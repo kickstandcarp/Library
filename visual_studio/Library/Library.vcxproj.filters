@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\python">
+      <UniqueIdentifier>{ddb8b949-2a62-42d3-bfcc-b5a06cfe3f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\python\repr">
+      <UniqueIdentifier>{eccd5a28-5fec-43d8-aef9-cb0e9a55d645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\python">
+      <UniqueIdentifier>{a970ebbe-420e-4051-8e0a-72bde73c5678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\python\repr">
+      <UniqueIdentifier>{6944c796-bb91-44f7-9177-a46870cd74ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\python\module">
+      <UniqueIdentifier>{2bbd8fbe-9d80-4a30-9ca8-5ec2dc9221a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\python\module">
+      <UniqueIdentifier>{c7bb95e4-90a6-4eb1-8b19-d0c6caeab8c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\coordinate">
+      <UniqueIdentifier>{2f338a0a-3c3a-4c7a-8c5a-d27fe3a4bced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\coordinate">
+      <UniqueIdentifier>{ff7ee039-24cb-413c-8aa7-0b67eaad1d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opengl">
+      <UniqueIdentifier>{ea492749-eb78-48e5-879e-41d7e4542973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\opengl">
+      <UniqueIdentifier>{88e631ea-041f-4f51-a5d3-15859d3a3c2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\test">
+      <UniqueIdentifier>{3f86c0cb-eae8-4c65-8f00-71e7e66a714c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\image">
+      <UniqueIdentifier>{d4c328b0-08dd-4e80-8efb-ac2547c535aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\image">
+      <UniqueIdentifier>{e20b6cac-b613-46c3-a2cc-bcea1110668b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{992d6a5e-d5e4-4f8f-8c35-721028cf648f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{e80206f4-c3fd-4401-bec2-d36fc522271f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{0527d74a-9f59-46e0-8bd9-e712211c204f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physics">
+      <UniqueIdentifier>{335e8469-f5a4-43d5-9d12-0ff0899b9b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\event">
+      <UniqueIdentifier>{b97c5c97-c662-4c70-bf51-1325c4704c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\event">
+      <UniqueIdentifier>{35b8eef5-39a9-4dff-aed3-5623a3c5cba6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\python\include\repr\glm_repr.hpp">
+      <Filter>Header Files\python\repr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\repr\repr.hpp">
+      <Filter>Header Files\python\repr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\module\glm.hpp">
+      <Filter>Header Files\python\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\coordinate\coordinate_transform.hpp">
+      <Filter>Header Files\coordinate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\coordinate\coordinate_transform_support.hpp">
+      <Filter>Header Files\coordinate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\repr\opengl_repr.hpp">
+      <Filter>Header Files\python\repr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\window.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\shader.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\shader_support.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\uniform_support.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\vertex_array.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\module\opengl.hpp">
+      <Filter>Header Files\python\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\buffer_support.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\frame_buffer.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\texture.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\image\indexing.hpp">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\image\transform.hpp">
+      <Filter>Header Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\repr\physics_repr.hpp">
+      <Filter>Header Files\python\repr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\math\integration.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\math\arithmatic.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\physics\paper_kinetics.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\event\event_handler.hpp">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\repr\event_repr.hpp">
+      <Filter>Header Files\python\repr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\python\include\repr\coordinate_repr.hpp">
+      <Filter>Header Files\python\repr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\event\event_handler_support.hpp">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\physics\oscillator_kinetics.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\python\src\repr\glm_repr.cpp">
+      <Filter>Source Files\python\repr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\module\coordinate.cpp">
+      <Filter>Source Files\python\module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\module\glm.cpp">
+      <Filter>Source Files\python\module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\coordinate\coordinate_transform_support.cpp">
+      <Filter>Source Files\coordinate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\coordinate\coordinate_transform.cpp">
+      <Filter>Source Files\coordinate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\module\opengl.cpp">
+      <Filter>Source Files\python\module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\repr\opengl_repr.cpp">
+      <Filter>Source Files\python\repr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\window.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\shader.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\shader_support.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\uniform_support.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\vertex_array.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\buffer_support.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\repr\repr.cpp">
+      <Filter>Source Files\python\repr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\frame_buffer.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\texture.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\image\indexing.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\image\transform.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\repr\physics_repr.cpp">
+      <Filter>Source Files\python\repr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\module\physics.cpp">
+      <Filter>Source Files\python\module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\math\arithmatic.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\physics\paper_kinetics.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\event\event_handler.cpp">
+      <Filter>Source Files\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\module\event.cpp">
+      <Filter>Source Files\python\module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\repr\event_repr.cpp">
+      <Filter>Source Files\python\repr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\python\src\repr\coordinate_repr.cpp">
+      <Filter>Source Files\python\repr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\physics\oscillator_kinetics.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\python\setup.py">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\test\test.py">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="..\..\test\test_support.py">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="..\..\test\flat.vert">
+      <Filter>Resource Files\test</Filter>
+    </None>
+    <None Include="..\..\test\flat.frag">
+      <Filter>Resource Files\test</Filter>
+    </None>
+  </ItemGroup>
+</Project>
