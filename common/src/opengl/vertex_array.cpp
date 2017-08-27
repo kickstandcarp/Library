@@ -1,22 +1,18 @@
+#include <stdexcept>
+
 #include "opengl/vertex_array.hpp"
 
 
 
 VertexArray::VertexArray(const DrawMode draw_mode)
 :	draw_mode(draw_mode),
-	element_buffer_information({0, 0, GL_UNSIGNED_INT, 1, -1})
+	num_vertices(0)
 {
     glGenVertexArrays(1, &this->id);
 }
 
 VertexArray::~VertexArray()
 {
-	for (auto const &information : this->buffer_information)
-		glDeleteBuffers(1, &information.second.id);
-
-	if (this->element_buffer_information.id != 0)
-		glDeleteBuffers(1, &this->element_buffer_information.id);
-
     glDeleteVertexArrays(1, &this->id);
 }
 
@@ -25,120 +21,178 @@ unsigned int VertexArray::get_id() const
 	return this->id;
 }
 
+unsigned int VertexArray::get_num_vertices() const
+{
+	return this->element_buffer ? element_buffer->get_size() : this->num_vertices;
+}
+
 std::vector<std::string> VertexArray::get_buffer_names() const
 {
 	std::vector<std::string> names;
-	for (auto const &information : this->buffer_information)
-		names.push_back(information.first);
+	for (auto const &buffer : this->buffers)
+		names.push_back(buffer.first);
 	return names;
 }
 
 unsigned int VertexArray::get_buffer_size(const std::string &name) const
 {
-	return this->buffer_information.at(name).size;
+	return this->buffers.at(name).buffer->get_size();
 }
 
 unsigned int VertexArray::get_element_buffer_size() const
 {
-	return this->element_buffer_information.size;
+	return this->element_buffer->get_size();
 }
 
 GLenum VertexArray::get_buffer_type(const std::string &name) const
 {
-	return this->buffer_information.at(name).type;
+	return this->buffers.at(name).buffer->get_type();
 }
 
 unsigned int VertexArray::get_buffer_dimension(const std::string &name) const
 {
-	return this->buffer_information.at(name).dimension;
+	return this->buffers.at(name).buffer->get_dimension();
 }
 
 int VertexArray::get_buffer_attribute_index(const std::string &name) const
 {
-	return this->buffer_information.at(name).attribute_index;
+	return this->buffers.at(name).attribute_index;
+}
+
+int VertexArray::get_buffer_transform_feedback_varying_index(const std::string &name) const
+{
+	return this->buffers.at(name).transform_feedback_varying_index;
+}
+
+unsigned int VertexArray::get_element_buffer(const unsigned int offset) const
+{
+    return this->element_buffer->get<unsigned int>(offset, false);
 }
 
 std::vector<unsigned int> VertexArray::get_element_buffer(const unsigned int offset, const unsigned int size) const
 {
-	if (this->element_buffer_information.id == 0 || offset + size > this->element_buffer_information.size)
-		throw std::length_error("element buffer length error");
-
-	std::vector<unsigned int> data(size, 2);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->element_buffer_information.id);
-	glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset*sizeof(unsigned int), size*sizeof(unsigned int), data.data());
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	return data;
+	return this->element_buffer->get<unsigned int>(offset, size, false);
 }
 
 void VertexArray::set_buffer_attribute_index(const std::string &name, const int index)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, this->buffer_information.at(name).id);
+	glBindBuffer(GL_ARRAY_BUFFER, this->buffers.at(name).buffer->get_id());
 	glEnableVertexAttribArray(index);
-	glVertexAttribPointer(index, this->buffer_information.at(name).dimension, this->buffer_information.at(name).type, GL_FALSE, 0, NULL);
+	glVertexAttribPointer(index, this->buffers.at(name).buffer->get_dimension(), this->buffers.at(name).buffer->get_type(), GL_FALSE, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	for (auto &information : this->buffer_information)
+	for (auto &buffer : this->buffers)
 	{
-		if (information.first != name && information.second.attribute_index == index)
-			information.second.attribute_index = -1;
+		if (buffer.first != name && this->buffers.at(name).attribute_index == index)
+			this->buffers.at(name).attribute_index = -1;
 	}
-	this->buffer_information.at(name).attribute_index = index;
+	this->buffers.at(name).attribute_index = index;
 }
 
-void VertexArray::set_element_buffer(const unsigned int offset, const std::vector<unsigned int> &data)
+void VertexArray::set_buffer_transform_feedback_varying_index(const std::string &name, const int index)
 {
-	if (this->element_buffer_information.id == 0 || offset + data.size() > this->element_buffer_information.size)
-		throw std::length_error("element buffer length error");
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, index, this->buffers.at(name).buffer->get_id());
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->element_buffer_information.id);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset*sizeof(unsigned int), data.size()*sizeof(unsigned int), data.data());
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	for (auto &buffer : this->buffers)
+	{
+		if (buffer.first != name && this->buffers.at(name).transform_feedback_varying_index == index)
+			this->buffers.at(name).transform_feedback_varying_index = -1;
+	}
+	this->buffers.at(name).transform_feedback_varying_index = index;
 }
 
-void VertexArray::add_element_buffer(const std::vector<unsigned int> &data)
+void VertexArray::set_element_buffer(const unsigned int data, const unsigned int offset)
 {
-	unsigned int buffer_id;
-	glGenBuffers(1, &buffer_id);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.size()*sizeof(unsigned int), data.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	this->element_buffer_information = BufferInformation{buffer_id, static_cast<unsigned int>(data.size()), 1, GL_UNSIGNED_INT, -1};
+    this->element_buffer->set(data, offset, false);
+}
+
+void VertexArray::set_element_buffer(const std::vector<unsigned int> &data, const unsigned int offset)
+{
+	this->element_buffer->set(data, offset, false);
+}
+
+void VertexArray::add_element_buffer(const std::vector<unsigned int> &data, const BufferUsageFrequency frequency, const BufferUsageAccess access)
+{
+	this->element_buffer = std::make_shared<Buffer>();
+	this->element_buffer->initialize(data, frequency, access);
 }
 
 void VertexArray::remove_buffer(const std::string &name)
 {
-	glDeleteBuffers(1, &this->buffer_information.at(name).id);
-	this->buffer_information.erase(name);
+	this->buffers.erase(name);
+
+	if (this->buffers.size() == 0)
+		this->num_vertices = 0;
+	else
+	{
+		for (auto const &buffer : this->buffers)
+			this->num_vertices = std::min(this->num_vertices, buffer.second.buffer->get_size());
+	}
 }
 
 void VertexArray::remove_element_buffer()
 {
-	glDeleteBuffers(1, &this->element_buffer_information.id);
-	this->element_buffer_information = BufferInformation{0, 0, 1, GL_UNSIGNED_INT, -1};
+	this->element_buffer.reset();
 }
 
-void VertexArray::draw(const unsigned int count) const
+void VertexArray::draw(const unsigned int count, const bool transform_feedback) const
 {
+	if (transform_feedback)
+		glBeginTransformFeedback(this->transform_feedback_primitive_mode());
+
 	if (count == 1)
     {
-        if (this->element_buffer_information.id != 0)
+        if (this->element_buffer)
         {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->element_buffer_information.id);
-            glDrawElements(static_cast<GLenum>(this->draw_mode), this->element_buffer_information.size, GL_UNSIGNED_INT, (void*)0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->element_buffer->get_id());
+            glDrawElements(static_cast<GLenum>(this->draw_mode), this->element_buffer->get_size(), this->element_buffer->get_type(), (void*)0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
         else
-            glDrawArrays(static_cast<GLenum>(this->draw_mode), 0, 0); // this->num_vertices);
+			glDrawArrays(static_cast<GLenum>(this->draw_mode), 0, this->num_vertices);
     }
     else
     {
-        if (this->element_buffer_information.id != 0)
+        if (this->element_buffer)
         {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->element_buffer_information.id);
-            glDrawElementsInstanced(static_cast<GLenum>(this->draw_mode), this->element_buffer_information.size, GL_UNSIGNED_INT, (void*)0, count);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->element_buffer->get_id());
+            glDrawElementsInstanced(static_cast<GLenum>(this->draw_mode), this->element_buffer->get_size(), this->element_buffer->get_type(), (void*)0, count);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
         else
-            glDrawArraysInstanced(static_cast<GLenum>(this->draw_mode), 0, 0, 0); // this->num_vertices, count);
+		   glDrawArraysInstanced(static_cast<GLenum>(this->draw_mode), 0, this->num_vertices, count);
     }
+
+	if (transform_feedback)
+		glEndTransformFeedback();
+}
+
+GLenum VertexArray::transform_feedback_primitive_mode() const
+{
+	switch (this->draw_mode)
+	{
+		case DrawMode::points:
+			return GL_POINTS;
+			break;
+		case DrawMode::line_strip:
+			return GL_LINES;
+			break;
+		case DrawMode::line_loop:
+			return GL_LINES;
+			break;
+		case DrawMode::lines:
+			return GL_LINES;
+			break;
+		case DrawMode::triangle_strip:
+			return GL_TRIANGLES;
+			break;
+		case DrawMode::triangle_fan:
+			return GL_TRIANGLES;
+			break;
+		case DrawMode::triangles:
+			return GL_TRIANGLES;
+			break;
+		default:
+			throw std::runtime_error("unknown draw mode");
+	}
 }

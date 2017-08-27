@@ -33,7 +33,7 @@ class CoordinateTransform: public std::enable_shared_from_this<CoordinateTransfo
 
 		void                                        translate(const glm::vec3 &translation);
 		void										rotate(const glm::quat &rotation);
-		void										scale(const glm::vec3 &scale);
+		void										scale(const glm::vec3 &scaling);
 		void										translate_origin(const glm::vec3 &translation);
 
 		glm::vec3									transform_position(const glm::vec3 &position, const bool to_global);

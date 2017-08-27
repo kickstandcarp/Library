@@ -27,6 +27,11 @@ PYBIND11_PLUGIN(coordinate)
 		.def_property_readonly("global_matrix", &CoordinateTransform::get_global_matrix)
 		.def_property_readonly("inverse_global_matrix", &CoordinateTransform::get_inverse_global_matrix)
 
+		.def("translate", &CoordinateTransform::translate, py::arg("translation"))
+		.def("rotate", &CoordinateTransform::rotate, py::arg("rotation"))
+		.def("scale", &CoordinateTransform::scale, py::arg("scaling"))
+		.def("translate_origin", &CoordinateTransform::translate_origin, py::arg("translation"))
+
 		.def("transform_position", &CoordinateTransform::transform_position, py::arg("position"), py::arg("to_global"))
 		.def("transform_direction", &CoordinateTransform::transform_direction, py::arg("direction"), py::arg("to_global"))
 

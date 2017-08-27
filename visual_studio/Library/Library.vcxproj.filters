@@ -150,6 +150,9 @@
     <ClInclude Include="..\..\common\include\physics\oscillator_kinetics.hpp">
       <Filter>Header Files\physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\common\include\opengl\buffer.hpp">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\python\src\repr\glm_repr.cpp">
@@ -233,6 +236,12 @@
     <ClCompile Include="..\..\common\src\physics\oscillator_kinetics.cpp">
       <Filter>Source Files\physics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\common\src\math\integration.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\opengl\buffer.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\python\setup.py">
@@ -241,13 +250,7 @@
     <None Include="..\..\test\test.py">
       <Filter>Resource Files\test</Filter>
     </None>
-    <None Include="..\..\test\test_support.py">
-      <Filter>Resource Files\test</Filter>
-    </None>
-    <None Include="..\..\test\flat.vert">
-      <Filter>Resource Files\test</Filter>
-    </None>
-    <None Include="..\..\test\flat.frag">
+    <None Include="..\..\test\test.vert">
       <Filter>Resource Files\test</Filter>
     </None>
   </ItemGroup>

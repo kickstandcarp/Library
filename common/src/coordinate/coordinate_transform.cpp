@@ -136,9 +136,9 @@ void CoordinateTransform::rotate(const glm::quat &rotation)
 	this->set_rotation(this->rotation*rotation);
 }
 
-void CoordinateTransform::scale(const glm::vec3 &scale)
+void CoordinateTransform::scale(const glm::vec3 &scaling)
 {
-	this->set_scaling(this->scaling*scale);
+	this->set_scaling(this->scaling*scaling);
 }
 
 void CoordinateTransform::translate_origin(const glm::vec3 &translation)

@@ -1,84 +1,12 @@
-#include <stdexcept>
-#include <utility>
-#include <sstream>
+#include <vector>
 
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "opengl/buffer_support.hpp"
 #include "opengl/uniform_support.hpp"
 
 
-
-std::map<std::string, AttributeInformation> get_attribute_information(const unsigned int id)
-{
-	std::map<std::string, AttributeInformation> information;
-
-	int num_attributes;
-	glGetProgramiv(id, GL_ACTIVE_ATTRIBUTES, &num_attributes);
-
-	int size;
-	GLenum type;
-	char name_c_str[1024];
-	for (int i = 0; i < num_attributes; i++)
-	{
-		glGetActiveAttrib(id, i, 1024, NULL, &size, &type, name_c_str);
-		std::string name = std::string(name_c_str);
-		information.insert(std::make_pair(name, AttributeInformation{get_attribute_location(id, name), static_cast<unsigned int>(size), type}));
-	}
-
-	return information;
-}
-
-unsigned int get_attribute_location(const unsigned int id, const std::string &name)
-{
-	int location = glGetAttribLocation(id, name.c_str());
-
-	if (location == -1)
-	{
-		std::stringstream what;
-		what << "attribute location error: " << name;
-		throw std::runtime_error(what.str());
-	}
-
-	return static_cast<unsigned int>(location);
-}
-
-std::map<std::string, UniformInformation> get_uniform_information(const unsigned int id)
-{
-    std::map<std::string, UniformInformation> information;
-
-    int num_uniforms;
-    glGetProgramiv(id, GL_ACTIVE_UNIFORMS, &num_uniforms);
-
-	int size;
-	GLenum type;
-	char name_c_str[1024];
-    for (int i = 0; i < num_uniforms; i++)
-    {
-        glGetActiveUniform(id, i, 1024, NULL, &size, &type, name_c_str);
-		
-		std::string name(name_c_str);
-		if (size > 1)
-			name = name.substr(0, name.find_first_of("["));
-
-		information.insert(std::make_pair(name, UniformInformation{get_uniform_location(id, name), static_cast<unsigned int>(size), type}));
-    }
-
-    return information;
-}
-
-unsigned int get_uniform_location(const unsigned int id, const std::string &name)
-{
-	int location = glGetUniformLocation(id, name.c_str());
-
-	if (location == -1)
-	{
-        std::stringstream what;
-        what << "uniform location error: " << name;
-        throw std::runtime_error(what.str());
-	}
-
-	return static_cast<unsigned int>(location);
-}
 
 template <>
 int get_uniform<int>(const unsigned int id, const unsigned int location, const unsigned int count)
@@ -339,4 +267,74 @@ template <>
 void set_uniform<std::vector<glm::mat4x4> >(const unsigned int location, const std::vector<glm::mat4x4> &value)
 {
 	glUniformMatrix4fv(location, value.size(), GL_FALSE, &value[0][0][0]);
+}
+
+std::map<std::string, UniformInformation> uniform_information(const unsigned int id)
+{
+	std::map<std::string, UniformInformation> information;
+
+	int num_uniforms;
+	glGetProgramiv(id, GL_ACTIVE_UNIFORMS, &num_uniforms);
+
+	int size, stride;
+	GLenum type;
+	char name_c_str[1024];
+	for (int i = 0; i < num_uniforms; i++)
+	{
+        unsigned int index = static_cast<unsigned int>(i);
+		glGetActiveUniform(id, index, 1024, NULL, &size, &type, name_c_str);
+        glGetActiveUniformsiv(id, 1, &index, GL_UNIFORM_ARRAY_STRIDE, &stride);
+
+		std::string name(name_c_str);
+		if (size > 1)
+			name = name.substr(0, name.find_first_of("["));
+
+		int location = glGetUniformLocation(id, name.c_str());
+		if (location >= 0)
+			information.insert(std::make_pair(name, UniformInformation{static_cast<unsigned int>(location), static_cast<unsigned int>(size), stride, type}));
+	}
+
+	return information;
+}
+
+std::map<std::string, UniformBufferInformation> uniform_buffer_information(const unsigned int id)
+{
+	std::map<std::string, UniformBufferInformation> information;
+
+	int num_uniform_buffers;
+	glGetProgramiv(id, GL_ACTIVE_UNIFORM_BLOCKS, &num_uniform_buffers);
+
+    int buffer_size, num_uniforms;
+    std::vector<int> uniform_indices;
+    char name_c_str[1024];
+	for (int i = 0; i < num_uniform_buffers; i++)
+	{
+		glGetActiveUniformBlockName(id, i, 1024, NULL, name_c_str);
+		glGetActiveUniformBlockiv(id, i, GL_UNIFORM_BLOCK_DATA_SIZE, &buffer_size);
+		glGetActiveUniformBlockiv(id, i, GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &num_uniforms);
+
+		uniform_indices.resize(num_uniforms);
+		glGetActiveUniformBlockiv(id, i, GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, uniform_indices.data());
+
+		std::string buffer_name = std::string(name_c_str);
+        information.insert(std::make_pair(buffer_name, UniformBufferInformation{static_cast<unsigned int>(i), static_cast<unsigned int>(buffer_size), 0, std::shared_ptr<Buffer>(), std::map<std::string, UniformInformation>()}));
+
+		int size, location, stride;
+		GLenum type;
+		for (int j = 0; j < num_uniforms; j++)
+		{
+			unsigned int index = static_cast<unsigned int>(uniform_indices[j]);
+			glGetActiveUniform(id, index, 1024, NULL, &size, &type, name_c_str);
+			glGetActiveUniformsiv(id, 1, &index, GL_UNIFORM_OFFSET, &location);
+            glGetActiveUniformsiv(id, 1, &index, GL_UNIFORM_ARRAY_STRIDE, &stride);
+
+			std::string name(name_c_str);
+			if (size > 1)
+				name = name.substr(0, name.find_first_of("["));
+
+			information.at(buffer_name).uniform_information.insert(std::make_pair(name, UniformInformation{static_cast<unsigned int>(location), static_cast<unsigned int>(size), stride, type}));
+		}
+	}
+
+	return information;
 }

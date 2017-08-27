@@ -1,46 +1,61 @@
 from sys import path
 from os.path import pardir, split, join, realpath
-from math import tan, atan, degrees, radians, pi
-
-from matplotlib.pylab import show, figure, plot, grid
 
 path.append(join(split(realpath(__file__))[0], pardir, 'python'))
-from glm import vec3, vec4, quat, mat4x4
-from opengl import BlendFactor
-from event import DeviceType
-from coordinate import Camera
-from test_support import initialize_window, Player, Square
+from glm import ivec2, ivec3, ivec4, vec2, vec3, vec4, quat, mat4x4
+from opengl import Window, BlendFactor, ShaderType, BufferUsageFrequency, BufferUsageAccess, DrawMode, TextureInterpolation, TextureWrap
 
 
 
-shaders_file_names = [(join(split(realpath(__file__))[0], 'flat.vert'), join(split(realpath(__file__))[0], 'flat.frag'))]
-window = initialize_window((1000, 500), shaders_file_names)
+with open(join(split(realpath(__file__))[0], 'test.vert')) as file:
+     vertex_shader_text = file.read()
+with open(join(split(realpath(__file__))[0], 'test.frag')) as file:
+     fragment_shader_text = file.read()
 
-camera = Camera(100.0, 50.0, 0.1, 100.0, True)
-# camera = Camera(radians(90.0), 2.0*atan((window.size[1] / window.size[0])*tan(radians(0.5*90.0))), 0.1, 100.0, False)
-camera.coordinate_transform.translation = vec3(30.0, 0.0, -40.0)
-camera.coordinate_transform.rotation = quat(vec3(0.0, 1.0, 0.0), 0.5*pi)
+window = Window('OpenGL Square Test', (500, 500), True)
+window.discard_rasterizer = True
 
-player = Player((1.0, 1.0), vec4(1.0, 1.0, 1.0, 0.5), vec3(0.0, 0.0, 0.0))
-squares = []
+window.add_shader('test', [(vertex_shader_text, ShaderType.vertex), (fragment_shader_text, ShaderType.fragment)], ['transformed_data_1', 'transformed_data_2'])
+window.shaders('test').initialize_uniform_buffer('uniform_buffer', 1)
 
-while not window.event_handler.quit:
-    window.event_handler.update()
+window.add_vertex_array('test', DrawMode.points)
+# window.vertex_arrays('test').add_element_buffer([0, 1])
+window.vertex_arrays('test').add_buffer('data', [vec3(1.0), vec3(1.0)], BufferUsageFrequency.dynamic, BufferUsageAccess.copy)
+window.vertex_arrays('test').add_buffer('transformed_data', [vec3(2.0), vec3(2.0)], BufferUsageFrequency.dynamic, BufferUsageAccess.copy)
 
-    square = player.update(window.event_handler, window.refresh_time)
-    if square is not None:
-        squares.append(square)
+window.shaders('test').set_attribute('data', window.vertex_arrays('test'), 'data')
 
-    for square in squares:
-        square.update(window.refresh_time)
+window.shaders('test').set_transform_feedback_varying('transformed_data_1', window.vertex_arrays('test'), 'data')
+window.shaders('test').set_transform_feedback_varying('transformed_data_2', window.vertex_arrays('test'), 'transformed_data')
 
-    window.set_target_frame_buffer('draw', [0,])
-    window.clear()
 
-    for square in squares:
-        square.draw(window, camera)
-    player.draw(window, camera)
+print(window.shaders('test').attribute_names)
+print(window.shaders('test').transform_feedback_varying_names)
+print(window.shaders('test').uniform_buffer_names)
+print(window.shaders('test').uniform_names)
 
-    window.copy_frame_buffer('draw', 0, 'window', 0)
-    window.draw()
+window.vertex_arrays('test').set_buffer('data', vec3(-1.0), 1)
+window.vertex_arrays('test').set_buffer('transformed_data', vec3(-2.0), 0)
+window.shaders('test').set_uniform('uniform_vec3', vec3(3.0))
+window.shaders('test').set_uniform('uniform_ivec2', [ivec2(4), ivec2(4), ivec2(4)])
+window.shaders('test').set_uniform('uniform_ivec2', [ivec2(-4), ivec2(-4)], 1)
+window.shaders('test').set_uniform('uniform_buffer_float_1', 5.0)
+window.shaders('test').set_uniform('uniform_buffer_float_2', 6.0)
+window.shaders('test').set_uniform('uniform_buffer_vec3', [vec3(7.0), vec3(-7.0)])
 
+print(window.vertex_arrays('test').get_buffer('data'), window.vertex_arrays('test').get_buffer('data', 1, 1))
+print(window.vertex_arrays('test').get_buffer('transformed_data'))
+print(window.shaders('test').get_uniform('uniform_vec3'))
+print(window.shaders('test').get_uniform('uniform_ivec2'), window.shaders('test').get_uniform('uniform_ivec2', 0, 2))
+print(window.shaders('test').get_uniform('uniform_buffer_float_1'))
+print(window.shaders('test').get_uniform('uniform_buffer_float_2'))
+print(window.shaders('test').get_uniform('uniform_buffer_vec3'))
+
+
+print(window.validate()[0])
+for i in range(3):
+     window.vertex_arrays('test').draw(transform_feedback=True)
+
+     print(i)
+     print(window.vertex_arrays('test').get_buffer('data'))
+     print(window.vertex_arrays('test').get_buffer('transformed_data'))

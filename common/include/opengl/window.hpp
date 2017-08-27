@@ -30,9 +30,10 @@ class Window
         float                                           get_refresh_time() const;
 		bool											get_use_depth_test()  const;
 		bool											get_use_blending() const;
-        EventHandler&                                   get_event_handler();
 		std::tuple<BlendFactor, BlendFactor>			get_blend_factors() const;
 		glm::vec4										get_clear_color() const;
+		bool											get_discard_rasterizer() const;
+		EventHandler&                                   get_event_handler();
 		std::vector<std::string>                        get_shader_names() const;
         Shader&                                         get_shader(const std::string &name);
 		std::vector<std::string>                        get_vertex_array_names() const;
@@ -45,10 +46,11 @@ class Window
 		void											set_use_depth_test(const bool use_depth_test);
 		void											set_use_blending(const bool use_blending);
 		void											set_blend_factors(const BlendFactor source, const BlendFactor destination);
+		void											set_discard_rasterizer(const bool discard_rasterizer);
 		void											set_clear_color(const glm::vec4 &color);
 		void											set_target_frame_buffer(const std::string &name, const std::vector<unsigned int> &color_attachment_indices);
 
-        void                                            add_shader(const std::string &name, const std::vector<std::pair<std::string, ShaderType> > &shaders);
+		void                                            add_shader(const std::string &name, const std::vector<std::pair<std::string, ShaderType> > &shaders, const std::vector<std::string> &transform_feedback_varying_names=std::vector<std::string>());
 		void                                            add_vertex_array(const std::string &name, const DrawMode draw_mode);
 		void											add_texture(const std::string &name, const std::vector<float> &data, const std::array<unsigned int, 2> &size, const TextureFormat format, const TextureInterpolation interpolation, const TextureWrap wrap);
 		void                                            add_frame_buffer(const std::string &name, const std::array<unsigned int, 2> &size, const unsigned int num_color_attachments, const bool has_depth_attachment);
@@ -63,13 +65,15 @@ class Window
 		void                                            clear(const bool color=true, const bool depth=true);
 		void                                            draw();
 
+        std::tuple<bool, std::string>                   validate() const;
+
 		std::string										frame_buffer_name;
 
     private:
 		SDL_Window*                                     sdl_window;
 		SDL_GLContext                                   sdl_context;
 
-		bool											use_depth_test, use_blending;
+		bool											use_depth_test, use_blending, discard_rasterizer;
 
         EventHandler                                    event_handler;
 

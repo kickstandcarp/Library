@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "opengl/window.hpp"
+#include "opengl/shader_support.hpp"
 
 
 
@@ -104,6 +105,11 @@ glm::vec4 Window::get_clear_color() const
 	glm::vec4 color;
 	glGetFloatv(GL_COLOR_CLEAR_VALUE, glm::value_ptr(color));
 	return color;
+}
+
+bool Window::get_discard_rasterizer() const
+{
+	return glIsEnabled(GL_RASTERIZER_DISCARD) == GL_TRUE;
 }
 
 EventHandler& Window::get_event_handler()
@@ -241,6 +247,19 @@ void Window::set_clear_color(const glm::vec4 &color)
 	glClearColor(color.r, color.g, color.b, color.a);
 }
 
+void Window::set_discard_rasterizer(const bool discard_rasterizer)
+{
+	if (this->discard_rasterizer == discard_rasterizer)
+		return;
+
+	if (discard_rasterizer)
+		glEnable(GL_RASTERIZER_DISCARD);
+	else
+		glDisable(GL_RASTERIZER_DISCARD);
+
+	this->discard_rasterizer = discard_rasterizer;
+}
+
 void Window::set_target_frame_buffer(const std::string &name, const std::vector<unsigned int> &color_attachment_indices)
 {
     if (name == this->frame_buffer_name)
@@ -288,9 +307,9 @@ void Window::set_target_frame_buffer(const std::string &name, const std::vector<
     }
 }
 
-void Window::add_shader(const std::string &name, const std::vector<std::pair<std::string, ShaderType> > &shaders)
+void Window::add_shader(const std::string &name, const std::vector<std::pair<std::string, ShaderType> > &shaders, const std::vector<std::string> &transform_feedback_varying_names)
 {
-    this->shaders.emplace(std::piecewise_construct, std::forward_as_tuple(name), std::forward_as_tuple(shaders));
+    this->shaders.emplace(std::piecewise_construct, std::forward_as_tuple(name), std::forward_as_tuple(shaders, transform_feedback_varying_names));
 }
 
 void Window::add_vertex_array(const std::string &name, const DrawMode draw_mode)
@@ -383,7 +402,17 @@ void Window::draw()
         glDrawBuffers(this->target_frame_buffer_color_attachments.size(), this->target_frame_buffer_color_attachments.data());
     }
 
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR)
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
         throw std::runtime_error("opengl error");
+}
+
+std::tuple<bool, std::string> Window::validate() const
+{
+    glValidateProgram(this->shader->second.get_id());
+
+    int validate_status;
+    glGetProgramiv(this->shader->second.get_id(), GL_VALIDATE_STATUS, &validate_status);
+
+    return std::make_tuple(validate_status == GL_TRUE, program_info_log(this->shader->second.get_id()));
 }

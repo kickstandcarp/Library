@@ -29,7 +29,7 @@ PYBIND11_PLUGIN(physics)
 		.def("__repr__", &oscillator_kinetics_repr);
 
     py::class_<PaperKinetics>(m, "PaperKinetics")
-        .def(py::init<glm::vec3, glm::quat, glm::vec3, glm::vec3, float, float, float, float, glm::vec3, glm::vec3>(), py::arg("position")=glm::vec3(0.0f), py::arg("orientation")=glm::quat(1.0f, 0.0f, 0.0f, 0.0f), py::arg("velocity")=glm::vec3(0.0f), py::arg("angular_velocity")=glm::vec3(0.0f), py::arg("perpendicular_friction")=10.0f, py::arg("parallel_friction")=0.1f, py::arg("fluid_density")=0.1f, py::arg("paper_density")=1.0f, py::arg("size")=glm::vec3(1.0f, 0.0f, 1.0f), py::arg("force")=glm::vec3(0.0f, -9.8f, 0.0f))
+        .def(py::init<glm::vec3, glm::quat, glm::vec3, glm::vec3, float, float, float, float, glm::vec3, glm::vec3>(), py::arg("position")=glm::vec3(0.0f), py::arg("orientation")=glm::quat(1.0f, 0.0f, 0.0f, 0.0f), py::arg("velocity")=glm::vec3(0.0f), py::arg("angular_velocity")=glm::vec3(0.0f), py::arg("perpendicular_friction")=10.0f, py::arg("parallel_friction")=0.1f, py::arg("fluid_density")=0.1f, py::arg("paper_density")=1.0f, py::arg("size")=glm::vec3(1.0f, 0.0f, 1.0f), py::arg("acceleration")=glm::vec3(0.0f, -9.8f, 0.0f))
 
 		.def_readwrite("perpendicular_friction", &PaperKinetics::perpendicular_friction)
 		.def_readwrite("parallel_friction", &PaperKinetics::parallel_friction)

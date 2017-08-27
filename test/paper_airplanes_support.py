@@ -5,7 +5,7 @@ from math import copysign, pi
 from matplotlib.cm import get_cmap
 
 path.append(join(split(realpath(__file__))[0], pardir, 'python'))
-from glm import vec3, vec4, quat, mat4x4, rotate, rotation
+from glm import vec3, vec4, quat, mat4x4, rotate, rotation, length
 from opengl import Window, BlendFactor, ShaderType, DrawMode, TextureInterpolation, TextureWrap
 from event import DeviceType
 from coordinate import CoordinateTransform, translation, rotation, scaling
@@ -83,13 +83,15 @@ class Player(object):
 
     def update(self, event_handler, elapsed_time):
         if event_handler.num_controllers > 0:
-            square_direction = event_handler.get_direction('right_stick', DeviceType.controller, 0)
             velocity_direction = event_handler.get_direction('left_stick', DeviceType.controller, 0)
+            square_direction = event_handler.get_direction('right_stick', DeviceType.controller, 0)
             fire = event_handler.get_button_moved_down('right_trigger', DeviceType.controller, 0)
         else:
-            square_direction = event_handler.get_direction('up,left,down,right', DeviceType.keyboard)
             velocity_direction = event_handler.get_direction('w,a,s,d', DeviceType.keyboard)
+            square_direction = event_handler.get_direction('up,left,down,right', DeviceType.keyboard)
             fire = event_handler.get_button_moved_down('return', DeviceType.keyboard)
+
+        self.coordinate_transform.rotate(quat(vec3(1.0, 0.0, 0.0), elapsed_time*velocity_direction.y))
 
         self.azimuth_kinetics.frequency = 2.0 if square_direction.x == 0.0 else 0.5
         self.azimuth_kinetics.damping_ratio = 0.2 if square_direction.x == 0.0 else 1.0
@@ -101,15 +103,14 @@ class Player(object):
         self.elevation_kinetics.acceleration = self.elevation_kinetics.steady_state_value_acceleration(0.25*pi)*square_direction.y
         self.elevation_kinetics.step(elapsed_time)
 
-        self.coordinate_transform.rotation = quat(vec3(1.0, 0.0, 0.0), self.elevation_kinetics.value)*quat(vec3(0.0, 1.0, 0.0), self.azimuth_kinetics.value)
-        # self.normal_arrow_coordinate_transform.scaling = 2.0 / self.square.coordinate_transform.scaling
+        self.square.coordinate_transform.rotation = quat(vec3(1.0, 0.0, 0.0), self.elevation_kinetics.value)*quat(vec3(0.0, 0.0, 1.0), self.azimuth_kinetics.value)
 
         if fire:
             size = scaling(self.square.coordinate_transform, None)
-            color = self.color_map(abs(1.0 - (self.color_map_index % 2.0)))
+            color = vec4(self.color_map(abs(1.0 - (self.color_map_index % 2.0))))
             position = translation(self.square.coordinate_transform, None)
             orientation = rotation(self.square.coordinate_transform, None)
-            velocity = 15.0*self.velocity_arrow_coordinate_transform.transform_direction(vec3(0.0, 1.0, 0.0), True)
+            velocity = 25.0*self.velocity_arrow_coordinate_transform.transform_direction(vec3(0.0, 1.0, 0.0), True)
             square = Square((size.x, size.z), color, position, orientation, velocity, vec3(0.0))
 
             self.color_map_index += self.color_map_interval
@@ -138,10 +139,11 @@ class Square(object):
 
         self.color = color
         self.coordinate_transform = CoordinateTransform(position, orientation, vec3(size[0], 1.0, size[1]))
-        self.kinetics = PaperKinetics(position, orientation, velocity, angular_velocity, size=(size[0], 0.0, size[1]), perpendicular_friction=7.0, parallel_friction=0.1, fluid_density=0.1, paper_density=1.0)
+        self.kinetics = PaperKinetics(position, orientation, velocity, angular_velocity, perpendicular_friction=10.0, parallel_friction=0.1, fluid_density=0.1, paper_density=1.0, size=vec3(size[0], 0.0, size[1]), acceleration=vec3(0.0, -9.8, 0.0))
 
     def update(self, elapsed_time):
-        self.kinetics.step(elapsed_time)
+        for i in range(100):
+            self.kinetics.step(elapsed_time / 100)
 
         self.coordinate_transform.translation = self.kinetics.position
         self.coordinate_transform.rotation = self.kinetics.orientation
