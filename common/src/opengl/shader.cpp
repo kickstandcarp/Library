@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <sstream>
 
 #include "opengl/shader.hpp"
 
@@ -139,5 +140,7 @@ std::tuple<std::shared_ptr<Buffer>, UniformInformation> Shader::buffer_uniform_i
         }
     }
 
-	throw std::runtime_error("uniform not found");
+	std::stringstream what;
+	what << "invalid uniform name: " << name << std::endl;
+	throw std::runtime_error(what.str());
 }

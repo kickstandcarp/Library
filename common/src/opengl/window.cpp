@@ -11,7 +11,7 @@
 
 
 Window::Window(const std::string &title, const std::array<unsigned int, 2> &size, const bool show)
-:   frame_buffer_name("window"),
+:   window_frame_buffer_name("window"),
 	use_depth_test(false),
 	use_blending(false),
     event_handler(size),
@@ -262,7 +262,7 @@ void Window::set_discard_rasterizer(const bool discard_rasterizer)
 
 void Window::set_target_frame_buffer(const std::string &name, const std::vector<unsigned int> &color_attachment_indices)
 {
-    if (name == this->frame_buffer_name)
+    if (name == this->window_frame_buffer_name)
     {
         if (this->target_frame_buffer == this->frame_buffers.end() && color_attachment_indices.size() == 1 && color_attachment_indices[0] == 0)
             return;
@@ -324,7 +324,7 @@ void Window::add_texture(const std::string &name, const std::vector<float> &data
 
 void Window::add_frame_buffer(const std::string &name, const std::array<unsigned int, 2> &size, const unsigned int num_color_attachments, const bool has_depth_attachment)
 {
-	if (name == this->frame_buffer_name)
+	if (name == this->window_frame_buffer_name)
 		throw std::runtime_error("invalid frame buffer name");
 
 	this->frame_buffers.emplace(std::piecewise_construct, std::forward_as_tuple(name), std::forward_as_tuple(size, num_color_attachments, has_depth_attachment));
@@ -361,7 +361,7 @@ void Window::remove_frame_buffer(const std::string &name)
 
 void Window::copy_frame_buffer(const std::string &source_name, const unsigned int source_color_attachment, const std::string &destination_name, const unsigned int destination_color_attachment)
 {
-	unsigned int source_frame_buffer_id = source_name == this->frame_buffer_name ? 0 : this->frame_buffers.at(source_name).get_id(), destination_frame_buffer_id = destination_name == this->frame_buffer_name ? 0 : this->frame_buffers.at(destination_name).get_id();
+	unsigned int source_frame_buffer_id = source_name == this->window_frame_buffer_name ? 0 : this->frame_buffers.at(source_name).get_id(), destination_frame_buffer_id = destination_name == this->window_frame_buffer_name ? 0 : this->frame_buffers.at(destination_name).get_id();
 	std::array<unsigned int, 2> source_size = source_frame_buffer_id == 0 ? this->get_size() : this->frame_buffers.at(source_name).get_size(), destination_size = destination_frame_buffer_id == 0 ? this->get_size() : this->frame_buffers.at(destination_name).get_size();
 	
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, source_frame_buffer_id);

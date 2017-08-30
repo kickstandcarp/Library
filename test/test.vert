@@ -10,11 +10,11 @@ out vec3                        transformed_data_2;
 uniform uniform_buffer
 {
     float                       uniform_buffer_float_1;
-	float						uniform_buffer_float_2;
+    float			uniform_buffer_float_2;
     vec3[2]                     uniform_buffer_vec3;
 };
 
-uniform vec3					uniform_vec3;
+uniform vec3			uniform_vec3;
 uniform ivec2[3]                uniform_ivec2;
 
 

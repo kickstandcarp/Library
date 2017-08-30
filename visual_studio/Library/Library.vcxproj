@@ -218,6 +218,7 @@ del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\python\setup.py" />
+    <None Include="..\..\test\test.frag" />
     <None Include="..\..\test\test.py" />
     <None Include="..\..\test\test.vert" />
   </ItemGroup>

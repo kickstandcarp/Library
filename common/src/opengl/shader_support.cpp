@@ -75,22 +75,35 @@ void link_program(const unsigned int program_id)
 
 std::string shader_info_log(const unsigned int id)
 {
+	std::string info_log;
+
     int size;
     glGetShaderiv(id, GL_INFO_LOG_LENGTH, &size);
-
-    std::string info_log(size, '\0');
-    glGetShaderInfoLog(id, size, NULL, &info_log[0]);
+	if (size > 0)
+	{
+		char *info_log_c_str = new char[size];
+		glGetShaderInfoLog(id, size, NULL, info_log_c_str);
+		info_log = info_log_c_str;
+		delete [] info_log_c_str;
+	}
 
     return info_log;
 }
 
 std::string program_info_log(const unsigned int id)
 {
+	std::string info_log;
+
     int size;
     glGetProgramiv(id, GL_INFO_LOG_LENGTH, &size);
 
-    std::string info_log(size, '\0');
-    glGetProgramInfoLog(id, size, NULL, &info_log[0]);
+	if (size > 0)
+	{
+		char *info_log_c_str = new char[size];
+		glGetProgramInfoLog(id, size, NULL, info_log_c_str);
+		info_log = info_log_c_str;
+		delete [] info_log_c_str;
+	}
 
     return info_log;
 }

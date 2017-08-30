@@ -24,7 +24,7 @@ PYBIND11_PLUGIN(opengl)
     py::class_<Window>(m, "Window")
 		.def("__init__", [] (Window &instance, const std::string &title, const py::iterable &iterable, const bool show) { new (&instance) Window(title, std::get<0>(iterable_to_array<unsigned int, 2>(iterable)), show); }, py::arg("title"), py::arg("size"), py::arg("show")=true)
 
-		.def_readwrite("frame_buffer_name", &Window::frame_buffer_name)
+		.def_readwrite("window_frame_buffer_name", &Window::window_frame_buffer_name)
 
 		.def_property_readonly("size", &Window::get_size)
 		.def_property_readonly("refresh_rate", &Window::get_refresh_rate)

@@ -253,5 +253,8 @@
     <None Include="..\..\test\test.vert">
       <Filter>Resource Files\test</Filter>
     </None>
+    <None Include="..\..\test\test.frag">
+      <Filter>Resource Files\test</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -19,7 +19,7 @@ window.add_shader('test', [(vertex_shader_text, ShaderType.vertex), (fragment_sh
 window.shaders('test').initialize_uniform_buffer('uniform_buffer', 1)
 
 window.add_vertex_array('test', DrawMode.points)
-# window.vertex_arrays('test').add_element_buffer([0, 1])
+window.vertex_arrays('test').add_element_buffer([0, 1])
 window.vertex_arrays('test').add_buffer('data', [vec3(1.0), vec3(1.0)], BufferUsageFrequency.dynamic, BufferUsageAccess.copy)
 window.vertex_arrays('test').add_buffer('transformed_data', [vec3(2.0), vec3(2.0)], BufferUsageFrequency.dynamic, BufferUsageAccess.copy)
 
@@ -52,7 +52,7 @@ print(window.shaders('test').get_uniform('uniform_buffer_float_2'))
 print(window.shaders('test').get_uniform('uniform_buffer_vec3'))
 
 
-print(window.validate()[0])
+print(window.validate())
 for i in range(3):
      window.vertex_arrays('test').draw(transform_feedback=True)
 
