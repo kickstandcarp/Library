@@ -207,6 +207,8 @@ PYBIND11_PLUGIN(glm)
 	py::implicitly_convertible<py::tuple, glm::vec2>();
     py::implicitly_convertible<py::list, glm::vec2>();
 
+	m.def("min", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::min);
+	m.def("max", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::max);
 	m.def("dot", (float (*)(const glm::vec2 &, const glm::vec2 &)) &glm::dot);
 	m.def("length", (float (*)(const glm::vec2 &)) &glm::length);
     m.def("normalize", (glm::vec2 (*)(const glm::vec2 &)) &glm::normalize);
@@ -261,6 +263,8 @@ PYBIND11_PLUGIN(glm)
     py::implicitly_convertible<py::list, glm::vec3>();
     py::implicitly_convertible<py::tuple, glm::vec3>();
 
+	m.def("min", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::min);
+	m.def("max", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::max);
 	m.def("dot", (float (*)(const glm::vec3 &, const glm::vec3 &)) &glm::dot);
 	m.def("cross", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::cross);
 	m.def("length", (float (*)(const glm::vec3 &)) &glm::length);
@@ -318,6 +322,8 @@ PYBIND11_PLUGIN(glm)
 	py::implicitly_convertible<py::list, glm::vec4>();
 	py::implicitly_convertible<py::tuple, glm::vec4>();
 
+	m.def("min", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::min);
+	m.def("max", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::max);
 	m.def("dot", (float (*)(const glm::vec4 &, const glm::vec4 &)) &glm::dot);
 	m.def("length", (float (*)(const glm::vec4 &)) &glm::length);
 	m.def("normalize", (glm::vec4 (*)(const glm::vec4 &)) &glm::normalize);

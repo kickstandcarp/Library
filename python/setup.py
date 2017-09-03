@@ -1,6 +1,7 @@
 from os import environ
 from os.path import pardir, join, split, abspath, realpath
 from distutils.core import setup, Extension
+import platform
 
 from pybind11 import get_include
 
@@ -13,10 +14,8 @@ include_dirs.append(get_include(False))
 include_dirs.append(abspath(join(path, 'include')))
 include_dirs.append(abspath(join(path, pardir, 'common', 'include')))
 
-# extra_compile_args = ['-std=c++11', '-O0']
-extra_compile_args = ['/Zi', '/Od']
-# extra_link_args = []
-extra_link_args = ['/DEBUG']
+extra_compile_args = ['-std=c++11', '-O0'] if platform.system() != 'Windows' else ['/Zi', '/Od']
+extra_link_args = [] if platform.system() != 'Windows' else ['/DEBUG']
 
 src_files = []
 src_files.append(abspath(join(path, 'src', 'module', 'glm.cpp')))
@@ -41,8 +40,10 @@ src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'texture.
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'frame_buffer.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'event', 'event_handler.cpp')))
 
-# opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=['GLEW', 'SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=['opengl32', 'glew32', 'SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+if platform.system() != 'Windows':
+    opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=['GLEW', 'SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+else:
+    opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=['opengl32', 'glew32', 'SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 
 src_files = []
 src_files.append(abspath(join(path, 'src', 'module', 'event.cpp')))
