@@ -1,6 +1,7 @@
 #include <pybind11/operators.h>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 #include "module/glm.hpp"
 #include "repr/glm_repr.hpp"
@@ -12,6 +13,68 @@ namespace py = pybind11;
 PYBIND11_PLUGIN(glm)
 {
     py::module m("glm");
+
+	py::class_<glm::bvec2>(m, "bvec2")
+		.def(py::init<>())
+		.def(py::init<bool>())
+		.def(py::init<bool, bool>())
+		.def(py::init<glm::bvec2>())
+		.def("__init__", [] (glm::bvec2 &instance, const py::iterable &iterable) { from_iterable<bool, glm::bvec2, 2>(instance, iterable); })
+
+		.def_readwrite("x", &glm::bvec2::x)
+		.def_readwrite("y", &glm::bvec2::y)
+
+		.def(py::self == py::self)
+		.def(py::self != py::self)
+
+		.def("__getitem__", [] (const glm::bvec2 &instance, const long index) { return py_get_vec<bool, glm::bvec2, 2>(instance, index); })
+		.def("__setitem__", [] (glm::bvec2 &instance, const long index, const bool value) { return py_set_vec<bool, glm::bvec2, 2>(instance, index, value); })
+		.def("__iter__", [] (const glm::bvec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+2); }, py::keep_alive<0, 1>())
+		.def("__repr__", &bvec2_repr);
+
+	py::class_<glm::bvec3>(m, "bvec3")
+		.def(py::init<>())
+		.def(py::init<bool>())
+        .def(py::init<glm::bvec2, bool>())
+        .def(py::init<bool, glm::bvec2>())
+		.def(py::init<bool, bool, bool>())
+		.def(py::init<glm::bvec3>())
+		.def("__init__", [] (glm::bvec3 &instance, const py::iterable &iterable) { from_iterable<bool, glm::bvec3, 3>(instance, iterable); })
+
+		.def_readwrite("x", &glm::bvec3::x)
+		.def_readwrite("y", &glm::bvec3::y)
+		.def_readwrite("z", &glm::bvec3::z)
+
+		.def(py::self == py::self)
+		.def(py::self != py::self)
+
+		.def("__getitem__", [] (const glm::bvec3 &instance, const long index) { return py_get_vec<bool, glm::bvec3, 3>(instance, index); })
+		.def("__setitem__", [] (glm::bvec3 &instance, const long index, const bool value) { return py_set_vec<bool, glm::bvec3, 3>(instance, index, value); })
+		.def("__iter__", [] (const glm::bvec3 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+3); }, py::keep_alive<0, 1>())
+		.def("__repr__", &bvec3_repr);
+
+	py::class_<glm::bvec4>(m, "bvec4")
+		.def(py::init<>())
+		.def(py::init<bool>())
+        .def(py::init<glm::bvec3, bool>())
+		.def(py::init<bool, glm::bvec3>())
+		.def(py::init<glm::bvec2, glm::bvec2>())
+		.def(py::init<bool, bool, bool, bool>())
+		.def(py::init<glm::bvec4>())
+		.def("__init__", [] (glm::bvec4 &instance, const py::iterable &iterable) { from_iterable<bool, glm::bvec4, 4>(instance, iterable); })
+
+		.def_readwrite("x", &glm::bvec4::x)
+		.def_readwrite("y", &glm::bvec4::y)
+		.def_readwrite("z", &glm::bvec4::z)
+		.def_readwrite("w", &glm::bvec4::w)
+
+		.def(py::self == py::self)
+		.def(py::self != py::self)
+
+		.def("__getitem__", [] (const glm::bvec4 &instance, const long index) { return py_get_vec<bool, glm::bvec4, 4>(instance, index); })
+		.def("__setitem__", [] (glm::bvec4 &instance, const long index, const bool value) { return py_set_vec<bool, glm::bvec4, 4>(instance, index, value); })
+		.def("__iter__", [] (const glm::bvec4 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+4); }, py::keep_alive<0, 1>())
+		.def("__repr__", &bvec4_repr);
 
 	py::class_<glm::ivec2>(m, "ivec2")
 		.def(py::init<>())
@@ -63,6 +126,8 @@ PYBIND11_PLUGIN(glm)
 	py::class_<glm::ivec3>(m, "ivec3")
 		.def(py::init<>())
 		.def(py::init<int>())
+        .def(py::init<glm::ivec2, int>())
+        .def(py::init<int, glm::ivec2>())
 		.def(py::init<int, int, int>())
 		.def(py::init<glm::ivec3>())
 		.def("__init__", [] (glm::ivec3 &instance, const py::iterable &iterable) { from_iterable<int, glm::ivec3, 3>(instance, iterable); })
@@ -112,6 +177,9 @@ PYBIND11_PLUGIN(glm)
 	py::class_<glm::ivec4>(m, "ivec4")
 		.def(py::init<>())
 		.def(py::init<int>())
+        .def(py::init<glm::ivec3, int>())
+		.def(py::init<int, glm::ivec3>())
+		.def(py::init<glm::ivec2, glm::ivec2>())
 		.def(py::init<int, int, int, int>())
 		.def(py::init<glm::ivec4>())
 		.def("__init__", [] (glm::ivec4 &instance, const py::iterable &iterable) { from_iterable<int, glm::ivec4, 4>(instance, iterable); })
@@ -159,6 +227,10 @@ PYBIND11_PLUGIN(glm)
 
 	py::implicitly_convertible<py::tuple, glm::ivec4>();
 	py::implicitly_convertible<py::list, glm::ivec4>();
+
+    m.def("clamp", (float (*)(const float, const float, const float)) &glm::clamp);
+	m.def("mix", (float (*)(const float, const float, const bool)) &glm::mix);
+	m.def("mix", (float (*)(const float, const float, const float)) &glm::mix);
 
     py::class_<glm::vec2>(m, "vec2")
 	    .def(py::init<>())
@@ -209,14 +281,19 @@ PYBIND11_PLUGIN(glm)
 
 	m.def("min", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::min);
 	m.def("max", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::max);
+	m.def("clamp", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &, const glm::vec2 &)) &glm::clamp);
 	m.def("dot", (float (*)(const glm::vec2 &, const glm::vec2 &)) &glm::dot);
 	m.def("length", (float (*)(const glm::vec2 &)) &glm::length);
     m.def("normalize", (glm::vec2 (*)(const glm::vec2 &)) &glm::normalize);
 	m.def("distance", (float (*)(const glm::vec2 &, const glm::vec2 &)) &glm::distance);
+	m.def("mix", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &, const glm::bvec2 &)) &glm::mix);
+	m.def("mix", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &, const glm::vec2 &)) &glm::mix);
 
     py::class_<glm::vec3>(m, "vec3")
         .def(py::init<>())
         .def(py::init<float>())
+        .def(py::init<glm::vec2, float>())
+        .def(py::init<float, glm::vec2>())
         .def(py::init<float, float, float>())
 		.def(py::init<glm::vec3>())
 		.def("__init__", [] (glm::vec3 &instance, const py::iterable &iterable) { from_iterable<float, glm::vec3, 3>(instance, iterable); })
@@ -265,15 +342,21 @@ PYBIND11_PLUGIN(glm)
 
 	m.def("min", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::min);
 	m.def("max", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::max);
+	m.def("clamp", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &)) &glm::clamp);
 	m.def("dot", (float (*)(const glm::vec3 &, const glm::vec3 &)) &glm::dot);
 	m.def("cross", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::cross);
 	m.def("length", (float (*)(const glm::vec3 &)) &glm::length);
 	m.def("normalize", (glm::vec3 (*)(const glm::vec3 &)) &glm::normalize);
 	m.def("distance", (float (*)(const glm::vec3 &, const glm::vec3 &)) &glm::distance);
+	m.def("mix", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &, const glm::bvec3 &)) &glm::mix);
+	m.def("mix", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &)) &glm::mix);
 
 	py::class_<glm::vec4>(m, "vec4")
 		.def(py::init<>())
 		.def(py::init<float>())
+		.def(py::init<glm::vec3, float>())
+		.def(py::init<float, glm::vec3>())
+		.def(py::init<glm::vec2, glm::vec2>())
 		.def(py::init<float, float, float, float>())
 		.def(py::init<glm::vec4>())
 		.def("__init__", [] (glm::vec4 &instance, const py::iterable &iterable) { from_iterable<float, glm::vec4, 4>(instance, iterable); })
@@ -324,10 +407,13 @@ PYBIND11_PLUGIN(glm)
 
 	m.def("min", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::min);
 	m.def("max", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::max);
+    m.def("clamp", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &, const glm::vec4 &)) &glm::clamp);
 	m.def("dot", (float (*)(const glm::vec4 &, const glm::vec4 &)) &glm::dot);
 	m.def("length", (float (*)(const glm::vec4 &)) &glm::length);
 	m.def("normalize", (glm::vec4 (*)(const glm::vec4 &)) &glm::normalize);
 	m.def("distance", (float (*)(const glm::vec4 &, const glm::vec4 &)) &glm::distance);
+	m.def("mix", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &, const glm::bvec4 &)) &glm::mix);
+	m.def("mix", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &, const glm::vec4 &)) &glm::mix);
 
 	py::class_<glm::quat>(m, "quat")
 		.def(py::init<>())
@@ -361,6 +447,7 @@ PYBIND11_PLUGIN(glm)
 	m.def("exp", (glm::quat (*)(const glm::quat &)) &glm::exp);
 	m.def("normalize", (glm::quat (*)(const glm::quat &)) &glm::normalize);
 	m.def("length", (float (*)(const glm::quat &)) &glm::length);
+	m.def("rotate", [] (const glm::vec2 &vector, const float &angle) { return glm::rotate(vector, angle); }, py::arg("vector"), py::arg("angle"));
 	m.def("rotate", [] (const glm::vec3 &vector, const glm::quat &quat) { return glm::rotate(quat, vector); }, py::arg("vector"), py::arg("quaternion"));
 	m.def("rotation", [] (const glm::vec3 &vector_1, const glm::vec3 &vector_2) { return glm::rotation(glm::normalize(vector_1), glm::normalize(vector_2)); }, py::arg("vector_1"), py::arg("vector_2"));
 

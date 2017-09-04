@@ -10,6 +10,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "repr/repr.hpp"
 
+std::string												bvec2_repr(const glm::bvec2 &vec);
+std::string												bvec3_repr(const glm::bvec3 &vec);
+std::string												bvec4_repr(const glm::bvec4 &vec);
+
 std::string												ivec2_repr(const glm::ivec2 &vec);
 std::string												ivec3_repr(const glm::ivec3 &vec);
 std::string												ivec4_repr(const glm::ivec4 &vec);

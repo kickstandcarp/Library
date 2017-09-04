@@ -1,9 +1,11 @@
+from math import sin, cos, pi
+
 from glm import vec2
 from opengl import Window, ShaderType, DrawMode
 from event import DeviceType
 from coordinate import Camera
 
-from vector_display_support import VectorDisplay
+from vector_display_support import Path, VectorDisplay
 
 
 
@@ -15,12 +17,13 @@ camera = Camera(2.0, 2.0, 0.0, 1.0, True)
 
 vector_display = VectorDisplay(window)
 
-vertices = [vec2(-0.5, -0.5), vec2(0.5, -0.5), vec2(0.5, -0.5), vec2(0.5, 0.5), vec2(0.5, 0.5), vec2(-0.5, 0.5), vec2(-0.5, 0.5), vec2(-0.5, -0.5)]
-vector_display.add_line(window, 'square', vertices)
+sides = 3
+radius = 1.0
+offset = vec2(0.5, 0.0)
+angle_offset = 0.0 # 0.5*pi
 
-max_excitation = vector_display.max_excitation(1.0 / 60.0)
-glow_line_excitation_ratio = vector_display.glow_line_excitation_ratio()
-print(max_excitation, max_excitation*glow_line_excitation_ratio)
+vertices = [vec2(radius*cos(2.0*pi*(i / sides) + angle_offset), radius*sin(2.0*pi*(i / sides) + angle_offset)) + offset for i in range(sides+1)]
+vector_display.paths.append(Path(vertices))
 
 while not window.event_handler.quit:
     window.event_handler.update()

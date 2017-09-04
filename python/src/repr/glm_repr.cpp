@@ -2,6 +2,27 @@
 
 
 
+std::string bvec2_repr(const glm::bvec2 &vec)
+{
+	std::stringstream stream;
+	stream << "bvec2(" << to_python_string(vec.x) << ", " << to_python_string(vec.y) << ")";
+	return stream.str();
+}
+
+std::string bvec3_repr(const glm::bvec3 &vec)
+{
+	std::stringstream stream;
+	stream << "bvec3(" << to_python_string(vec.x) << ", " << to_python_string(vec.y) << ", " << to_python_string(vec.z) << ")";
+	return stream.str();
+}
+
+std::string bvec4_repr(const glm::bvec4 &vec)
+{
+	std::stringstream stream;
+	stream << "bvec4(" << to_python_string(vec.x) << ", " << to_python_string(vec.y) << ", " << to_python_string(vec.z) << ", " << to_python_string(vec.w) << ")";
+	return stream.str();
+}
+
 std::string ivec2_repr(const glm::ivec2 &vec)
 {
 	std::stringstream stream;
