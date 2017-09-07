@@ -51,7 +51,7 @@ float path_distance()
     for (int i = 0; i < num_vertices-1; i++)
     {
         float line_length = distance(vertices[i+1].xy, vertices[i].xy);
-        vec2 line_direction = (vertices[i+1].xy - vertices[i].xy) / line_length;
+        vec2 line_direction = mix(vec2(0.0), (vertices[i+1].xy - vertices[i].xy) / line_length, bvec2(line_length != 0.0));
         float projection_length = clamp(dot(position - vertices[i].xy, line_direction), 0.0, line_length);
         path_distance = min(path_distance, distance(position, vertices[i].xy + projection_length*line_direction));
     }

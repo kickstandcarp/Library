@@ -5,7 +5,7 @@ from opengl import Window, ShaderType, DrawMode
 from event import DeviceType
 from coordinate import Camera
 
-from vector_display_support import Path, VectorDisplay
+from vector_display_support import Path, SegmentPath, SpiroPath, VectorDisplay
 
 
 
@@ -17,13 +17,8 @@ camera = Camera(2.0, 2.0, 0.0, 1.0, True)
 
 vector_display = VectorDisplay(window)
 
-sides = 3
-radius = 1.0
-offset = vec2(0.5, 0.0)
-angle_offset = 0.0 # 0.5*pi
-
-vertices = [vec2(radius*cos(2.0*pi*(i / sides) + angle_offset), radius*sin(2.0*pi*(i / sides) + angle_offset)) + offset for i in range(sides+1)]
-vector_display.paths.append(Path(vertices))
+vector_display.paths.append(SegmentPath([[vec2(0.0, 0.5), vec2(0.0, -0.5)], [vec2(-0.5, 0.0), vec2(0.5, 0.0)]]))
+# vector_display.paths.append(SpiroPath(1.0, 0.61, 0.61))
 
 while not window.event_handler.quit:
     window.event_handler.update()
