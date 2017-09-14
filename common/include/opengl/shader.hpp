@@ -11,8 +11,6 @@
 #include "opengl/shader_support.hpp"
 #include "opengl/uniform_support.hpp"
 
-enum class ShaderType : GLenum { vertex = GL_VERTEX_SHADER, geometry = GL_GEOMETRY_SHADER, fragment = GL_FRAGMENT_SHADER };
-
 class Shader
 {
     public:
@@ -26,13 +24,13 @@ class Shader
 		std::vector<std::string>                                get_uniform_buffer_names() const;
 		GLenum                                                  get_uniform_type(const std::string &name) const;
 		unsigned int                                            get_uniform_size(const std::string &name) const;
-        template <class T> T                                    get_uniform(const std::string &name, const unsigned int offset) const;
+        template <class T> T                                    get_uniform(const std::string &name, const unsigned int offset=0) const;
         template <class T> std::vector<T>                       get_uniform(const std::string &name, const unsigned int offset, const unsigned int size) const;
 
 		void                                                    set_attribute(const std::string &name, VertexArray &vertex_array, const std::string &buffer_name) const;
 		void                                                    set_transform_feedback_varying(const std::string &name, VertexArray &vertex_array, const std::string &buffer_name) const;
-		template <class T> void                                 set_uniform(const std::string &name, const T &value, const unsigned int offset);
-		template <class T> void                                 set_uniform(const std::string &name, const std::vector<T> &values, const unsigned int offset);
+		template <class T> void                                 set_uniform(const std::string &name, const T &value, const unsigned int offset=0);
+		template <class T> void                                 set_uniform(const std::string &name, const std::vector<T> &values, const unsigned int offset=0);
 
 		void                                                    initialize_uniform_buffer(const std::string &name, const unsigned int binding, const BufferUsageFrequency frequency=BufferUsageFrequency::statical, const BufferUsageAccess access=BufferUsageAccess::draw);
 

@@ -18,17 +18,45 @@ extra_compile_args = ['-std=c++11', '-O0'] if platform.system() != 'Windows' els
 extra_link_args = [] if platform.system() != 'Windows' else ['/DEBUG']
 
 src_files = []
-src_files.append(abspath(join(path, 'src', 'module', 'glm.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'repr.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'glm_repr.cpp')))
+src_files.append(abspath(join(path, 'src', 'glm.cpp')))
+src_files.append(abspath(join(path, 'src', 'repr.cpp')))
 
+libraries = []
 glm_extension = Extension('glm', src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 
 src_files = []
-src_files.append(abspath(join(path, 'src', 'module', 'opengl.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'repr.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'glm_repr.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'opengl_repr.cpp')))
+src_files.append(abspath(join(path, 'src', 'geometry.cpp')))
+src_files.append(abspath(join(path, 'src', 'repr.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'coordinate_transform.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'coordinate_transform_support.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'path_vertex.cpp')))
+
+libraries = []
+geometry_extension = Extension('geometry', src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+
+src_files = []
+src_files.append(abspath(join(path, 'src', 'physics.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'arithmatic.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'integration.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'path_vertex.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'physics', 'paper_kinetics.cpp')))
+
+libraries = []
+physics_extension = Extension('physics', src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+
+src_files = []
+src_files.append(abspath(join(path, 'src', 'event.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'path_vertex.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'event', 'event_handler.cpp')))
+
+libraries = ['SDL2']
+event_extension = Extension('event', src_files, language='c++', include_dirs=include_dirs, libraries=libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+
+src_files = []
+src_files.append(abspath(join(path, 'src', 'opengl.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'coordinate_transform.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'path_vertex.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'event', 'event_handler.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'window.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'buffer.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'buffer_support.cpp')))
@@ -38,41 +66,34 @@ src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'uniform_
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'vertex_array.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'texture.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'frame_buffer.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'camera.cpp')))
+
+libraries = ['opengl32', 'glew32', 'SDL2'] if platform.system() == 'Windows' else ['GLEW', 'SDL2'] 
+opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+
+
+include_dirs.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'include')))
+
+src_files = []
+src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'python', 'src', 'vector_display.cpp')))
+src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display.cpp')))
+src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display_path.cpp')))
+src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'trochoid_path.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'path_vertex.cpp')))
 src_files.append(abspath(join(path, pardir, 'common', 'src', 'event', 'event_handler.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'window.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'buffer.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'buffer_support.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'shader.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'shader_support.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'uniform_support.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'vertex_array.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'texture.cpp')))
+src_files.append(abspath(join(path, pardir, 'common', 'src', 'opengl', 'frame_buffer.cpp')))
 
-if platform.system() != 'Windows':
-    opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=['GLEW', 'SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-else:
-    opengl_extension = Extension('opengl', src_files, language='c++', include_dirs=include_dirs, libraries=['opengl32', 'glew32', 'SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+libraries = ['opengl32', 'glew32', 'SDL2'] if platform.system() == 'Windows' else ['GLEW', 'SDL2'] 
+vector_display_extension = Extension('vector_display', src_files, language='c++', include_dirs=include_dirs, libraries=libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 
-src_files = []
-src_files.append(abspath(join(path, 'src', 'module', 'event.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'repr.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'event_repr.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'event', 'event_handler.cpp')))
 
-event_extension = Extension('event', src_files, language='c++', include_dirs=include_dirs, libraries=['SDL2'], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-
-src_files = []
-src_files.append(abspath(join(path, 'src', 'module', 'coordinate.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'repr.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'coordinate_repr.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'coordinate', 'coordinate_transform.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'coordinate', 'coordinate_transform_support.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'coordinate', 'camera.cpp')))
-
-coordinate_extension = Extension('coordinate', src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-
-src_files = []
-src_files.append(abspath(join(path, 'src', 'module', 'physics.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'repr.cpp')))
-src_files.append(abspath(join(path, 'src', 'repr', 'physics_repr.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'arithmatic.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'integration.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'physics', 'oscillator_kinetics.cpp')))
-src_files.append(abspath(join(path, pardir, 'common', 'src', 'physics', 'paper_kinetics.cpp')))
-
-physics_extension = Extension('physics', src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-
-ext_modules = [glm_extension, opengl_extension, event_extension, coordinate_extension, physics_extension]
+ext_modules = [glm_extension, geometry_extension, physics_extension, event_extension, opengl_extension, vector_display_extension]
 setup(ext_modules=ext_modules)

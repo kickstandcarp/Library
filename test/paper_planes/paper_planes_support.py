@@ -1,42 +1,23 @@
-from sys import path
-from os.path import pardir, split, join, realpath, basename
 from math import copysign, pi
 
 from matplotlib.cm import get_cmap
 
-path.append(join(split(realpath(__file__))[0], pardir, 'python'))
-from glm import vec3, vec4, quat, mat4x4, rotate, rotation, length
+from glm import vec2, vec3, vec4, quat, mat4x4, rotate, rotation, length
 from opengl import Window, BlendFactor, ShaderType, DrawMode, TextureInterpolation, TextureWrap
 from event import DeviceType
-from coordinate import CoordinateTransform, translation, rotation, scaling
+from geometry import CoordinateTransform, translation, rotation, scaling
 from physics import OscillatorKinetics, PaperKinetics
 
 
 
-def initialize_window(size, shaders_file_names):
+def initialize_window(size):
     window = Window('OpenGL Square Test', size, True)
 
     window.use_depth_test = True
     window.use_blending = True
     window.blend_factors = BlendFactor.source_alpha, BlendFactor.one_minus_source_alpha
 
-    for shader_file_names in shaders_file_names:
-        shader = []
-
-        shader_name = basename(shader_file_names[0]).split('.')[0]
-        for shader_file_name in shader_file_names:
-            shader_extension = basename(shader_file_name).split('.')[1]
-            if shader_extension == 'vert':
-                shader_type = ShaderType.vertex
-            elif shader_extension == 'frag':
-                shader_type = ShaderType.fragment
-
-            with open(shader_file_name) as file:
-                shader_text = file.read()
-
-            shader.append((shader_text, shader_type))
-
-        window.add_shader(shader_name, shader)
+    window.add_shader('flat', [(read_text('flat.vert'), ShaderType.vertex), (read_text('flat.frag'), ShaderType.fragment)])
 
     window.add_vertex_array('arrow', DrawMode.lines)
     window.vertex_arrays('arrow').add_element_buffer(sum([(0, 1), (1, 2), (1, 3)], ()))
@@ -70,8 +51,7 @@ class Player(object):
         self.square = Square(size, color, vec3(0.0), quat(1.0, 0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0))
         self.square.coordinate_transform.parent = self.coordinate_transform
 
-        self.azimuth_kinetics = OscillatorKinetics(0.0, 0.0, 2.0, 0.2, 0.0)
-        self.elevation_kinetics = OscillatorKinetics(0.0, 0.0, 2.0, 0.2, 0.0)
+        self.tilt_kinetics = OscillatorKinetics(vec2(0.0), vec2(0.0), vec2(0.0), vec2(2.0), vec2(0.2))
 
         self.normal_arrow_color = vec4(0.0, 1.0, 0.0, 1.0)
         self.normal_arrow_coordinate_transform = CoordinateTransform(vec3(0.0), quat(1.0, 0.0, 0.0, 0.0), 2.0 / self.square.coordinate_transform.scaling)
@@ -81,7 +61,7 @@ class Player(object):
         self.color_map_index = 0.0
         self.color_map_interval = 0.05
 
-    def update(self, event_handler, elapsed_time):
+    def update(self, event_handler, elapsed_time, time):
         if event_handler.num_controllers > 0:
             velocity_direction = event_handler.get_direction('left_stick', DeviceType.controller, 0)
             square_direction = event_handler.get_direction('right_stick', DeviceType.controller, 0)
@@ -93,17 +73,12 @@ class Player(object):
 
         self.coordinate_transform.rotate(quat(vec3(1.0, 0.0, 0.0), elapsed_time*velocity_direction.y))
 
-        self.azimuth_kinetics.frequency = 2.0 if square_direction.x == 0.0 else 0.5
-        self.azimuth_kinetics.damping_ratio = 0.2 if square_direction.x == 0.0 else 1.0
-        self.azimuth_kinetics.acceleration = self.azimuth_kinetics.steady_state_value_acceleration(0.25*pi)*square_direction.x
-        self.azimuth_kinetics.step(elapsed_time)
+        self.tilt_kinetics.frequency = vec2(2.0 if square_direction.x == 0.0 else 0.5, 2.0 if square_direction.y == 0.0 else 0.5)
+        self.tilt_kinetics.damping_ratio = vec2(0.2 if square_direction.x == 0.0 else 1.0, 0.2 if square_direction.y == 0.0 else 1.0)
+        self.tilt_kinetics.external_acceleration = self.tilt_kinetics.steady_state_value_to_acceleration(vec2(0.25*pi))*square_direction
+        self.tilt_kinetics.step(elapsed_time, time)
 
-        self.elevation_kinetics.frequency = 2.0 if square_direction.y == 0.0 else 0.5
-        self.elevation_kinetics.damping_ratio = 0.2 if square_direction.y == 0.0 else 1.0
-        self.elevation_kinetics.acceleration = self.elevation_kinetics.steady_state_value_acceleration(0.25*pi)*square_direction.y
-        self.elevation_kinetics.step(elapsed_time)
-
-        self.square.coordinate_transform.rotation = quat(vec3(1.0, 0.0, 0.0), self.elevation_kinetics.value)*quat(vec3(0.0, 0.0, 1.0), self.azimuth_kinetics.value)
+        self.square.coordinate_transform.rotation = quat(vec3(1.0, 0.0, 0.0), self.tilt_kinetics.value.y)*quat(vec3(0.0, 0.0, 1.0), self.tilt_kinetics.value.x)
 
         if fire:
             size = scaling(self.square.coordinate_transform, None)
@@ -139,11 +114,13 @@ class Square(object):
 
         self.color = color
         self.coordinate_transform = CoordinateTransform(position, orientation, vec3(size[0], 1.0, size[1]))
-        self.kinetics = PaperKinetics(position, orientation, velocity, angular_velocity, perpendicular_friction=10.0, parallel_friction=0.1, fluid_density=0.1, paper_density=1.0, size=vec3(size[0], 0.0, size[1]), acceleration=vec3(0.0, -9.8, 0.0))
+        self.kinetics = PaperKinetics(position, orientation, velocity, angular_velocity, external_acceleration=vec3(0.0, -9.8, 0.0), external_angular_acceleration=vec3(0.0), perpendicular_friction=10.0, parallel_friction=0.1, fluid_density=0.1, paper_density=1.0, size=vec3(size[0], 0.0, size[1]))
 
-    def update(self, elapsed_time):
-        for i in range(100):
-            self.kinetics.step(elapsed_time / 100)
+    def update(self, elapsed_time, time):
+        intervals = 10
+        for i in range(intervals):
+            self.kinetics.step(elapsed_time / intervals, time)
+            time = time + elapsed_time / intervals
 
         self.coordinate_transform.translation = self.kinetics.position
         self.coordinate_transform.rotation = self.kinetics.orientation
@@ -158,3 +135,7 @@ class Square(object):
         # window.textures('').set_texture_unit(0)
 
         window.vertex_arrays(self.vertex_array_name).draw()
+
+def read_text(file_name):
+    with open(file_name) as file:
+        return file.read()

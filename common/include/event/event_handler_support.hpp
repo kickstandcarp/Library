@@ -5,6 +5,8 @@
 #include <map>
 #include <SDL2/SDL.h>
 
+enum class DeviceType : unsigned int { keyboard, mouse, controller };
+
 struct ButtonState
 {
 	bool            is_down;

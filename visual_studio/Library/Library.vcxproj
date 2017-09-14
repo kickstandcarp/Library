@@ -157,15 +157,20 @@ del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\common\include\coordinate\coordinate_transform.hpp" />
-    <ClInclude Include="..\..\common\include\coordinate\coordinate_transform_support.hpp" />
     <ClInclude Include="..\..\common\include\event\event_handler.hpp" />
     <ClInclude Include="..\..\common\include\event\event_handler_support.hpp" />
+    <ClInclude Include="..\..\common\include\geometry\coordinate_transform.hpp" />
+    <ClInclude Include="..\..\common\include\geometry\coordinate_transform_support.hpp" />
+    <ClInclude Include="..\..\common\include\geometry\path.hpp" />
+    <ClInclude Include="..\..\common\include\geometry\path_support.hpp" />
+    <ClInclude Include="..\..\common\include\geometry\path_vertex.hpp" />
+    <ClInclude Include="..\..\common\include\geometry\segmented_path.hpp" />
     <ClInclude Include="..\..\common\include\image\indexing.hpp" />
     <ClInclude Include="..\..\common\include\image\transform.hpp" />
     <ClInclude Include="..\..\common\include\math\arithmatic.hpp" />
     <ClInclude Include="..\..\common\include\math\integration.hpp" />
     <ClInclude Include="..\..\common\include\opengl\buffer.hpp" />
+    <ClInclude Include="..\..\common\include\opengl\camera.hpp" />
     <ClInclude Include="..\..\common\include\opengl\frame_buffer.hpp" />
     <ClInclude Include="..\..\common\include\opengl\shader.hpp" />
     <ClInclude Include="..\..\common\include\opengl\shader_support.hpp" />
@@ -173,27 +178,31 @@ del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
     <ClInclude Include="..\..\common\include\opengl\uniform_support.hpp" />
     <ClInclude Include="..\..\common\include\opengl\vertex_array.hpp" />
     <ClInclude Include="..\..\common\include\opengl\buffer_support.hpp" />
+    <ClInclude Include="..\..\common\include\opengl\vertex_array_support.hpp" />
     <ClInclude Include="..\..\common\include\opengl\window.hpp" />
+    <ClInclude Include="..\..\common\include\physics\kinetics.hpp" />
     <ClInclude Include="..\..\common\include\physics\oscillator_kinetics.hpp" />
     <ClInclude Include="..\..\common\include\physics\paper_kinetics.hpp" />
-    <ClInclude Include="..\..\python\include\module\glm.hpp" />
-    <ClInclude Include="..\..\python\include\module\opengl.hpp" />
-    <ClInclude Include="..\..\python\include\repr\coordinate_repr.hpp" />
-    <ClInclude Include="..\..\python\include\repr\event_repr.hpp" />
-    <ClInclude Include="..\..\python\include\repr\glm_repr.hpp" />
-    <ClInclude Include="..\..\python\include\repr\opengl_repr.hpp" />
-    <ClInclude Include="..\..\python\include\repr\physics_repr.hpp" />
-    <ClInclude Include="..\..\python\include\repr\repr.hpp" />
+    <ClInclude Include="..\..\python\include\glm.hpp" />
+    <ClInclude Include="..\..\python\include\opengl.hpp" />
+    <ClInclude Include="..\..\python\include\repr.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\trochoid_path.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\vector_display.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_path.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_shaders.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\common\src\coordinate\coordinate_transform.cpp" />
-    <ClCompile Include="..\..\common\src\coordinate\coordinate_transform_support.cpp" />
     <ClCompile Include="..\..\common\src\event\event_handler.cpp" />
+    <ClCompile Include="..\..\common\src\geometry\coordinate_transform.cpp" />
+    <ClCompile Include="..\..\common\src\geometry\coordinate_transform_support.cpp" />
+    <ClCompile Include="..\..\common\src\geometry\path_support.cpp" />
+    <ClCompile Include="..\..\common\src\geometry\path_vertex.cpp" />
     <ClCompile Include="..\..\common\src\image\indexing.cpp" />
     <ClCompile Include="..\..\common\src\image\transform.cpp" />
     <ClCompile Include="..\..\common\src\math\arithmatic.cpp" />
     <ClCompile Include="..\..\common\src\math\integration.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer.cpp" />
+    <ClCompile Include="..\..\common\src\opengl\camera.cpp" />
     <ClCompile Include="..\..\common\src\opengl\frame_buffer.cpp" />
     <ClCompile Include="..\..\common\src\opengl\shader.cpp" />
     <ClCompile Include="..\..\common\src\opengl\shader_support.cpp" />
@@ -202,19 +211,17 @@ del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
     <ClCompile Include="..\..\common\src\opengl\vertex_array.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer_support.cpp" />
     <ClCompile Include="..\..\common\src\opengl\window.cpp" />
-    <ClCompile Include="..\..\common\src\physics\oscillator_kinetics.cpp" />
     <ClCompile Include="..\..\common\src\physics\paper_kinetics.cpp" />
-    <ClCompile Include="..\..\python\src\module\coordinate.cpp" />
-    <ClCompile Include="..\..\python\src\module\event.cpp" />
-    <ClCompile Include="..\..\python\src\module\glm.cpp" />
-    <ClCompile Include="..\..\python\src\module\opengl.cpp" />
-    <ClCompile Include="..\..\python\src\module\physics.cpp" />
-    <ClCompile Include="..\..\python\src\repr\coordinate_repr.cpp" />
-    <ClCompile Include="..\..\python\src\repr\event_repr.cpp" />
-    <ClCompile Include="..\..\python\src\repr\glm_repr.cpp" />
-    <ClCompile Include="..\..\python\src\repr\opengl_repr.cpp" />
-    <ClCompile Include="..\..\python\src\repr\physics_repr.cpp" />
-    <ClCompile Include="..\..\python\src\repr\repr.cpp" />
+    <ClCompile Include="..\..\python\src\event.cpp" />
+    <ClCompile Include="..\..\python\src\geometry.cpp" />
+    <ClCompile Include="..\..\python\src\glm.cpp" />
+    <ClCompile Include="..\..\python\src\opengl.cpp" />
+    <ClCompile Include="..\..\python\src\physics.cpp" />
+    <ClCompile Include="..\..\python\src\repr.cpp" />
+    <ClCompile Include="..\..\test\vector_display\common\src\trochoid_path.cpp" />
+    <ClCompile Include="..\..\test\vector_display\common\src\vector_display.cpp" />
+    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_path.cpp" />
+    <ClCompile Include="..\..\test\vector_display\python\src\vector_display.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\python\setup.py" />

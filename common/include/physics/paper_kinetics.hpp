@@ -4,25 +4,30 @@
 #include <array>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "physics/kinetics.hpp"
 
-class PaperKinetics
+class PaperKinetics: public Kinetics<glm::vec3, glm::quat>
 {
 	public:
-		PaperKinetics(const glm::vec3 &position=glm::vec3(0.0f), const glm::quat &orientation=glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3 &velocity=glm::vec3(0.0f), const glm::vec3 &angular_velocity=glm::vec3(0.0f), const float perpendicular_friction=10.0f, const float parallel_friction=0.1f, const float fluid_density=0.1f, const float paper_density=1.0f, const glm::vec3 &size=glm::vec3(1.0f, 0.0f, 1.0f), const glm::vec3 &acceleration=glm::vec3(0.0, -9.8f, 0.0f));
-		~PaperKinetics();
+		PaperKinetics(const glm::vec3 &position, const glm::quat &orientation, const glm::vec3 &velocity, const glm::vec3 &angular_velocity, const glm::vec3 &external_acceleration, const glm::vec3 &external_angular_acceleration, const float perpendicular_friction, const float parallel_friction, const float fluid_density, const float paper_density, const glm::vec3 &size);
+		virtual ~PaperKinetics();
 
-        void            step(const float elapsed_time);
+		const std::shared_ptr<SegmentedPath<glm::vec3> >	get_position_path();
+		const std::shared_ptr<SegmentedPath<glm::quat> >	get_orientation_path();
 
-		float           perpendicular_friction, parallel_friction;
-        float           fluid_density, paper_density;
-		glm::vec3       size;
-		glm::vec3       acceleration;
+		void												add_position_path(const float time);
+		void												add_orientation_path(const float time);
 
-        glm::vec3       position;
-        glm::quat       orientation; 
-		glm::vec3		velocity, angular_velocity;
+		void												remove_position_path();
+		void												remove_orientation_path();
+
+        virtual void										step(const float elapsed_time, const float time);
+
+		float												perpendicular_friction, parallel_friction;
+        float												fluid_density, paper_density;
+		glm::vec3											size;
 };
 
-std::array<float, 6>    paper_kinetics_d2x_dt2(const float dt, const std::array<float, 6> &dx_dt, const PaperKinetics &kinetics);
+std::array<float, 6>										paper_kinetics_d2x_dt2(const float dt, const std::array<float, 6> &dx_dt, const PaperKinetics &kinetics);
 
 #endif

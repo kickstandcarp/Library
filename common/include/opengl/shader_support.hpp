@@ -6,6 +6,8 @@
 #include <vector>
 #include <GL/glew.h>
 
+enum class ShaderType : GLenum { vertex = GL_VERTEX_SHADER, geometry = GL_GEOMETRY_SHADER, fragment = GL_FRAGMENT_SHADER };
+
 struct AttributeInformation
 {
 	unsigned int    index;

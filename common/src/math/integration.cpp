@@ -5,7 +5,7 @@
 
 
 template <>
-void accumulate<glm::quat, glm::vec3>(glm::quat &v, const glm::vec3 &dv_dt, const float dt)
+void accumulate<glm::quat>(glm::quat &v, const glm::quat &dv_dt, const float dt)
 {
-    v *= glm::exp(dt*0.5f*glm::quat(0.0f, dv_dt.x, dv_dt.y, dv_dt.z));
+	v *= glm::exp(dt*0.5f*dv_dt);
 }

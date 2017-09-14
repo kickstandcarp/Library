@@ -6,45 +6,6 @@
 
 
 
-/* unsigned int type_size(const GLenum type)
-{
-    switch (type)
-    {
-        case GL_INT:
-            return sizeof(int);
-            break;
-        case GL_INT_VEC2:
-            return sizeof(glm::ivec2);
-            break;
-        case GL_INT_VEC3:
-            return sizeof(glm::ivec3);
-            break;
-        case GL_INT_VEC4:
-            return sizeof(glm::ivec4);
-            break;
-        case GL_FLOAT:
-            return sizeof(float);
-            break;
-        case GL_FLOAT_VEC2:
-            return sizeof(glm::vec3);
-            break;
-        case GL_FLOAT_VEC3:
-            return sizeof(glm::vec3);
-            break;
-        case GL_FLOAT_VEC4:
-            return sizeof(glm::vec4);
-            break;
-        case GL_FLOAT_MAT4:
-            return sizeof(glm::vec4);
-            break;
-        case GL_SAMPLER_2D:
-            return sizeof(int);
-            break;
-        default:
-            throw std::runtime_error("unknown GL type");
-    }
-} */
-
 GLenum buffer_usage(const BufferUsageFrequency frequency, const BufferUsageAccess access)
 {
 	switch (frequency)

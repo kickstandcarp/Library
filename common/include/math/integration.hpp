@@ -5,15 +5,15 @@
 #include <glm/gtc/quaternion.hpp>
 #include "math/arithmatic.hpp"
 
-template <class T, class D> void    accumulate(T &v, const D &dv_dt, const float dt);
-template <> void                    accumulate(glm::quat &v, const glm::vec3 &dv_dt, const float dt);
+template <class T> void             accumulate(T &v, const T &dv_dt, const float dt);
+template <> void				    accumulate(glm::quat &v, const glm::quat &dv_dt, const float dt);
 
 template <class T, class ...A> T    runge_kutta(T (*dx_dt)(const float, const T&, A&&...), const T &x, const float t, const float dt, A&&... args);
 
 
 
-template <class T, class D>
-void accumulate(T &v, const D &dv_dt, const float dt)
+template <class T>
+void accumulate(T &v, const T &dv_dt, const float dt)
 {
     v += dt*dv_dt;
 }
