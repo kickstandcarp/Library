@@ -12,8 +12,12 @@
 
 Window::Window(const std::string &title, const std::array<unsigned int, 2> &size, const bool show)
 :   window_frame_buffer_name("window"),
+    size(size),
 	use_depth_test(false),
 	use_blending(false),
+    discard_rasterizer(false),
+    blend_factors(std::make_tuple(BlendFactor::one, BlendFactor::one)),
+    clear_color(glm::vec4(0.0f)),
     event_handler(size),
 	target_frame_buffer_color_attachments({GL_COLOR_ATTACHMENT0})
 {
@@ -47,6 +51,13 @@ Window::Window(const std::string &title, const std::array<unsigned int, 2> &size
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glGetError();
 
+
+    SDL_DisplayMode display_mode;
+	SDL_GetCurrentDisplayMode(SDL_GetWindowDisplayIndex(this->sdl_window), &display_mode);
+
+    this->refresh_rate = display_mode.refresh_rate;
+    this->refresh_time = 1.0f / static_cast<float>(display_mode.refresh_rate);
+
     this->shader = this->shaders.end();
 	this->vertex_array = this->vertex_arrays.end();
 	this->target_frame_buffer = this->frame_buffers.end();
@@ -63,53 +74,61 @@ Window::~Window()
 
 std::array<unsigned int, 2> Window::get_size() const
 {
-    int w, h;
-    SDL_GetWindowSize(this->sdl_window, &w, &h);
-    return std::array<unsigned int, 2>{{static_cast<unsigned int>(w), static_cast<unsigned int>(h)}};
+    // int w, h;
+    // SDL_GetWindowSize(this->sdl_window, &w, &h);
+    // return std::array<unsigned int, 2>{{static_cast<unsigned int>(w), static_cast<unsigned int>(h)}};
+    return this->size;
 }
 
 int Window::get_refresh_rate() const
 {
-    SDL_DisplayMode display_mode;
-	SDL_GetCurrentDisplayMode(SDL_GetWindowDisplayIndex(this->sdl_window), &display_mode);
-    return display_mode.refresh_rate;
+    // SDL_DisplayMode display_mode;
+	// SDL_GetCurrentDisplayMode(SDL_GetWindowDisplayIndex(this->sdl_window), &display_mode);
+    // return display_mode.refresh_rate;
+    return this->refresh_rate;
 }
 
 float Window::get_refresh_time() const
 {
-    SDL_DisplayMode display_mode;
-	SDL_GetCurrentDisplayMode(SDL_GetWindowDisplayIndex(this->sdl_window), &display_mode);
-	return 1.0f / static_cast<float>(display_mode.refresh_rate);
+    // SDL_DisplayMode display_mode;
+	// SDL_GetCurrentDisplayMode(SDL_GetWindowDisplayIndex(this->sdl_window), &display_mode);
+	// return 1.0f / static_cast<float>(display_mode.refresh_rate);
+    return this->refresh_time;
 }
 
 bool Window::get_use_depth_test() const
 {
-	return glIsEnabled(GL_DEPTH_TEST) == GL_TRUE;
+	// return glIsEnabled(GL_DEPTH_TEST) == GL_TRUE;
+    return this->use_depth_test;
 }
 
 bool Window::get_use_blending() const
 {
-	return glIsEnabled(GL_BLEND) == GL_TRUE;
+	// return glIsEnabled(GL_BLEND) == GL_TRUE;
+    return this->use_blending;
 }
 
 std::tuple<BlendFactor, BlendFactor> Window::get_blend_factors() const
 {
-	int source, destination;
-	glGetIntegerv(GL_BLEND_SRC, &source);
-	glGetIntegerv(GL_BLEND_SRC, &destination);
-	return std::make_tuple(static_cast<BlendFactor>(source), static_cast<BlendFactor>(destination));
+	// int source, destination;
+	// glGetIntegerv(GL_BLEND_SRC, &source);
+	// glGetIntegerv(GL_BLEND_SRC, &destination);
+	// return std::make_tuple(static_cast<BlendFactor>(source), static_cast<BlendFactor>(destination));
+    return this->blend_factors;
 }
 
 glm::vec4 Window::get_clear_color() const
 {
-	glm::vec4 color;
-	glGetFloatv(GL_COLOR_CLEAR_VALUE, glm::value_ptr(color));
-	return color;
+	// glm::vec4 color;
+	// glGetFloatv(GL_COLOR_CLEAR_VALUE, glm::value_ptr(color));
+	// return color;
+    return this->clear_color;
 }
 
 bool Window::get_discard_rasterizer() const
 {
-	return glIsEnabled(GL_RASTERIZER_DISCARD) == GL_TRUE;
+	// return glIsEnabled(GL_RASTERIZER_DISCARD) == GL_TRUE;
+    return this->discard_rasterizer;
 }
 
 EventHandler& Window::get_event_handler()
@@ -239,12 +258,20 @@ void Window::set_use_blending(const bool use_blending)
 
 void Window::set_blend_factors(const BlendFactor source, const BlendFactor destination)
 {
-	glBlendFunc(static_cast<GLenum>(source), static_cast<GLenum>(destination));
+    if (std::get<0>(this->blend_factors) == source && std::get<1>(this->blend_factors) == destination)
+        return;
+
+    glBlendFunc(static_cast<GLenum>(source), static_cast<GLenum>(destination));
+    this->blend_factors = std::make_tuple(source, destination);
 }
 
 void Window::set_clear_color(const glm::vec4 &color)
 {
+    if (this->clear_color == color)
+        return;
+
 	glClearColor(color.r, color.g, color.b, color.a);
+    this->clear_color = color;
 }
 
 void Window::set_discard_rasterizer(const bool discard_rasterizer)

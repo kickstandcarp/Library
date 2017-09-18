@@ -24,8 +24,10 @@ TrochoidPath::~TrochoidPath()
 
 PathVertex<glm::vec2> TrochoidPath::vertex(const float t) const
 {
-	float x = (this->stator_radius - this->rotor_radius)*std::cos(t) + this->rotor_offset*std::cos((this->stator_radius - this->rotor_radius)*t / this->rotor_radius);
-	float y = (this->stator_radius - this->rotor_radius)*std::sin(t) - this->rotor_offset*std::sin((this->stator_radius - this->rotor_radius)*t / this->rotor_radius);
+    float c = std::sqrt((this->stator_radius - this->rotor_radius)*(this->stator_radius - this->rotor_radius)*(this->rotor_offset*this->rotor_offset + this->rotor_radius*this->rotor_radius) / (this->rotor_radius*this->rotor_radius));
+
+	float x = (this->stator_radius - this->rotor_radius)*std::cos(t / c) + this->rotor_offset*std::cos((this->stator_radius - this->rotor_radius)*(t / c) / this->rotor_radius);
+	float y = (this->stator_radius - this->rotor_radius)*std::sin(t / c) - this->rotor_offset*std::sin((this->stator_radius - this->rotor_radius)*(t / c) / this->rotor_radius);
 	return PathVertex<glm::vec2>(glm::vec2(x, y), t);
 }
 
@@ -43,7 +45,7 @@ std::list<PathVertex<glm::vec2> > TrochoidPath::vertices(const float t1, const f
 				throw std::length_error("exceeded max number of vertices");
 		}
 		else
-			std::advance(vertex, 1);
+			vertex++;
 	}
 
 	return vertices;

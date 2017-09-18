@@ -120,8 +120,8 @@ PYBIND11_PLUGIN(glm)
 		.def("__iter__", [] (const glm::ivec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+2); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::ivec2>);
 
-	py::implicitly_convertible<py::tuple, glm::ivec2>();
-	py::implicitly_convertible<py::list, glm::ivec2>();
+	// py::implicitly_convertible<py::tuple, glm::ivec2>();
+	// py::implicitly_convertible<py::list, glm::ivec2>();
 
 	py::class_<glm::ivec3>(m, "ivec3")
 		.def(py::init<>())
@@ -171,8 +171,8 @@ PYBIND11_PLUGIN(glm)
 		.def("__iter__", [] (const glm::ivec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+3); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::ivec3>);
 
-	py::implicitly_convertible<py::tuple, glm::ivec3>();
-	py::implicitly_convertible<py::list, glm::ivec3>();
+	// py::implicitly_convertible<py::tuple, glm::ivec3>();
+	// py::implicitly_convertible<py::list, glm::ivec3>();
 
 	py::class_<glm::ivec4>(m, "ivec4")
 		.def(py::init<>())
@@ -225,8 +225,8 @@ PYBIND11_PLUGIN(glm)
 		.def("__iter__", [] (const glm::ivec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+4); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::ivec4>);
 
-	py::implicitly_convertible<py::tuple, glm::ivec4>();
-	py::implicitly_convertible<py::list, glm::ivec4>();
+	// py::implicitly_convertible<py::tuple, glm::ivec4>();
+	// py::implicitly_convertible<py::list, glm::ivec4>();
 
     m.def("clamp", (float (*)(const float, const float, const float)) &glm::clamp);
 	m.def("mix", (float (*)(const float, const float, const bool)) &glm::mix);
@@ -276,8 +276,8 @@ PYBIND11_PLUGIN(glm)
 		.def("__iter__", [] (const glm::vec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+2); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::vec2>);
 	
-	py::implicitly_convertible<py::tuple, glm::vec2>();
-    py::implicitly_convertible<py::list, glm::vec2>();
+	// py::implicitly_convertible<py::tuple, glm::vec2>();
+    // py::implicitly_convertible<py::list, glm::vec2>();
 
 	m.def("min", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::min);
 	m.def("max", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::max);
@@ -337,8 +337,8 @@ PYBIND11_PLUGIN(glm)
 		.def("__iter__", [] (const glm::vec3 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+3); }, py::keep_alive<0, 1>())
         .def("__repr__", &to_python_string<glm::vec3>);
 
-    py::implicitly_convertible<py::list, glm::vec3>();
-    py::implicitly_convertible<py::tuple, glm::vec3>();
+    // py::implicitly_convertible<py::list, glm::vec3>();
+    // py::implicitly_convertible<py::tuple, glm::vec3>();
 
 	m.def("min", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::min);
 	m.def("max", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::max);
@@ -402,8 +402,8 @@ PYBIND11_PLUGIN(glm)
 		.def("__iter__", [] (const glm::vec4 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+4); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::vec4>);
 
-	py::implicitly_convertible<py::list, glm::vec4>();
-	py::implicitly_convertible<py::tuple, glm::vec4>();
+	// py::implicitly_convertible<py::list, glm::vec4>();
+	// py::implicitly_convertible<py::tuple, glm::vec4>();
 
 	m.def("min", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::min);
 	m.def("max", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::max);

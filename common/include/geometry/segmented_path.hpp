@@ -81,7 +81,7 @@ void SegmentedPath<T>::remove_path_vertices_prior(const float t)
 template <class T>
 PathVertex<T> SegmentedPath<T>::vertex(const float t) const
 {
-	PathVertex<T> vertex = this->path_vertices.front();
+	PathVertex<T> vertex(this->path_vertices.front().vertex, t);
 
 	auto end_path_vertex = std::prev(this->path_vertices.end());
 	for (auto path_vertex = this->path_vertices.begin(); path_vertex != end_path_vertex; ++path_vertex)
@@ -103,15 +103,15 @@ std::list<PathVertex<T> > SegmentedPath<T>::vertices(const float t1, const float
 	std::list<PathVertex<T> > vertices;
 	for (auto path_vertex = this->path_vertices.begin(); path_vertex != this->path_vertices.end(); ++path_vertex)
 	{
-		if (path_vertex->t >= t1 && path_vertex->t <= t2)
+		if (path_vertex->t > t1 && path_vertex->t < t2)
 			vertices.push_back(*path_vertex);
 	}
 
-	if (t1 > this->path_vertices.front().t && t1 < this->path_vertices.back().t)
-		vertices.push_front(this->vertex(t1));
+	if (t1 >= this->path_vertices.front().t && t1 <= this->path_vertices.back().t)
+        vertices.push_front(this->vertex(t1));
 
-	if (t2 > this->path_vertices.front().t && t2 < this->path_vertices.back().t)
-		vertices.push_back(this->vertex(t2));
+	if (t2 >= this->path_vertices.front().t && t2 <= this->path_vertices.back().t)
+        vertices.push_back(this->vertex(t2));
 
 	return vertices;
 }

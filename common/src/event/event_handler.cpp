@@ -27,8 +27,8 @@ EventHandler::EventHandler(const std::array<unsigned int, 2> &window_size)
 	mouse_button_paths({{SDL_BUTTON_LEFT, std::shared_ptr<SegmentedPath<bool> >()}, {SDL_BUTTON_MIDDLE, std::shared_ptr<SegmentedPath<bool> >()}, {SDL_BUTTON_RIGHT, std::shared_ptr<SegmentedPath<bool> >()}, {SDL_BUTTON_X1, std::shared_ptr<SegmentedPath<bool> >()} ,{SDL_BUTTON_X2, std::shared_ptr<SegmentedPath<bool> >()}}),
 	mouse_motion_count(0),
 	mouse_wheel_count(0),
-	mouse_position_path(std::shared_ptr<SegmentedPath<glm::vec2> >()),
 	mouse_motion(0),
+	mouse_position_path(std::shared_ptr<SegmentedPath<glm::vec2> >()),
 	mouse_wheel_motion(0)
 {
 	if (SDL_WasInit(SDL_INIT_EVENTS) != SDL_TRUE)
@@ -49,7 +49,7 @@ EventHandler::EventHandler(const std::array<unsigned int, 2> &window_size)
 
 	int mouse_position_x, mouse_position_y;
 	SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
-	this->mouse_position = glm::vec2(static_cast<float>(mouse_position_x), static_cast<float>(window_size[1] - mouse_position_y));
+	this->mouse_position = glm::vec2(static_cast<float>(mouse_position_x) / static_cast<float>(this->window_size[0]), static_cast<float>(window_size[1] - mouse_position_y) / static_cast<float>(this->window_size[1]));
 
     int num_controllers = SDL_NumJoysticks();
     for (int index = 0; index < num_controllers; index++)
@@ -218,32 +218,17 @@ void EventHandler::update(const float time)
 			case SDL_MOUSEBUTTONDOWN:
 				this->mouse_button_states.at(event.button.button).is_down = true;
 				this->mouse_button_states.at(event.button.button).moved_down_count = this->update_count;
-				if (this->mouse_button_paths.at(event.button.button))
-				{
-					this->mouse_button_paths.at(event.button.button)->remove_path_vertices_prior(time - this->path_duration);
-					this->mouse_button_paths.at(event.button.button)->add_path_vertex(PathVertex<bool>(true, time));
-				}
 				break;
 			case SDL_MOUSEBUTTONUP:
 				this->mouse_button_states.at(event.button.button).is_down = false;
 				this->mouse_button_states.at(event.button.button).moved_up_count = this->update_count;
-				if (this->mouse_button_paths.at(event.button.button))
-				{
-					this->mouse_button_paths.at(event.button.button)->remove_path_vertices_prior(time - this->path_duration);
-					this->mouse_button_paths.at(event.button.button)->add_path_vertex(PathVertex<bool>(false, time));
-				}
 				break;
 			case SDL_MOUSEMOTION:
 				this->mouse_motion_count = this->update_count;
-				this->mouse_position.x = static_cast<float>(event.motion.x);
-				this->mouse_position.y = static_cast<float>(this->window_size[1] - event.motion.y);
-				this->mouse_motion.x = static_cast<float>(event.motion.xrel);
-				this->mouse_motion.y = static_cast<float>(-event.motion.yrel);
-				if (this->mouse_position_path)
-				{
-					this->mouse_position_path->remove_path_vertices_prior(time - this->path_duration);
-					this->mouse_position_path->add_path_vertex(PathVertex<glm::vec2>(this->mouse_position, time));
-				}
+				this->mouse_position.x = static_cast<float>(event.motion.x) / static_cast<float>(this->window_size[0]);
+				this->mouse_position.y = static_cast<float>(this->window_size[1] - event.motion.y) / static_cast<float>(this->window_size[1]);
+				this->mouse_motion.x = static_cast<float>(event.motion.xrel) / static_cast<float>(this->window_size[0]);
+				this->mouse_motion.y = static_cast<float>(-event.motion.yrel) / static_cast<float>(this->window_size[1]);
 				break;
 			case SDL_MOUSEWHEEL:
 				this->mouse_wheel_count = this->update_count;
@@ -286,6 +271,21 @@ void EventHandler::update(const float time)
                 break;
 		}
 	}
+
+    for (auto &path : this->mouse_button_paths)
+    {
+        if (path.second)
+        {
+            path.second->remove_path_vertices_prior(time - this->path_duration);
+            path.second->add_path_vertex(PathVertex<bool>(this->mouse_button_states.at(path.first).is_down, time));
+        }
+    }
+
+    if (this->mouse_position_path)
+    {
+        this->mouse_position_path->remove_path_vertices_prior(time - this->path_duration);
+        this->mouse_position_path->add_path_vertex(PathVertex<glm::vec2>(this->mouse_position, time));
+    }
 }
 
 ButtonState EventHandler::button_state(const std::string &name, const DeviceType type, const unsigned int index) const

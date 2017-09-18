@@ -1,5 +1,5 @@
-#ifndef MODULE_GLM_HPP
-#define MODULE_GLM_HPP
+#ifndef PYTHON_GLM_HPP
+#define PYTHON_GLM_HPP
 
 #include <cmath>
 #include <array>

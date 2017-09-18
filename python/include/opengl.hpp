@@ -1,5 +1,5 @@
-#ifndef MODULE_OPENGL_HPP
-#define MODULE_OPENGL_HPP
+#ifndef PYTHON_OPENGL_HPP
+#define PYTHON_OPENGL_HPP
 
 #include <stdexcept>
 #include <utility>

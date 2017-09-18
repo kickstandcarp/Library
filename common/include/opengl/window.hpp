@@ -73,12 +73,12 @@ class Window
 		SDL_Window*                                     sdl_window;
 		SDL_GLContext                                   sdl_context;
 
-        // glm::ivec2                                      size;
-        // unsigned int                                    refresh_rate;
-        // float                                           refresh_time;
+        std::array<unsigned int, 2>                     size;
+        unsigned int                                    refresh_rate;
+        float                                           refresh_time;
 		bool											use_depth_test, use_blending, discard_rasterizer;
-        // std::tuple<BlendFactor, BlendFactor>            blend_factors;
-        // glm::vec4                                       clear_color;
+        std::tuple<BlendFactor, BlendFactor>            blend_factors;
+        glm::vec4                                       clear_color;
 
         EventHandler                                    event_handler;
 

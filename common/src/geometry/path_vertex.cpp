@@ -5,7 +5,10 @@
 template <>
 PathVertex<bool> mix<bool>(const PathVertex<bool> &path_vertex_1, const PathVertex<bool> &path_vertex_2, const float t)
 {
-	return PathVertex<bool>(path_vertex_1.vertex, t);
+	if (t == path_vertex_2.t)
+        return PathVertex<bool>(path_vertex_2.vertex, t);
+    else
+        return PathVertex<bool>(path_vertex_1.vertex, t);
 }
 
 template <>

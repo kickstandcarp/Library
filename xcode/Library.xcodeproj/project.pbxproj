@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		660B286E1F6754030053C885 /* path_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = path_support.hpp; path = ../common/include/geometry/path_support.hpp; sourceTree = "<group>"; };
 		660B286F1F6754030053C885 /* path_vertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = path_vertex.hpp; path = ../common/include/geometry/path_vertex.hpp; sourceTree = "<group>"; };
 		660B28701F6754030053C885 /* path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = path.hpp; path = ../common/include/geometry/path.hpp; sourceTree = "<group>"; };
-		660B28711F67540E0053C885 /* path_support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = path_support.cpp; path = ../common/src/geometry/path_support.cpp; sourceTree = "<group>"; };
 		660B28721F67540E0053C885 /* path_vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = path_vertex.cpp; path = ../common/src/geometry/path_vertex.cpp; sourceTree = "<group>"; };
 		660B28731F6754340053C885 /* repr.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = repr.hpp; path = ../python/include/repr.hpp; sourceTree = "<group>"; };
 		660B28741F67543F0053C885 /* repr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = repr.cpp; path = ../python/src/repr.cpp; sourceTree = "<group>"; };
@@ -32,6 +30,7 @@
 		6643D3751F488CDC009BF826 /* integration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = integration.cpp; path = ../common/src/math/integration.cpp; sourceTree = "<group>"; };
 		66628E941F2CF09D008E4BD9 /* test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = test.py; path = ../test/test.py; sourceTree = "<group>"; };
 		666A13881F2ABAF8006FC93A /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = setup.py; path = ../python/setup.py; sourceTree = "<group>"; };
+		668B887C1F6D62B70003D6AC /* geometry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = geometry.hpp; path = ../python/include/geometry.hpp; sourceTree = "<group>"; };
 		66A3A9F71F53410300C8E512 /* test.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = test.frag; path = ../test/test.frag; sourceTree = "<group>"; };
 		66CD193E1F374D4F00469E6B /* paper_kinetics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = paper_kinetics.hpp; path = ../common/include/physics/paper_kinetics.hpp; sourceTree = "<group>"; };
 		66CD193F1F374D5A00469E6B /* paper_kinetics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = paper_kinetics.cpp; path = ../common/src/physics/paper_kinetics.cpp; sourceTree = "<group>"; };
@@ -48,6 +47,10 @@
 		66CF49C01F2E4AFC00D7BD06 /* shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shader.cpp; path = ../common/src/opengl/shader.cpp; sourceTree = "<group>"; };
 		66CF49C11F2E4AFC00D7BD06 /* uniform_support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uniform_support.cpp; path = ../common/src/opengl/uniform_support.cpp; sourceTree = "<group>"; };
 		66CF49C31F2E4AFC00D7BD06 /* vertex_array.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vertex_array.cpp; path = ../common/src/opengl/vertex_array.cpp; sourceTree = "<group>"; };
+		66D00E8A1F6E9384003D71D7 /* image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = image.cpp; path = ../python/src/image.cpp; sourceTree = "<group>"; };
+		66D00E8B1F6E9434003D71D7 /* gaussian_filter_shaders.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = gaussian_filter_shaders.hpp; path = ../common/include/image/gaussian_filter_shaders.hpp; sourceTree = "<group>"; };
+		66D00E8C1F6E9434003D71D7 /* gaussian_filter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = gaussian_filter.hpp; path = ../common/include/image/gaussian_filter.hpp; sourceTree = "<group>"; };
+		66D00E8D1F6E9440003D71D7 /* gaussian_filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gaussian_filter.cpp; path = ../common/src/image/gaussian_filter.cpp; sourceTree = "<group>"; };
 		66D262B71F5189FF0088E148 /* test.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = test.vert; path = ../test/test.vert; sourceTree = "<group>"; };
 		66D262B81F518A3C0088E148 /* buffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = buffer.hpp; path = ../common/include/opengl/buffer.hpp; sourceTree = "<group>"; };
 		66D262B91F518A4B0088E148 /* buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = buffer.cpp; path = ../common/src/opengl/buffer.cpp; sourceTree = "<group>"; };
@@ -127,11 +130,11 @@
 			isa = PBXGroup;
 			children = (
 				66CD19451F37540C00469E6B /* math */,
-				6619E5AA1F2BFEA7009BFA97 /* opengl */,
-				66DA44621F3E6FDE00B4F6B8 /* event */,
-				66CD19441F37540300469E6B /* image */,
 				666A13741F2AB98C006FC93A /* geometry */,
 				66CD193D1F374D1500469E6B /* physics */,
+				66DA44621F3E6FDE00B4F6B8 /* event */,
+				6619E5AA1F2BFEA7009BFA97 /* opengl */,
+				66CD19441F37540300469E6B /* image */,
 			);
 			name = common;
 			sourceTree = "<group>";
@@ -146,8 +149,6 @@
 				660B28701F6754030053C885 /* path.hpp */,
 				660B286F1F6754030053C885 /* path_vertex.hpp */,
 				660B28721F67540E0053C885 /* path_vertex.cpp */,
-				660B286E1F6754030053C885 /* path_support.hpp */,
-				660B28711F67540E0053C885 /* path_support.cpp */,
 				66DAF66A1F6B40EB004B5690 /* segmented_path.hpp */,
 			);
 			name = geometry;
@@ -161,11 +162,13 @@
 				660B28741F67543F0053C885 /* repr.cpp */,
 				66F7D0961F65668F00364D08 /* glm.hpp */,
 				66F7D0921F65668300364D08 /* glm.cpp */,
+				668B887C1F6D62B70003D6AC /* geometry.hpp */,
 				66F7D0911F65668300364D08 /* geometry.cpp */,
 				66F7D0951F65668300364D08 /* physics.cpp */,
 				66F7D0901F65668300364D08 /* event.cpp */,
 				66F7D0971F65668F00364D08 /* opengl.hpp */,
 				66F7D0941F65668300364D08 /* opengl.cpp */,
+				66D00E8A1F6E9384003D71D7 /* image.cpp */,
 			);
 			name = python;
 			sourceTree = "<group>";
@@ -186,6 +189,9 @@
 			children = (
 				66CD19481F37543F00469E6B /* indexing.hpp */,
 				66CD19491F37543F00469E6B /* transform.hpp */,
+				66D00E8C1F6E9434003D71D7 /* gaussian_filter.hpp */,
+				66D00E8D1F6E9440003D71D7 /* gaussian_filter.cpp */,
+				66D00E8B1F6E9434003D71D7 /* gaussian_filter_shaders.hpp */,
 			);
 			name = image;
 			sourceTree = "<group>";

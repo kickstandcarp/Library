@@ -65,7 +65,7 @@ void Kinetics<A...>::step_path(const float elapsed_time, const float time)
 	if (std::get<I>(this->value_paths))
 	{
 		std::get<I>(this->value_paths)->remove_path_vertices_prior(time - this->path_duration);
-		std::get<I>(this->value_paths)->add_path_vertex(PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type>(std::get<I>(this->values), time));
+        std::get<I>(this->value_paths)->add_path_vertex(PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type>(std::get<I>(this->values), time));
 	}
 }
 
