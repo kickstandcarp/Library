@@ -8,6 +8,7 @@
 #include <array>
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
+#include "clock.hpp"
 #include "event/event_handler_support.hpp"
 #include "geometry/segmented_path.hpp"
 #include "geometry/path_vertex.hpp"
@@ -38,7 +39,7 @@ class EventHandler
 		void													remove_value_path(const std::string &name, const DeviceType type, const unsigned int index=0);
 		void													remove_direction_path(const std::string &name, const DeviceType type, const unsigned int index=0);
 
-		void                                                    update(const float time);
+		void                                                    update(const Clock &clock);
 
 		bool                                                    quit;
 
@@ -50,6 +51,8 @@ class EventHandler
 		float													path_duration;
 
 	private:
+        glm::vec2                                               pixel_to_gl_position(const glm::ivec2 &pixel_position) const;
+
 		ButtonState                                             button_state(const std::string &name, const DeviceType type, const unsigned int index=0) const;
 		glm::vec2                                               button_direction(const std::string &name, const DeviceType type, const unsigned int index=0) const;
 		

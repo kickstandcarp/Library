@@ -4,6 +4,7 @@
 #include <array>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "clock.hpp"
 #include "physics/kinetics.hpp"
 
 class PaperKinetics: public Kinetics<glm::vec3, glm::quat>
@@ -21,7 +22,7 @@ class PaperKinetics: public Kinetics<glm::vec3, glm::quat>
 		void												remove_position_path();
 		void												remove_orientation_path();
 
-        virtual void										step(const float elapsed_time, const float time);
+        virtual void										step(const Clock &clock);
 
 		float												perpendicular_friction, parallel_friction;
         float												fluid_density, paper_density;

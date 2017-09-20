@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <tuple>
+#include "clock.hpp"
 #include "geometry/segmented_path.hpp"
 
 template <class ...A>
@@ -15,7 +16,7 @@ class Kinetics
 		template <unsigned int I> void						add_path(const float time);
 		template <unsigned int I> void						remove_path();
 
-        virtual void										step(const float elapsed_time, const float time)=0;
+        virtual void										step(const Clock &clock)=0;
 
         std::tuple<A...>									values, velocities, external_accelerations;
 		
@@ -23,7 +24,7 @@ class Kinetics
 		float												path_duration;
 
     protected:
-        template <unsigned int I> void						step_path(const float elapsed_time, const float time);
+        template <unsigned int I> void						step_path(const Clock &clock);
 };
 
 
@@ -60,12 +61,12 @@ void Kinetics<A...>::remove_path()
 
 template <class ...A>
 template <unsigned int I>
-void Kinetics<A...>::step_path(const float elapsed_time, const float time)
+void Kinetics<A...>::step_path(const Clock &clock)
 {
 	if (std::get<I>(this->value_paths))
 	{
-		std::get<I>(this->value_paths)->remove_path_vertices_prior(time - this->path_duration);
-        std::get<I>(this->value_paths)->add_path_vertex(PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type>(std::get<I>(this->values), time));
+		std::get<I>(this->value_paths)->remove_path_vertices_prior(clock.time + clock.elapsed_time - this->path_duration);
+        std::get<I>(this->value_paths)->add_path_vertex(PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type>(std::get<I>(this->values), clock.time + clock.elapsed_time));
 	}
 }
 

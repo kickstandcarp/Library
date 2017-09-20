@@ -70,51 +70,51 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>del "$(ProjectDir)*.pyd"
-$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" clean
-del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>
+    </NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>..\..\python</OutDir>
+    <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>del "$(ProjectDir)*.pyd"
-$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" clean
-del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>
+    </NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>..\..\python</OutDir>
+    <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>del "$(ProjectDir)*.pyd"
-$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" clean
-del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>
+    </NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>..\..\python</OutDir>
+    <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>del "$(ProjectDir)*.pyd"
-$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --inplace
-copy "$(ProjectDir)*.pyd" "$(SolutionDir)..\python"</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" clean
-del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>
+    </NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>..\..\python</OutDir>
+    <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -162,7 +162,6 @@ del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
     <ClInclude Include="..\..\common\include\geometry\coordinate_transform.hpp" />
     <ClInclude Include="..\..\common\include\geometry\coordinate_transform_support.hpp" />
     <ClInclude Include="..\..\common\include\geometry\path.hpp" />
-    <ClInclude Include="..\..\common\include\geometry\path_support.hpp" />
     <ClInclude Include="..\..\common\include\geometry\path_vertex.hpp" />
     <ClInclude Include="..\..\common\include\geometry\segmented_path.hpp" />
     <ClInclude Include="..\..\common\include\image\indexing.hpp" />
@@ -195,7 +194,6 @@ del "$(ProjectDir)*.pyd"</NMakeCleanCommandLine>
     <ClCompile Include="..\..\common\src\event\event_handler.cpp" />
     <ClCompile Include="..\..\common\src\geometry\coordinate_transform.cpp" />
     <ClCompile Include="..\..\common\src\geometry\coordinate_transform_support.cpp" />
-    <ClCompile Include="..\..\common\src\geometry\path_support.cpp" />
     <ClCompile Include="..\..\common\src\geometry\path_vertex.cpp" />
     <ClCompile Include="..\..\common\src\image\indexing.cpp" />
     <ClCompile Include="..\..\common\src\image\transform.cpp" />

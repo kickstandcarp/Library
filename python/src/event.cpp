@@ -49,7 +49,7 @@ PYBIND11_PLUGIN(event)
 		.def("remove_value_path", &EventHandler::get_value_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 		.def("remove_direction_path", &EventHandler::get_direction_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 
-		.def("update", &EventHandler::update, py::arg("time"));
+		.def("update", &EventHandler::update, py::arg("clock"));
 
 	return m.ptr();
 }

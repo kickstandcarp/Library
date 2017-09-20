@@ -47,9 +47,9 @@ EventHandler::EventHandler(const std::array<unsigned int, 2> &window_size)
 	for (auto &key_state : this->key_states)
 		key_state = ButtonState{false, 0, 0};
 
-	int mouse_position_x, mouse_position_y;
-	SDL_GetMouseState(&mouse_position_x, &mouse_position_y);
-	this->mouse_position = glm::vec2(static_cast<float>(mouse_position_x) / static_cast<float>(this->window_size[0]), static_cast<float>(window_size[1] - mouse_position_y) / static_cast<float>(this->window_size[1]));
+	glm::ivec2 mouse_pixel_position;
+	SDL_GetMouseState(&mouse_pixel_position.x, &mouse_pixel_position.y);
+	this->mouse_position = this->pixel_to_gl_position(mouse_pixel_position);
 
     int num_controllers = SDL_NumJoysticks();
     for (int index = 0; index < num_controllers; index++)
@@ -193,7 +193,7 @@ void EventHandler::remove_direction_path(const std::string &name, const DeviceTy
 	this->direction_path(name, type, index).reset();
 }
 
-void EventHandler::update(const float time)
+void EventHandler::update(const Clock &clock)
 {
 	this->update_count++;
 
@@ -225,8 +225,7 @@ void EventHandler::update(const float time)
 				break;
 			case SDL_MOUSEMOTION:
 				this->mouse_motion_count = this->update_count;
-				this->mouse_position.x = static_cast<float>(event.motion.x) / static_cast<float>(this->window_size[0]);
-				this->mouse_position.y = static_cast<float>(this->window_size[1] - event.motion.y) / static_cast<float>(this->window_size[1]);
+                this->mouse_position = this->pixel_to_gl_position(glm::ivec2(event.motion.x, event.motion.y));
 				this->mouse_motion.x = static_cast<float>(event.motion.xrel) / static_cast<float>(this->window_size[0]);
 				this->mouse_motion.y = static_cast<float>(-event.motion.yrel) / static_cast<float>(this->window_size[1]);
 				break;
@@ -276,16 +275,24 @@ void EventHandler::update(const float time)
     {
         if (path.second)
         {
-            path.second->remove_path_vertices_prior(time - this->path_duration);
-            path.second->add_path_vertex(PathVertex<bool>(this->mouse_button_states.at(path.first).is_down, time));
+            path.second->remove_path_vertices_prior(clock.time + clock.elapsed_time - this->path_duration);
+            path.second->add_path_vertex(PathVertex<bool>(this->mouse_button_states.at(path.first).is_down, clock.time + clock.elapsed_time));
         }
     }
 
     if (this->mouse_position_path)
     {
-        this->mouse_position_path->remove_path_vertices_prior(time - this->path_duration);
-        this->mouse_position_path->add_path_vertex(PathVertex<glm::vec2>(this->mouse_position, time));
+        this->mouse_position_path->remove_path_vertices_prior(clock.time + clock.elapsed_time - this->path_duration);
+        this->mouse_position_path->add_path_vertex(PathVertex<glm::vec2>(this->mouse_position, clock.time + clock.elapsed_time));
     }
+}
+
+glm::vec2 EventHandler::pixel_to_gl_position(const glm::ivec2 &pixel_position) const
+{
+    float x = 2.0f*((static_cast<float>(pixel_position.x) + 0.5f) / this->window_size[0]) - 1.0f;
+    float y = 2.0f*((static_cast<float>(this->window_size[1] - pixel_position.y - 1) + 0.5f) / this->window_size[1]) - 1.0f;
+
+    return glm::vec2(x, y);
 }
 
 ButtonState EventHandler::button_state(const std::string &name, const DeviceType type, const unsigned int index) const

@@ -129,9 +129,6 @@
     <ClInclude Include="..\..\common\include\geometry\path.hpp">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\common\include\geometry\path_support.hpp">
-      <Filter>Header Files\geometry</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\common\include\opengl\camera.hpp">
       <Filter>Header Files\opengl</Filter>
     </ClInclude>
@@ -220,9 +217,6 @@
     </ClCompile>
     <ClCompile Include="..\..\common\src\opengl\buffer.cpp">
       <Filter>Source Files\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\src\geometry\path_support.cpp">
-      <Filter>Source Files\geometry</Filter>
     </ClCompile>
     <ClCompile Include="..\..\common\src\opengl\camera.cpp">
       <Filter>Source Files\opengl</Filter>

@@ -33,7 +33,7 @@ PYBIND11_PLUGIN(physics)
 
         .def("steady_state_value_to_acceleration", &OscillatorKinetics<glm::vec2>::steady_state_value_to_acceleration, py::arg("value"))
 
-		.def("step", &OscillatorKinetics<glm::vec2>::step, py::arg("elapsed_time"), py::arg("time"));
+		.def("step", &OscillatorKinetics<glm::vec2>::step, py::arg("clock"));
 
     py::class_<PaperKinetics>(m, "PaperKinetics")
         .def(py::init<glm::vec3, glm::quat, glm::vec3, glm::vec3, glm::vec3, glm::vec3, float, float, float, float, glm::vec3>(), py::arg("position"), py::arg("orientation"), py::arg("velocity"), py::arg("angular_velocity"), py::arg("external_acceleration"), py::arg("external_angular_acceleration"), py::arg("perpendicular_friction"), py::arg("parallel_friction"), py::arg("fluid_density"), py::arg("paper_density"), py::arg("size"))
@@ -61,7 +61,7 @@ PYBIND11_PLUGIN(physics)
 		.def("remove_position_path", &PaperKinetics::remove_position_path)
 		.def("remove_orientation_path", &PaperKinetics::remove_orientation_path)
 
-		.def("step", &PaperKinetics::step, py::arg("elapsed_time"), py::arg("time"));
+		.def("step", &PaperKinetics::step, py::arg("clock"));
 
 	return m.ptr();
 }

@@ -229,6 +229,8 @@ PYBIND11_PLUGIN(glm)
 	// py::implicitly_convertible<py::list, glm::ivec4>();
 
     m.def("clamp", (float (*)(const float, const float, const float)) &glm::clamp);
+	m.def("step", [] (const float edge, const float x)  { return glm::mix(1.0f, 0.0f, x < edge); });
+	m.def("smoothstep", (float (*)(const float, const float, const float)) &glm::smoothstep);
 	m.def("mix", (float (*)(const float, const float, const bool)) &glm::mix);
 	m.def("mix", (float (*)(const float, const float, const float)) &glm::mix);
 
@@ -282,6 +284,8 @@ PYBIND11_PLUGIN(glm)
 	m.def("min", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::min);
 	m.def("max", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::max);
 	m.def("clamp", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &, const glm::vec2 &)) &glm::clamp);
+	m.def("step", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::step);
+	m.def("smoothstep", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &, const glm::vec2 &)) &glm::smoothstep);
 	m.def("dot", (float (*)(const glm::vec2 &, const glm::vec2 &)) &glm::dot);
 	m.def("length", (float (*)(const glm::vec2 &)) &glm::length);
     m.def("normalize", (glm::vec2 (*)(const glm::vec2 &)) &glm::normalize);
@@ -343,6 +347,8 @@ PYBIND11_PLUGIN(glm)
 	m.def("min", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::min);
 	m.def("max", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::max);
 	m.def("clamp", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &)) &glm::clamp);
+	m.def("step", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::step);
+	m.def("smoothstep", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &)) &glm::smoothstep);
 	m.def("dot", (float (*)(const glm::vec3 &, const glm::vec3 &)) &glm::dot);
 	m.def("cross", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::cross);
 	m.def("length", (float (*)(const glm::vec3 &)) &glm::length);
@@ -408,6 +414,8 @@ PYBIND11_PLUGIN(glm)
 	m.def("min", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::min);
 	m.def("max", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::max);
     m.def("clamp", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &, const glm::vec4 &)) &glm::clamp);
+	m.def("step", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::step);
+	m.def("smoothstep", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &, const glm::vec4 &)) &glm::smoothstep);
 	m.def("dot", (float (*)(const glm::vec4 &, const glm::vec4 &)) &glm::dot);
 	m.def("length", (float (*)(const glm::vec4 &)) &glm::length);
 	m.def("normalize", (glm::vec4 (*)(const glm::vec4 &)) &glm::normalize);

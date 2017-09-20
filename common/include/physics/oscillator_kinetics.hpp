@@ -4,6 +4,7 @@
 #include <memory>
 #include <tuple>
 #include <glm/gtc/constants.hpp>
+#include "clock.hpp"
 #include "physics/kinetics.hpp"
 #include "math/integration.hpp"
 #include "geometry/path.hpp"
@@ -22,7 +23,7 @@ class OscillatorKinetics: public Kinetics<T>
 
         T											steady_state_value_to_acceleration(const T &value) const;
 
-        virtual void								step(const float elapsed_time, const float time);
+        virtual void								step(const Clock &clock);
 
         T											frequency, damping_ratio;
 };
@@ -71,14 +72,14 @@ T OscillatorKinetics<T>::steady_state_value_to_acceleration(const T &value) cons
 }
 
 template <class T>
-void OscillatorKinetics<T>::step(const float elapsed_time, const float time)
+void OscillatorKinetics<T>::step(const Clock &clock)
 {
-    T accelerations = runge_kutta<T, const OscillatorKinetics<T>&>(oscillator_kinetics_d2x_dt2<T>, std::get<0>(this->velocities), 0.0f, elapsed_time, *this);
+	T accelerations = runge_kutta<T, const OscillatorKinetics<T>&>(oscillator_kinetics_d2x_dt2<T>, std::get<0>(this->velocities), 0.0f, clock.elapsed_time, *this);
 
-    accumulate(std::get<0>(this->velocities), accelerations, elapsed_time);
-    accumulate(std::get<0>(this->values), std::get<0>(this->velocities), elapsed_time);
+	accumulate(std::get<0>(this->velocities), accelerations, clock.elapsed_time);
+	accumulate(std::get<0>(this->values), std::get<0>(this->velocities), clock.elapsed_time);
 
-	this->Kinetics<T>::template step_path<0>(elapsed_time, time);
+	this->Kinetics<T>::template step_path<0>(clock);
 }
 
 template <class T>

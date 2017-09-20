@@ -39,18 +39,18 @@ PYBIND11_PLUGIN(vector_display)
 	py::class_<VectorDisplay>(m, "VectorDisplay")
 		.def("__init__", [] (VectorDisplay &instance, Window &window, const py::iterable &py_size, const std::string &frame_buffer_name) { new (&instance) VectorDisplay(window, std::get<0>(iterable_to_array<unsigned int, 2>(py_size)), frame_buffer_name); }, py::arg("window"), py::arg("size"), py::arg("frame_buffer_name"))
 
-        .def_readwrite("excitation_time_constant", &VectorDisplay::excitation_time_constant)
+		.def_readwrite("threshold", &VectorDisplay::threshold)
+		
+		.def_readwrite("excitation_time_constant", &VectorDisplay::excitation_time_constant)
         .def_readwrite("decay_time_constant_1", &VectorDisplay::decay_time_constant_1)
-        .def_readwrite("decay_time_constant_2", &VectorDisplay::decay_time_constant_2)
-        .def_readwrite("decay_threshold_1", &VectorDisplay::decay_threshold_1)
-        .def_readwrite("decay_threshold_2", &VectorDisplay::decay_threshold_2)
+		.def_readwrite("decay_time_constant_2", &VectorDisplay::decay_time_constant_2)
+		.def_readwrite("decay_time_constant_edge_1", &VectorDisplay::decay_time_constant_edge_1)
+		.def_readwrite("decay_time_constant_edge_2", &VectorDisplay::decay_time_constant_edge_2)
 
 		.def_readonly("kinetics", &VectorDisplay::kinetics)
 		.def_readonly("beam_kinetics", &VectorDisplay::beam_kinetics)
 
 		.def_readonly("glow_filter", &VectorDisplay::glow_filter)
-
-        .def_property_readonly("time", &VectorDisplay::get_time)
 
 		.def("paths", &VectorDisplay::get_path, py::arg("name"))
 		.def("add_path", &VectorDisplay::add_path, py::arg("name"), py::arg("vector_display_path"))

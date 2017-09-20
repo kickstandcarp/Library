@@ -28,6 +28,9 @@
 		662CD7EA1F329FA8005EB9D0 /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = texture.cpp; path = ../common/src/opengl/texture.cpp; sourceTree = "<group>"; };
 		6643D3731F48816E009BF826 /* oscillator_kinetics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oscillator_kinetics.hpp; path = ../common/include/physics/oscillator_kinetics.hpp; sourceTree = "<group>"; };
 		6643D3751F488CDC009BF826 /* integration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = integration.cpp; path = ../common/src/math/integration.cpp; sourceTree = "<group>"; };
+		664AAFEE1F6FFFC300EB110C /* clock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = clock.hpp; path = ../common/include/clock.hpp; sourceTree = "<group>"; };
+		664AAFEF1F6FFFCC00EB110C /* clock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = clock.cpp; path = ../common/src/clock.cpp; sourceTree = "<group>"; };
+		664AAFF01F6FFFF100EB110C /* clock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = clock.cpp; path = ../python/src/clock.cpp; sourceTree = "<group>"; };
 		66628E941F2CF09D008E4BD9 /* test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = test.py; path = ../test/test.py; sourceTree = "<group>"; };
 		666A13881F2ABAF8006FC93A /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = setup.py; path = ../python/setup.py; sourceTree = "<group>"; };
 		668B887C1F6D62B70003D6AC /* geometry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = geometry.hpp; path = ../python/include/geometry.hpp; sourceTree = "<group>"; };
@@ -129,6 +132,8 @@
 		666A13731F2AB977006FC93A /* common */ = {
 			isa = PBXGroup;
 			children = (
+				664AAFEE1F6FFFC300EB110C /* clock.hpp */,
+				664AAFEF1F6FFFCC00EB110C /* clock.cpp */,
 				66CD19451F37540C00469E6B /* math */,
 				666A13741F2AB98C006FC93A /* geometry */,
 				66CD193D1F374D1500469E6B /* physics */,
@@ -162,6 +167,7 @@
 				660B28741F67543F0053C885 /* repr.cpp */,
 				66F7D0961F65668F00364D08 /* glm.hpp */,
 				66F7D0921F65668300364D08 /* glm.cpp */,
+				664AAFF01F6FFFF100EB110C /* clock.cpp */,
 				668B887C1F6D62B70003D6AC /* geometry.hpp */,
 				66F7D0911F65668300364D08 /* geometry.cpp */,
 				66F7D0951F65668300364D08 /* physics.cpp */,

@@ -8,6 +8,8 @@ layout(location = 0) in vec2	vertex_position;
 
 out vec2                        position;
 
+
+
 void main()
 {
 	position = vertex_position;
@@ -21,6 +23,8 @@ uniform int                     size;
 uniform float                   width, amplitude;
 
 uniform sampler2D               color_sampler;
+
+
 
 void main()
 {
@@ -49,6 +53,8 @@ uniform int                     size;
 uniform float                   width;
 
 uniform sampler2D               intermediate_color_sampler, source_color_sampler;
+
+
 
 void main()
 {
