@@ -65,14 +65,12 @@ PYBIND11_PLUGIN(opengl)
 			std::tie(data, size) = py_array_to_texture_data(image);	
 			instance.add_texture(name, data, size, TextureFormat::rgba, interpolation, wrap);
 		}, py::arg("name"), py::arg("image"), py::arg("interpolation"), py::arg("wrap"))
-		.def("add_frame_buffer", [] (Window &instance, const std::string &name, const py::iterable &py_size, const unsigned int num_color_attachments, const bool has_depth_attachment) { instance.add_frame_buffer(name, std::get<0>(iterable_to_array<unsigned int, 2>(py_size)), num_color_attachments, has_depth_attachment); }, py::arg("name"), py::arg("size"), py::arg("num_color_attachments"), py::arg("has_depth_attachment"))
+		.def("add_frame_buffer", [] (Window &instance, const std::string &name, const py::iterable &py_size, const std::vector<TextureFormat> &color_attachment_texture_formats, const bool has_depth_attachment) { instance.add_frame_buffer(name, std::get<0>(iterable_to_array<unsigned int, 2>(py_size)), color_attachment_texture_formats, has_depth_attachment); }, py::arg("name"), py::arg("size"), py::arg("color_attachment_texture_formats"), py::arg("has_depth_attachment"))
 
 		.def("remove_shader", &Window::remove_shader, py::arg("name"))
 		.def("remove_vertex_array", &Window::remove_vertex_array, py::arg("name"))
 		.def("remove_texture", &Window::remove_vertex_array, py::arg("name"))
 		.def("remove_frame_buffer", &Window::remove_frame_buffer, py::arg("name"))
-
-		.def("copy_frame_buffer", &Window::copy_frame_buffer, py::arg("source_name"), py::arg("source_color_attachment"), py::arg("destination_name"), py::arg("source_color_attachment"))
 
 		.def("clear", &Window::clear, py::arg("color")=true, py::arg("depth")=true)
 		.def("draw", &Window::draw)
@@ -195,12 +193,14 @@ PYBIND11_PLUGIN(opengl)
 		.def("set_texture_unit", &Texture::set_texture_unit, py::arg("index"));
 
 	py::class_<FrameBuffer>(m, "FrameBuffer")
-		.def_property_readonly("size", &FrameBuffer::get_size)
 		.def_property_readonly("num_color_attachments", &FrameBuffer::get_num_color_attachments)
 		.def_property_readonly("has_depth_attachment", &FrameBuffer::get_has_depth_attachment)
 
 		.def("get_color_texture", &FrameBuffer::get_color_texture, py::arg("index"), py::return_value_policy::reference_internal)
-		.def("get_depth_texture", &FrameBuffer::get_depth_texture, py::return_value_policy::reference_internal);
+		.def("get_depth_texture", &FrameBuffer::get_depth_texture, py::return_value_policy::reference_internal)
+
+        .def("swap_color_texture", &FrameBuffer::swap_color_texture, py::arg("color_attachement_index"), py::arg("texture_name"))
+        .def("copy", &FrameBuffer::copy, py::arg("color_attachment_index"));
 
     py::class_<Camera>(m, "Camera")
         .def(py::init<float, float, float, float, bool>(), py::arg("width"), py::arg("height"), py::arg("near_z"), py::arg("far_z"), py::arg("orthographic"))

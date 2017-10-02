@@ -25,34 +25,34 @@ PaperKinetics::~PaperKinetics()
 
 }
 
-const std::shared_ptr<SegmentedPath<glm::vec3> > PaperKinetics::get_position_path()
+const std::shared_ptr<const SegmentCurve<glm::vec3> > PaperKinetics::get_position_history() const
 {
-	return std::get<0>(this->value_paths);
+	return std::get<0>(this->value_histories);
 }
 
-const std::shared_ptr<SegmentedPath<glm::quat> > PaperKinetics::get_orientation_path()
+const std::shared_ptr<const SegmentCurve<glm::quat> > PaperKinetics::get_orientation_history() const
 {
-	return std::get<1>(this->value_paths);
+	return std::get<1>(this->value_histories);
 }
 
-void PaperKinetics::add_position_path(const float time)
+void PaperKinetics::add_position_history(const float time)
 {
-	this->Kinetics<glm::vec3, glm::quat>::add_path<0>(time);
+	this->Kinetics<glm::vec3, glm::quat>::add_history<0>(time);
 }
 
-void PaperKinetics::add_orientation_path(const float time)
+void PaperKinetics::add_orientation_history(const float time)
 {
-	this->Kinetics<glm::vec3, glm::quat>::add_path<1>(time);
+	this->Kinetics<glm::vec3, glm::quat>::add_history<1>(time);
 }
 
-void PaperKinetics::remove_position_path()
+void PaperKinetics::remove_position_history()
 {
-	this->Kinetics<glm::vec3, glm::quat>::remove_path<0>();
+	this->Kinetics<glm::vec3, glm::quat>::remove_history<0>();
 }
 
-void PaperKinetics::remove_orientation_path()
+void PaperKinetics::remove_orientation_history()
 {
-	this->Kinetics<glm::vec3, glm::quat>::remove_path<1>();
+	this->Kinetics<glm::vec3, glm::quat>::remove_history<1>();
 }
 
 void PaperKinetics::step(const Clock &clock)
@@ -67,8 +67,8 @@ void PaperKinetics::step(const Clock &clock)
 	accumulate(std::get<1>(this->values), std::get<1>(this->velocities), clock.elapsed_time);
 	std::get<1>(this->values) = glm::normalize(std::get<1>(this->values));
 
-	this->Kinetics<glm::vec3, glm::quat>::step_path<0>(clock);
-	this->Kinetics<glm::vec3, glm::quat>::step_path<1>(clock);
+	this->Kinetics<glm::vec3, glm::quat>::step_history<0>(clock);
+	this->Kinetics<glm::vec3, glm::quat>::step_history<1>(clock);
 }
 
 std::array<float, 6> paper_kinetics_d2x_dt2(const float dt, const std::array<float, 6> &dx_dt, const PaperKinetics &kinetics)

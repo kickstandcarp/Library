@@ -70,50 +70,50 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python\lib" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>
     </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>
     </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..\python</OutDir>
+    <OutDir>..\..\python\lib</OutDir>
     <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python\lib" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>
     </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>
     </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..\python</OutDir>
+    <OutDir>..\..\python\lib</OutDir>
     <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python\lib" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>
     </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>
     </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..\python</OutDir>
+    <OutDir>..\..\python\lib</OutDir>
     <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(DevelopPath)\include;$(IncludePath)</IncludePath>
-    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>$(PythonPath)\python.exe "$(SolutionDir)..\python\setup.py" build_ext --build-lib "$(SolutionDir)..\python\lib" --build-temp "$(SolutionDir)..\python\build"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>
     </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>
     </NMakeCleanCommandLine>
     <NMakeIncludeSearchPath>$(SolutionDir)..\python\include;$(SolutionDir)..\common\include;$(PythonPath)\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <LibraryPath>$(DevelopPath)\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..\python</OutDir>
+    <OutDir>..\..\python\lib</OutDir>
     <IntDir>..\..\python\build</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -157,13 +157,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\common\include\clock.hpp" />
     <ClInclude Include="..\..\common\include\event\event_handler.hpp" />
     <ClInclude Include="..\..\common\include\event\event_handler_support.hpp" />
     <ClInclude Include="..\..\common\include\geometry\coordinate_transform.hpp" />
     <ClInclude Include="..\..\common\include\geometry\coordinate_transform_support.hpp" />
-    <ClInclude Include="..\..\common\include\geometry\path.hpp" />
-    <ClInclude Include="..\..\common\include\geometry\path_vertex.hpp" />
-    <ClInclude Include="..\..\common\include\geometry\segmented_path.hpp" />
+    <ClInclude Include="..\..\common\include\image\gaussian_filter.hpp" />
+    <ClInclude Include="..\..\common\include\image\gaussian_filter_shaders.hpp" />
     <ClInclude Include="..\..\common\include\image\indexing.hpp" />
     <ClInclude Include="..\..\common\include\image\transform.hpp" />
     <ClInclude Include="..\..\common\include\math\arithmatic.hpp" />
@@ -179,22 +179,27 @@
     <ClInclude Include="..\..\common\include\opengl\buffer_support.hpp" />
     <ClInclude Include="..\..\common\include\opengl\vertex_array_support.hpp" />
     <ClInclude Include="..\..\common\include\opengl\window.hpp" />
+    <ClInclude Include="..\..\common\include\parametric\curve.hpp" />
+    <ClInclude Include="..\..\common\include\parametric\curve_support.hpp" />
+    <ClInclude Include="..\..\common\include\parametric\segment_curve.hpp" />
     <ClInclude Include="..\..\common\include\physics\kinetics.hpp" />
     <ClInclude Include="..\..\common\include\physics\oscillator_kinetics.hpp" />
     <ClInclude Include="..\..\common\include\physics\paper_kinetics.hpp" />
     <ClInclude Include="..\..\python\include\glm.hpp" />
     <ClInclude Include="..\..\python\include\opengl.hpp" />
+    <ClInclude Include="..\..\python\include\parametric.hpp" />
     <ClInclude Include="..\..\python\include\repr.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\trochoid_path.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\trochoid.hpp" />
     <ClInclude Include="..\..\test\vector_display\common\include\vector_display.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_path.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_curve.hpp" />
     <ClInclude Include="..\..\test\vector_display\common\include\vector_display_shaders.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\common\src\clock.cpp" />
     <ClCompile Include="..\..\common\src\event\event_handler.cpp" />
     <ClCompile Include="..\..\common\src\geometry\coordinate_transform.cpp" />
     <ClCompile Include="..\..\common\src\geometry\coordinate_transform_support.cpp" />
-    <ClCompile Include="..\..\common\src\geometry\path_vertex.cpp" />
+    <ClCompile Include="..\..\common\src\image\gaussian_filter.cpp" />
     <ClCompile Include="..\..\common\src\image\indexing.cpp" />
     <ClCompile Include="..\..\common\src\image\transform.cpp" />
     <ClCompile Include="..\..\common\src\math\arithmatic.cpp" />
@@ -209,16 +214,19 @@
     <ClCompile Include="..\..\common\src\opengl\vertex_array.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer_support.cpp" />
     <ClCompile Include="..\..\common\src\opengl\window.cpp" />
+    <ClCompile Include="..\..\common\src\parametric\curve_support.cpp" />
+    <ClCompile Include="..\..\common\src\parametric\segment_curve.cpp" />
     <ClCompile Include="..\..\common\src\physics\paper_kinetics.cpp" />
     <ClCompile Include="..\..\python\src\event.cpp" />
     <ClCompile Include="..\..\python\src\geometry.cpp" />
     <ClCompile Include="..\..\python\src\glm.cpp" />
     <ClCompile Include="..\..\python\src\opengl.cpp" />
+    <ClCompile Include="..\..\python\src\parametric.cpp" />
     <ClCompile Include="..\..\python\src\physics.cpp" />
     <ClCompile Include="..\..\python\src\repr.cpp" />
-    <ClCompile Include="..\..\test\vector_display\common\src\trochoid_path.cpp" />
+    <ClCompile Include="..\..\test\vector_display\common\src\trochoid.cpp" />
     <ClCompile Include="..\..\test\vector_display\common\src\vector_display.cpp" />
-    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_path.cpp" />
+    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_curve.cpp" />
     <ClCompile Include="..\..\test\vector_display\python\src\vector_display.cpp" />
   </ItemGroup>
   <ItemGroup>

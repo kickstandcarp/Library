@@ -29,7 +29,7 @@ PYBIND11_PLUGIN(event)
 		.def_readwrite("stick_threshold", &EventHandler::stick_threshold)
 		.def_readwrite("trigger_threshold", &EventHandler::trigger_threshold)
 
-		.def_readwrite("path_duration", &EventHandler::path_duration)
+		.def_readwrite("history_duration", &EventHandler::history_duration)
 
 		.def("get_button", &EventHandler::get_button, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 		.def("get_button_moved_down", &EventHandler::get_button_moved_down, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
@@ -37,19 +37,19 @@ PYBIND11_PLUGIN(event)
 		.def("get_value", &EventHandler::get_value, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 		.def("get_direction", &EventHandler::get_direction, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 
-		.def("get_button_path", &EventHandler::get_button_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
-		.def("get_value_path", &EventHandler::get_value_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
-		.def("get_direction_path", &EventHandler::get_direction_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
+		.def("get_button_history", &EventHandler::get_button_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
+		.def("get_value_history", &EventHandler::get_value_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
+		.def("get_direction_history", &EventHandler::get_direction_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 
-		.def("add_button_path", &EventHandler::add_button_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0, py::arg("time")=0.0f)
-		.def("add_value_path", &EventHandler::add_value_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0, py::arg("time")=0.0f)
-		.def("add_direction_path", &EventHandler::add_direction_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0, py::arg("time")=0.0f)
+		.def("add_button_history", &EventHandler::add_button_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0, py::arg("time")=0.0f)
+		.def("add_value_history", &EventHandler::add_value_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0, py::arg("time")=0.0f)
+		.def("add_direction_history", &EventHandler::add_direction_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0, py::arg("time")=0.0f)
 
-		.def("remove_button_path", &EventHandler::get_button_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
-		.def("remove_value_path", &EventHandler::get_value_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
-		.def("remove_direction_path", &EventHandler::get_direction_path, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
+		.def("remove_button_history", &EventHandler::get_button_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
+		.def("remove_value_history", &EventHandler::get_value_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
+		.def("remove_direction_history", &EventHandler::get_direction_history, py::arg("name"), py::arg("device_type"), py::arg("device_index")=0)
 
-		.def("update", &EventHandler::update, py::arg("clock"));
+		.def("step", &EventHandler::step, py::arg("clock"));
 
 	return m.ptr();
 }

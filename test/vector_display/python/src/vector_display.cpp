@@ -4,8 +4,8 @@
 
 #include "glm.hpp"
 #include "vector_display.hpp"
-#include "vector_display_path.hpp"
-#include "trochoid_path.hpp"
+#include "vector_display_curve.hpp"
+#include "trochoid.hpp"
 
 namespace py = pybind11;
 
@@ -20,21 +20,21 @@ PYBIND11_PLUGIN(vector_display)
 
     py::module m("vector_display");
 
-	py::class_<TrochoidPath, Path<glm::vec2>, std::shared_ptr<TrochoidPath> >(m, "TrochoidPath")
+	py::class_<Trochoid, Curve<glm::vec2>, std::shared_ptr<Trochoid> >(m, "Trochoid")
 		.def(py::init<float, float, float, float>(), py::arg("stator_radius"), py::arg("rotor_radius"), py::arg("rotor_offset"), py::arg("min_vertex_radius"))
 
-		.def_readwrite("stator_radius", &TrochoidPath::stator_radius)
-		.def_readwrite("rotor_radius", &TrochoidPath::rotor_radius)
-		.def_readwrite("rotor_offset", &TrochoidPath::rotor_offset);
+		.def_readwrite("stator_radius", &Trochoid::stator_radius)
+		.def_readwrite("rotor_radius", &Trochoid::rotor_radius)
+		.def_readwrite("rotor_offset", &Trochoid::rotor_offset);
 
-	py::class_<VectorDisplayPath>(m, "VectorDisplayPath")
-		.def(py::init<std::shared_ptr<Path<glm::vec2> >, std::shared_ptr<Path<bool> >, float, float, float, glm::vec3>(), py::arg("vertex_path"), py::arg("drawn_path"), py::arg("t"), py::arg("width"), py::arg("velocity"), py::arg("color"))
+	py::class_<VectorDisplayCurve>(m, "VectorDisplayCurve")
+		.def(py::init<std::shared_ptr<Curve<glm::vec2> >, std::shared_ptr<Curve<bool> >, float, float, float, glm::vec3>(), py::arg("vertex_curve"), py::arg("drawn_curve"), py::arg("velocity"), py::arg("offset_time"),  py::arg("width"), py::arg("color"))
 
-		.def_readwrite("width", &VectorDisplayPath::width)
-		.def_readwrite("velocity", &VectorDisplayPath::velocity)
-		.def_readwrite("color", &VectorDisplayPath::color)
-
-		.def("pop_back", &VectorDisplayPath::pop_back);
+		.def_readwrite("velocity", &VectorDisplayCurve::velocity)
+		.def_readwrite("offset_time", &VectorDisplayCurve::offset_time)
+	
+		.def_readwrite("width", &VectorDisplayCurve::width)
+		.def_readwrite("color", &VectorDisplayCurve::color);
 
 	py::class_<VectorDisplay>(m, "VectorDisplay")
 		.def("__init__", [] (VectorDisplay &instance, Window &window, const py::iterable &py_size, const std::string &frame_buffer_name) { new (&instance) VectorDisplay(window, std::get<0>(iterable_to_array<unsigned int, 2>(py_size)), frame_buffer_name); }, py::arg("window"), py::arg("size"), py::arg("frame_buffer_name"))
@@ -52,9 +52,9 @@ PYBIND11_PLUGIN(vector_display)
 
 		.def_readonly("glow_filter", &VectorDisplay::glow_filter)
 
-		.def("paths", &VectorDisplay::get_path, py::arg("name"))
-		.def("add_path", &VectorDisplay::add_path, py::arg("name"), py::arg("vector_display_path"))
-		.def("remove_path", &VectorDisplay::remove_path, py::arg("name"))
+		.def("curves", &VectorDisplay::get_curve, py::arg("name"), py::return_value_policy::reference_internal)
+		.def("add_curve", &VectorDisplay::add_curve, py::arg("name"), py::arg("vector_display_curve"), py::arg("window"))
+		.def("remove_curve", &VectorDisplay::remove_curve, py::arg("name"), py::arg("window"))
 
         .def("step", &VectorDisplay::step, py::arg("elapsed_time"), py::arg("window"))
         .def("draw", &VectorDisplay::draw, py::arg("window"));

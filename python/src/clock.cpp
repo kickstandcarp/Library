@@ -11,13 +11,13 @@ PYBIND11_PLUGIN(clock)
     py::module m("clock");
 
     py::class_<Clock>(m, "Clock")
-		.def(py::init<float>(), py::arg("initial_time")=0.0f)
+		.def(py::init<>())
 
         .def_readwrite("time", &Clock::time)
         .def_readwrite("elapsed_time", &Clock::elapsed_time)
-        .def_readwrite("count", &Clock::count)
+        .def_readwrite("step_count", &Clock::step_count)
 
-        .def("update", &Clock::update, py::arg("elapsed_time"));
+        .def("step", &Clock::step, py::arg("elapsed_time"));
 
 	return m.ptr();
 }

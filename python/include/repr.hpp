@@ -21,7 +21,7 @@ void mat_repr(const T &mat, std::stringstream &stream)
 	unsigned int field_length = 0;
 	std::vector<std::string> strings(R*C);
 
-	const float* value_ptr = glm::value_ptr(mat);
+	const float *value_ptr = glm::value_ptr(mat);
 	for (unsigned int index = 0;  index < R*C; index++)
 	{
 		strings[index] = to_python_string(*(value_ptr + index));

@@ -1,5 +1,5 @@
-#ifndef VECTOR_DISPLAY_SHADERS_HPP
-#define VECTOR_DISPLAY_SHADERS_HPP
+#ifndef VECTOR_DISPLAY_VECTOR_DISPLAY_SHADERS_HPP
+#define VECTOR_DISPLAY_VECTOR_DISPLAY_SHADERS_HPP
 
 #include <string>
 
@@ -16,14 +16,14 @@ void main()
 	gl_Position = vec4(vertex_position, 0.0, 1.0);
 })";
 
-static const std::string vector_display_fragment_shader = R"(#version 330 core
+static const std::string vector_display_curve_fragment_shader = R"(#version 330 core
 layout(location = 0) out vec4   next_value;
 
 in vec2                         position;
 
 uniform vec4[32]                vertices; // x, y, t, d
 uniform int                     num_segments;
-uniform int[17]                 segment_vertices_indices;
+uniform int[17]                 segment_indices;
 
 uniform sampler2D               value_sampler;
 uniform float                   time, elapsed_time;
@@ -78,7 +78,7 @@ void transform_position(out int segment_index, out float tangential_position, ou
 
     for (int i = 0; i < num_segments; i++)
     {
-        for (int j = segment_vertices_indices[i]; j < segment_vertices_indices[i+1]-1; j++)
+        for (int j = segment_indices[i]; j < segment_indices[i+1]-1; j++)
         {
             float segment_length = vertices[j+1].w - vertices[j].w;
             vec2 segment_direction = (vertices[j+1].xy - vertices[j].xy) / mix(1.0, segment_length, 1.0 - step(segment_length, 0.0)*step(0.0, segment_length));
@@ -97,9 +97,9 @@ void excitation_integration_limits(in int segment_index, in float tangential_pos
 {
     float d1 = tangential_position - 5.0*beam_width, d2 = tangential_position + 5.0*beam_width;
 
-    i1 = segment_vertices_indices[segment_index], i2 = segment_vertices_indices[segment_index+1]-2;
-	t1 = vertices[segment_vertices_indices[segment_index]].z, t2 = vertices[segment_vertices_indices[segment_index+1]-1].z;
-    for (int i = segment_vertices_indices[segment_index]; i < segment_vertices_indices[segment_index+1]-1; i++)
+    i1 = segment_indices[segment_index], i2 = segment_indices[segment_index+1]-2;
+	t1 = vertices[segment_indices[segment_index]].z, t2 = vertices[segment_indices[segment_index+1]-1].z;
+    for (int i = segment_indices[segment_index]; i < segment_indices[segment_index+1]-1; i++)
 	{
         float d1_in_segment = step(vertices[i].w, d1)*step(d1, vertices[i+1].w);
         float d2_in_segment = step(vertices[i].w, d2)*step(d2, vertices[i+1].w);
@@ -174,8 +174,22 @@ vec3 v_f(in float t, in int i1, in int i2)
 
 vec3 tau(in vec3 v, in vec3 v_f)
 {
-	vec3 decay_time_constant = mix(vec3(decay_time_constant_1), vec3(decay_time_constant_2), smoothstep(vec3(decay_time_constant_edge_1), vec3(decay_time_constant_edge_2), v));
+	vec3 decay_time_constant = exp(mix(vec3(log(decay_time_constant_1)), vec3(log(decay_time_constant_2)), smoothstep(vec3(decay_time_constant_edge_1), vec3(decay_time_constant_edge_2), v)));
 	return mix(vec3(excitation_time_constant), decay_time_constant, step(v_f, v));
+})";
+
+static const std::string vector_display_accumulation_fragment_shader = R"(#version 330 core
+layout(location = 0) out vec4   next_value;
+
+in vec2                         position;
+
+uniform sampler2D               value_sampler;
+
+
+
+void main()
+{
+    next_value = texelFetch(value_sampler, ivec2(gl_FragCoord.xy), 0);
 })";
 
 #endif

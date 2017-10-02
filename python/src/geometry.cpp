@@ -4,11 +4,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "geometry.hpp"
 #include "geometry/coordinate_transform.hpp"
 #include "geometry/coordinate_transform_support.hpp"
-#include "geometry/path.hpp"
-#include "geometry/segmented_path.hpp"
 
 namespace py = pybind11;
 
@@ -47,69 +44,6 @@ PYBIND11_PLUGIN(geometry)
 
 	m.def("transform_position", &transform_position, py::arg("position"), py::arg("from"), py::arg("to"));
 	m.def("transform_direction", &transform_direction, py::arg("direction"), py::arg("from"), py::arg("to"));
-
-	py::class_<PathVertex<bool> >(m, "PathVertexBool")
-		.def(py::init<bool, float>(), py::arg("vertex"), py::arg("t"))
-		.def("__init__", [] (PathVertex<bool> &instance, const py::iterable &iterable) { path_vertex_from_iterable(instance, iterable); })
-
-		.def_readwrite("vertex", &PathVertex<bool>::vertex)
-		.def_readwrite("t", &PathVertex<bool>::t);
-
-	py::implicitly_convertible<py::list, PathVertex<bool> >();
-	py::implicitly_convertible<py::tuple, PathVertex<bool> >();
-
-	py::class_<Path<bool>, std::shared_ptr<Path<bool> > >(m, "PathBool")
-		.def("vertex", &Path<bool>::vertex, py::arg("t"))
-		.def("vertices", &Path<bool>::vertices, py::arg("t1"), py::arg("t2"));
-
-	py::class_<SegmentedPath<bool>, Path<bool>, std::shared_ptr<SegmentedPath<bool> > >(m, "SegmentedPathBool")
-		.def(py::init<std::list<PathVertex<bool> > >(), py::arg("vertices"))
-
-		.def_property_readonly("path_vertices", &SegmentedPath<bool>::get_path_vertices)
-		.def("add_path_vertex", &SegmentedPath<bool>::add_path_vertex, py::arg("path_vertex"))
-		.def("remove_path_vertices_prior", &SegmentedPath<bool>::remove_path_vertices_prior, py::arg("t"));
-
-	py::class_<PathVertex<float> >(m, "PathVertexFloat")
-		.def(py::init<float, float>(), py::arg("vertex"), py::arg("t"))
-		.def("__init__", [] (PathVertex<float> &instance, const py::iterable &iterable) { path_vertex_from_iterable(instance, iterable); })
-
-		.def_readwrite("vertex", &PathVertex<float>::vertex)
-		.def_readwrite("t", &PathVertex<float>::t);
-
-    py::implicitly_convertible<py::list, PathVertex<float> >();
-    py::implicitly_convertible<py::tuple, PathVertex<float> >();
-
-	py::class_<Path<float>, std::shared_ptr<Path<float> > >(m, "PathFloat")
-		.def("vertex", &Path<float>::vertex, py::arg("t"))
-		.def("vertices", &Path<float>::vertices, py::arg("t1"), py::arg("t2"));
-
-	py::class_<SegmentedPath<float>, Path<float>, std::shared_ptr<SegmentedPath<float> > >(m, "SegmentedPathFloat")
-		.def(py::init<std::list<PathVertex<float> > >(), py::arg("vertices"))
-
-		.def_property_readonly("path_vertices", &SegmentedPath<float>::get_path_vertices)
-		.def("add_path_vertex", &SegmentedPath<float>::add_path_vertex, py::arg("path_vertex"))
-		.def("remove_path_vertices_prior", &SegmentedPath<float>::remove_path_vertices_prior, py::arg("t"));
-
-	py::class_<PathVertex<glm::vec2> >(m, "PathVertexVec2")
-		.def(py::init<glm::vec2, float>(), py::arg("vertex"), py::arg("t"))
-		.def("__init__", [] (PathVertex<glm::vec2> &instance, const py::iterable &iterable) { path_vertex_from_iterable(instance, iterable); })
-
-		.def_readwrite("vertex", &PathVertex<glm::vec2>::vertex)
-		.def_readwrite("t", &PathVertex<glm::vec2>::t);
-
-	py::implicitly_convertible<py::list, PathVertex<glm::vec2> >();
-	py::implicitly_convertible<py::tuple, PathVertex<glm::vec2> >();
-
-	py::class_<Path<glm::vec2>, std::shared_ptr<Path<glm::vec2> > >(m, "PathVec2")
-		.def("vertex", &Path<glm::vec2>::vertex, py::arg("t"))
-		.def("vertices", &Path<glm::vec2>::vertices, py::arg("t1"), py::arg("t2"));
-
-	py::class_<SegmentedPath<glm::vec2>, Path<glm::vec2>, std::shared_ptr<SegmentedPath<glm::vec2> > >(m, "SegmentedPathVec2")
-		.def(py::init<std::list<PathVertex<glm::vec2> > >(), py::arg("vertices"))
-
-		.def_property_readonly("path_vertices", &SegmentedPath<glm::vec2>::get_path_vertices)
-		.def("add_path_vertex", &SegmentedPath<glm::vec2>::add_path_vertex, py::arg("path_vertex"))
-		.def("remove_path_vertices_prior", &SegmentedPath<glm::vec2>::remove_path_vertices_prior, py::arg("t"));
 
 	return m.ptr();
 }

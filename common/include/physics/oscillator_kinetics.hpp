@@ -7,8 +7,8 @@
 #include "clock.hpp"
 #include "physics/kinetics.hpp"
 #include "math/integration.hpp"
-#include "geometry/path.hpp"
-#include "geometry/path_vertex.hpp"
+#include "parametric/curve.hpp"
+#include "parametric/curve_support.hpp"
 
 template <class T>
 class OscillatorKinetics: public Kinetics<T>
@@ -17,18 +17,18 @@ class OscillatorKinetics: public Kinetics<T>
 		OscillatorKinetics(const T &value, const T &velocity, const T &external_acceleration, const T &frequency, const T &damping_ratio);
 		virtual ~OscillatorKinetics();
 
-		const std::shared_ptr<SegmentedPath<T> >	get_path();
-		void										add_path(const float time);
-		void										remove_path();
+		const std::shared_ptr<const SegmentCurve<T> >   get_history() const;
+		void										    add_history(const float time);
+		void										    remove_history();
 
-        T											steady_state_value_to_acceleration(const T &value) const;
+        T											    steady_state_value_to_acceleration(const T &value) const;
 
-        virtual void								step(const Clock &clock);
+        virtual void								    step(const Clock &clock);
 
-        T											frequency, damping_ratio;
+        T											    frequency, damping_ratio;
 };
 
-template <class T> T								oscillator_kinetics_d2x_dt2(const float dt, const T &dx_dt, const OscillatorKinetics<T> &kinetics);
+template <class T> T								    oscillator_kinetics_d2x_dt2(const float dt, const T &dx_dt, const OscillatorKinetics<T> &kinetics);
 
 
 
@@ -48,21 +48,21 @@ OscillatorKinetics<T>::~OscillatorKinetics()
 }
 
 template <class T>
-const std::shared_ptr<SegmentedPath<T> > OscillatorKinetics<T>::get_path()
+const std::shared_ptr<const SegmentCurve<T> > OscillatorKinetics<T>::get_history() const
 {
-	return std::get<0>(this->value_paths);
+	return std::get<0>(this->value_histories);
 }
 
 template <class T>
-void OscillatorKinetics<T>::add_path(const float time)
+void OscillatorKinetics<T>::add_history(const float time)
 {
-	this->Kinetics<T>::template add_path<0>(time);
+	this->Kinetics<T>::template add_history<0>(time);
 }
 
 template <class T>
-void OscillatorKinetics<T>::remove_path()
+void OscillatorKinetics<T>::remove_history()
 {
-	this->Kinetics<T>::template remove_path<0>();
+	this->Kinetics<T>::template remove_history<0>();
 }
 
 template <class T>
@@ -79,7 +79,7 @@ void OscillatorKinetics<T>::step(const Clock &clock)
 	accumulate(std::get<0>(this->velocities), accelerations, clock.elapsed_time);
 	accumulate(std::get<0>(this->values), std::get<0>(this->velocities), clock.elapsed_time);
 
-	this->Kinetics<T>::template step_path<0>(clock);
+	this->Kinetics<T>::template step_history<0>(clock);
 }
 
 template <class T>

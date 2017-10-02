@@ -24,11 +24,11 @@ PYBIND11_PLUGIN(image)
         .def_readwrite("destination_blend_factor", &GaussianFilter::destination_blend_factor)
 
         .def_readwrite("source_frame_buffer_name", &GaussianFilter::source_frame_buffer_name)
-        .def_readwrite("source_color_attachment", &GaussianFilter::source_color_attachment)
+        .def_readwrite("source_color_attachment_index", &GaussianFilter::source_color_attachment_index)
         .def_readwrite("intermediate_frame_buffer_name", &GaussianFilter::intermediate_frame_buffer_name)
-        .def_readwrite("intermediate_color_attachment", &GaussianFilter::intermediate_color_attachment)
+        .def_readwrite("intermediate_color_attachment_index", &GaussianFilter::intermediate_color_attachment_index)
         .def_readwrite("destination_frame_buffer_name", &GaussianFilter::destination_frame_buffer_name)
-        .def_readwrite("destination_color_attachment", &GaussianFilter::destination_color_attachment)
+        .def_readwrite("destination_color_attachment_index", &GaussianFilter::destination_color_attachment_index)
 
         .def("apply", &GaussianFilter::apply, py::arg("window"));
 

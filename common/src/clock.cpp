@@ -2,10 +2,10 @@
 
 
 
-Clock::Clock(const float initial_time)
-:   time(initial_time),
+Clock::Clock()
+:   time(0.0f),
     elapsed_time(0.0f),
-    count(0)
+    step_count(0)
 {
 
 }
@@ -15,9 +15,9 @@ Clock::~Clock()
 
 }
 
-void Clock::update(const float elapsed_time)
+void Clock::step(const float elapsed_time)
 {
     this->time += this->elapsed_time;
     this->elapsed_time = elapsed_time;
-    this->count++;
+    this->step_count++;
 }

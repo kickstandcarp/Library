@@ -4,7 +4,7 @@
 #include <memory>
 #include <tuple>
 #include "clock.hpp"
-#include "geometry/segmented_path.hpp"
+#include "parametric/segment_curve.hpp"
 
 template <class ...A>
 class Kinetics
@@ -13,18 +13,18 @@ class Kinetics
 		Kinetics(const std::tuple<A...> &values, const std::tuple<A...> &velocities, const std::tuple<A...> &external_accelerations);
 		virtual ~Kinetics();
 
-		template <unsigned int I> void						add_path(const float time);
-		template <unsigned int I> void						remove_path();
+		template <unsigned int I> void						add_history(const float time);
+		template <unsigned int I> void						remove_history();
 
         virtual void										step(const Clock &clock)=0;
 
         std::tuple<A...>									values, velocities, external_accelerations;
 		
-		std::tuple<std::shared_ptr<SegmentedPath<A> >...>	value_paths;
-		float												path_duration;
+		std::tuple<std::shared_ptr<SegmentCurve<A> >...>	value_histories;
+		float												history_duration;
 
     protected:
-        template <unsigned int I> void						step_path(const Clock &clock);
+        template <unsigned int I> void						step_history(const Clock &clock);
 };
 
 
@@ -34,7 +34,7 @@ Kinetics<A...>::Kinetics(const std::tuple<A...> &values, const std::tuple<A...> 
 :   values(values),
     velocities(velocities),
 	external_accelerations(external_accelerations),
-	path_duration(0.0f)
+	history_duration(0.0f)
 {
 
 }
@@ -47,26 +47,26 @@ Kinetics<A...>::~Kinetics()
 
 template <class ...A>
 template <unsigned int I>
-void Kinetics<A...>::add_path(const float time)
+void Kinetics<A...>::add_history(const float time)
 {
-	std::get<I>(this->value_paths) = std::make_shared<SegmentedPath<typename std::tuple_element<I, std::tuple<A...> >::type> >(std::list<PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type> >(1, PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type>(std::get<I>(values), time)));
+	std::get<I>(this->value_histories) = std::make_shared<SegmentCurve<typename std::tuple_element<I, std::tuple<A...> >::type> >(std::list<CurveVertex<typename std::tuple_element<I, std::tuple<A...> >::type> >(1, {std::get<I>(values), time}));
 }
 
 template <class ...A>
 template <unsigned int I>
-void Kinetics<A...>::remove_path()
+void Kinetics<A...>::remove_history()
 {
-	std::get<I>(this->value_paths).reset();
+	std::get<I>(this->value_histories).reset();
 }
 
 template <class ...A>
 template <unsigned int I>
-void Kinetics<A...>::step_path(const Clock &clock)
+void Kinetics<A...>::step_history(const Clock &clock)
 {
-	if (std::get<I>(this->value_paths))
+	if (std::get<I>(this->value_histories))
 	{
-		std::get<I>(this->value_paths)->remove_path_vertices_prior(clock.time + clock.elapsed_time - this->path_duration);
-        std::get<I>(this->value_paths)->add_path_vertex(PathVertex<typename std::tuple_element<I, std::tuple<A...> >::type>(std::get<I>(this->values), clock.time + clock.elapsed_time));
+		std::get<I>(this->value_histories)->remove_curve_vertices_prior(clock.time + clock.elapsed_time - this->history_duration);
+        std::get<I>(this->value_histories)->add_curve_vertex({std::get<I>(this->values), clock.time + clock.elapsed_time});
 	}
 }
 

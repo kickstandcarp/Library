@@ -5,7 +5,7 @@ import platform
 
 from pybind11 import get_include
 
-
+# python setup.py build_ext --build-lib "lib" --build-temp "build"
 
 path = split(realpath(__file__))[0]
 
@@ -29,7 +29,12 @@ geometry_src_files = []
 geometry_src_files.append(abspath(join(path, 'src', 'geometry.cpp')))
 geometry_src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'coordinate_transform.cpp')))
 geometry_src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'coordinate_transform_support.cpp')))
-geometry_src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry', 'path_vertex.cpp')))
+
+parametric_src_files = []
+parametric_src_files.append(abspath(join(path, 'src', 'parametric.cpp')))
+parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'interpolation.cpp')))
+parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'curve_support.cpp')))
+parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'segment_curve.cpp')))
 
 physics_src_files = []
 physics_src_files.append(abspath(join(path, 'src', 'physics.cpp')))
@@ -64,17 +69,30 @@ vector_display_include_dirs = [abspath(join(path, pardir, 'test', 'vector_displa
 vector_display_src_files = []
 vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'python', 'src', 'vector_display.cpp')))
 vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display.cpp')))
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display_path.cpp')))
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'trochoid_path.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display_curve.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'trochoid.cpp')))
+
+'''
+glm_extension = Extension('glm', glm_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+clock_extension = Extension('clock', clock_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+geometry_extension = Extension('geometry', geometry_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+parametric_extension = Extension('parametric', parametric_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+physics_extension = Extension('physics', physics_src_files + parametric_src_files + clock_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+event_extension = Extension('event', event_src_files + parametric_src_files + clock_src_files, language='c++', include_dirs=include_dirs, libraries=event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+opengl_extension = Extension('opengl', opengl_src_files + event_src_files + parametric_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+image_extension = Extension('image', image_src_files + opengl_src_files + event_src_files + parametric_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+vector_display_extension = Extension('vector_display', vector_display_src_files + image_src_files + opengl_src_files + event_src_files + parametric_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs + vector_display_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+'''
 
 glm_extension = Extension('glm', glm_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 clock_extension = Extension('clock', clock_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 geometry_extension = Extension('geometry', geometry_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-physics_extension = Extension('physics', physics_src_files + geometry_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-event_extension = Extension('event', event_src_files + geometry_src_files, language='c++', include_dirs=include_dirs, libraries=event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-opengl_extension = Extension('opengl', opengl_src_files + event_src_files + geometry_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-image_extension = Extension('image', image_src_files + opengl_src_files + event_src_files + geometry_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
-vector_display_extension = Extension('vector_display', vector_display_src_files + image_src_files + opengl_src_files + event_src_files + geometry_src_files, language='c++', include_dirs=include_dirs + vector_display_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+parametric_extension = Extension('parametric', parametric_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+physics_extension = Extension('physics', physics_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+event_extension = Extension('event', event_src_files, language='c++', include_dirs=include_dirs, libraries=event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+opengl_extension = Extension('opengl', opengl_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+image_extension = Extension('image', image_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+vector_display_extension = Extension('vector_display', vector_display_src_files, language='c++', include_dirs=include_dirs + vector_display_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 
-ext_modules = [glm_extension, clock_extension, geometry_extension, physics_extension, event_extension, opengl_extension, image_extension, vector_display_extension]
+ext_modules = [glm_extension, clock_extension, geometry_extension, parametric_extension, physics_extension, event_extension, opengl_extension, image_extension, vector_display_extension]
 setup(ext_modules=ext_modules)

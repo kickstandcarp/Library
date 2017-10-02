@@ -105,7 +105,7 @@ void from_iterable(T &instance, const py::iterable &iterable)
 	if (num_values != D)
 		throw py::cast_error();
 
-	A* instance_ptr = glm::value_ptr(instance);
+	A *instance_ptr = glm::value_ptr(instance);
 	for (unsigned int index = 0; index < D; index++)
 		*(instance_ptr + index) = values[index];
 }

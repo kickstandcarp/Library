@@ -20,16 +20,16 @@ PYBIND11_PLUGIN(physics)
 
         .def_readwrite("frequency", &OscillatorKinetics<glm::vec2>::frequency)
         .def_readwrite("damping_ratio", &OscillatorKinetics<glm::vec2>::damping_ratio)
-		.def_property("path_duration", [] (OscillatorKinetics<glm::vec2> &instance) { return instance.path_duration; }, [] (OscillatorKinetics<glm::vec2> &instance, const float path_duration) { return instance.path_duration = path_duration; })
+		.def_property("history_duration", [] (OscillatorKinetics<glm::vec2> &instance) { return instance.history_duration; }, [] (OscillatorKinetics<glm::vec2> &instance, const float history_duration) { return instance.history_duration = history_duration; })
 
 		.def_property("value", [] (OscillatorKinetics<glm::vec2> &instance) { return std::get<0>(instance.values); }, [] (OscillatorKinetics<glm::vec2> &instance, const glm::vec2 value) { std::get<0>(instance.values) = value; })
 		.def_property("velocity", [] (OscillatorKinetics<glm::vec2> &instance) { return std::get<0>(instance.velocities); }, [] (OscillatorKinetics<glm::vec2> &instance, const glm::vec2 velocity) { std::get<0>(instance.velocities) = velocity; })
 		.def_property("external_acceleration", [] (OscillatorKinetics<glm::vec2> &instance) { return std::get<0>(instance.external_accelerations); }, [] (OscillatorKinetics<glm::vec2> &instance, const glm::vec2 external_acceleration) { std::get<0>(instance.external_accelerations) = external_acceleration; })
 
-		.def_property_readonly("path", &OscillatorKinetics<glm::vec2>::get_path)
+		.def_property_readonly("history", &OscillatorKinetics<glm::vec2>::get_history)
 
-		.def("add_path", &OscillatorKinetics<glm::vec2>::add_path, py::arg("time"))
-		.def("remove_path", &OscillatorKinetics<glm::vec2>::remove_path)
+		.def("add_history", &OscillatorKinetics<glm::vec2>::add_history, py::arg("time"))
+		.def("remove_history", &OscillatorKinetics<glm::vec2>::remove_history)
 
         .def("steady_state_value_to_acceleration", &OscillatorKinetics<glm::vec2>::steady_state_value_to_acceleration, py::arg("value"))
 
@@ -43,7 +43,7 @@ PYBIND11_PLUGIN(physics)
 		.def_readwrite("fluid_density", &PaperKinetics::fluid_density)
 		.def_readwrite("paper_density", &PaperKinetics::paper_density)
 		.def_readwrite("size", &PaperKinetics::size)
-		.def_property("path_duration", [] (PaperKinetics &instance) { return instance.path_duration; }, [] (PaperKinetics &instance, const float path_duration) { return instance.path_duration = path_duration; })
+		.def_property("history_duration", [] (PaperKinetics &instance) { return instance.history_duration; }, [] (PaperKinetics &instance, const float history_duration) { return instance.history_duration = history_duration; })
 
 		.def_property("position", [] (PaperKinetics &instance) { return std::get<0>(instance.values); }, [] (PaperKinetics &instance, const glm::vec3 &value) { std::get<0>(instance.values) = value; })
 		.def_property("orientation", [] (PaperKinetics &instance) { return std::get<1>(instance.values); }, [] (PaperKinetics &instance, const glm::quat &value) { std::get<1>(instance.values) = value; })
@@ -52,14 +52,14 @@ PYBIND11_PLUGIN(physics)
 		.def_property("external_acceleration", [] (PaperKinetics &instance) { return std::get<0>(instance.external_accelerations); }, [] (PaperKinetics &instance, const glm::vec3 &external_acceleration) { std::get<0>(instance.external_accelerations) = external_acceleration; })
 		.def_property("external_angular_acceleration", [] (PaperKinetics &instance) { return std::get<1>(instance.external_accelerations); }, [] (PaperKinetics &instance, const glm::vec3 &external_angular_acceleration) { std::get<1>(instance.external_accelerations) = glm::quat(0.0f, external_angular_acceleration.x, external_angular_acceleration.y, external_angular_acceleration.z); })
 
-		.def_property_readonly("position_path", &PaperKinetics::get_position_path)
-		.def_property_readonly("orienation_path", &PaperKinetics::get_orientation_path)
+		.def_property_readonly("position_history", &PaperKinetics::get_position_history)
+		.def_property_readonly("orienation_history", &PaperKinetics::get_orientation_history)
 
-		.def("add_position_path", &PaperKinetics::add_position_path, py::arg("time"))
-		.def("add_orientation_path", &PaperKinetics::add_orientation_path, py::arg("time"))
+		.def("add_position_history", &PaperKinetics::add_position_history, py::arg("time"))
+		.def("add_orientation_history", &PaperKinetics::add_orientation_history, py::arg("time"))
 
-		.def("remove_position_path", &PaperKinetics::remove_position_path)
-		.def("remove_orientation_path", &PaperKinetics::remove_orientation_path)
+		.def("remove_position_history", &PaperKinetics::remove_position_history)
+		.def("remove_orientation_history", &PaperKinetics::remove_orientation_history)
 
 		.def("step", &PaperKinetics::step, py::arg("clock"));
 

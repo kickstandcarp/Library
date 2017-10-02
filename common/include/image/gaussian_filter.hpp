@@ -10,7 +10,7 @@ class GaussianFilter
 		GaussianFilter(Window &window);
         ~GaussianFilter();
 
-        void            apply(Window &window);
+        void            apply(Window &window) const;
 
 		float			size, width, amplitude;
 
@@ -18,7 +18,7 @@ class GaussianFilter
         BlendFactor     source_blend_factor, destination_blend_factor;
 
         std::string     source_frame_buffer_name, intermediate_frame_buffer_name, destination_frame_buffer_name;
-        unsigned int    source_color_attachment, intermediate_color_attachment, destination_color_attachment;
+        unsigned int    source_color_attachment_index, intermediate_color_attachment_index, destination_color_attachment_index;
 
     private:
         std::string		shader_1_name, shader_2_name;

@@ -12,23 +12,21 @@
 #include "event/event_handler.hpp"
 
 
-#include <iostream>
-
 
 EventHandler::EventHandler(const std::array<unsigned int, 2> &window_size)
 :	quit(false),
 	button_direction_delimiter(','),
 	stick_threshold(0.25f),
 	trigger_threshold(0.5f),
-	path_duration(0.0f),
-	update_count(1),
+	history_duration(0.0f),
+	step_count(1),
     window_size(window_size),
     mouse_button_states({{SDL_BUTTON_LEFT, ButtonState{false, 0, 0}}, {SDL_BUTTON_MIDDLE, ButtonState{false, 0, 0}}, {SDL_BUTTON_RIGHT, ButtonState{false, 0, 0}}, {SDL_BUTTON_X1, ButtonState{false, 0, 0}} ,{SDL_BUTTON_X2, ButtonState{false, 0, 0}}}),
-	mouse_button_paths({{SDL_BUTTON_LEFT, std::shared_ptr<SegmentedPath<bool> >()}, {SDL_BUTTON_MIDDLE, std::shared_ptr<SegmentedPath<bool> >()}, {SDL_BUTTON_RIGHT, std::shared_ptr<SegmentedPath<bool> >()}, {SDL_BUTTON_X1, std::shared_ptr<SegmentedPath<bool> >()} ,{SDL_BUTTON_X2, std::shared_ptr<SegmentedPath<bool> >()}}),
+	mouse_button_histories({{SDL_BUTTON_LEFT, std::shared_ptr<SegmentCurve<bool> >()}, {SDL_BUTTON_MIDDLE, std::shared_ptr<SegmentCurve<bool> >()}, {SDL_BUTTON_RIGHT, std::shared_ptr<SegmentCurve<bool> >()}, {SDL_BUTTON_X1, std::shared_ptr<SegmentCurve<bool> >()} ,{SDL_BUTTON_X2, std::shared_ptr<SegmentCurve<bool> >()}}),
 	mouse_motion_count(0),
 	mouse_wheel_count(0),
 	mouse_motion(0),
-	mouse_position_path(std::shared_ptr<SegmentedPath<glm::vec2> >()),
+	mouse_position_history(std::shared_ptr<SegmentCurve<glm::vec2> >()),
 	mouse_wheel_motion(0)
 {
 	if (SDL_WasInit(SDL_INIT_EVENTS) != SDL_TRUE)
@@ -74,12 +72,12 @@ bool EventHandler::get_button(const std::string &name, const DeviceType type, co
 
 bool EventHandler::get_button_moved_down(const std::string &name, const DeviceType type, const unsigned int index) const
 {
-	return this->button_state(name, type, index).moved_down_count == this->update_count;
+	return this->button_state(name, type, index).moved_down_count == this->step_count;
 }
 
 bool EventHandler::get_button_moved_up(const std::string &name, const DeviceType type, const unsigned int index) const
 {
-	return this->button_state(name, type, index).moved_up_count == this->update_count;
+	return this->button_state(name, type, index).moved_up_count == this->step_count;
 }
 
 float EventHandler::get_value(const std::string &name, const DeviceType type, const unsigned int index) const
@@ -91,7 +89,7 @@ float EventHandler::get_value(const std::string &name, const DeviceType type, co
 			break;
 		case DeviceType::mouse:
 			if (name == "wheel")
-				return this->mouse_wheel_count == this->update_count ? static_cast<float>(this->mouse_wheel_motion) : 0.0f;
+				return this->mouse_wheel_count == this->step_count ? static_cast<float>(this->mouse_wheel_motion) : 0.0f;
 			else
 				throw std::runtime_error("unknown mouse value name");
 			break;
@@ -122,9 +120,9 @@ glm::vec2 EventHandler::get_direction(const std::string &name, const DeviceType 
 			break;
 		case DeviceType::mouse:
 			if (name == "relative")
-				return this->mouse_motion_count == this->update_count ? static_cast<glm::vec2>(this->mouse_motion) : glm::vec2(0.0f);
+				return this->mouse_motion_count == this->step_count ? static_cast<glm::vec2>(this->mouse_motion) : glm::vec2(0.0f);
 			else if (name == "absolute")
-				return 2.0f*(static_cast<glm::vec2>(this->mouse_position) / glm::vec2(static_cast<float>(this->window_size[0]), static_cast<float>(this->window_size[1]))) - glm::vec2(1.0f);
+				return this->mouse_position;
 			else
 				throw std::runtime_error("unknown mouse direction name");
 			break;
@@ -148,54 +146,54 @@ glm::vec2 EventHandler::get_direction(const std::string &name, const DeviceType 
 	}
 }
 
-const std::shared_ptr<SegmentedPath<bool> > EventHandler::get_button_path(const std::string &name, const DeviceType type, const unsigned int index) const
+const std::shared_ptr<const SegmentCurve<bool> > EventHandler::get_button_history(const std::string &name, const DeviceType type, const unsigned int index) const
 {
-	return const_cast<EventHandler*>(this)->button_path(name, type, index);
+	return const_cast<EventHandler*>(this)->button_history(name, type, index);
 }
 
-const std::shared_ptr<SegmentedPath<float> > EventHandler::get_value_path(const std::string &name, const DeviceType type, const unsigned int index) const
+const std::shared_ptr<const SegmentCurve<float> > EventHandler::get_value_history(const std::string &name, const DeviceType type, const unsigned int index) const
 {
-	return const_cast<EventHandler*>(this)->value_path(name, type, index);
+	return const_cast<EventHandler*>(this)->value_history(name, type, index);
 }
 
-const std::shared_ptr<SegmentedPath<glm::vec2> > EventHandler::get_direction_path(const std::string &name, const DeviceType type, const unsigned int index) const
+const std::shared_ptr<const SegmentCurve<glm::vec2> > EventHandler::get_direction_history(const std::string &name, const DeviceType type, const unsigned int index) const
 {
-	return const_cast<EventHandler*>(this)->direction_path(name, type, index);
+	return const_cast<EventHandler*>(this)->direction_history(name, type, index);
 }
 
-void EventHandler::add_button_path(const std::string &name, const DeviceType type, const unsigned int index, const float time)
+void EventHandler::add_button_history(const std::string &name, const DeviceType type, const unsigned int index, const float time)
 {
-	this->button_path(name, type, index) = std::make_shared<SegmentedPath<bool> >(std::list<PathVertex<bool> >(1, PathVertex<bool>(this->get_button(name, type, index), time)));
+	this->button_history(name, type, index) = std::make_shared<SegmentCurve<bool> >(std::list<CurveVertex<bool> >(1, {this->get_button(name, type, index), time}));
 }
 
-void EventHandler::add_value_path(const std::string &name, const DeviceType type, const unsigned int index, const float time)
+void EventHandler::add_value_history(const std::string &name, const DeviceType type, const unsigned int index, const float time)
 {
-	this->value_path(name, type, index) = std::make_shared<SegmentedPath<float> >(std::list<PathVertex<float> >(1, PathVertex<float>(this->get_value(name, type, index), time)));
+	this->value_history(name, type, index) = std::make_shared<SegmentCurve<float> >(std::list<CurveVertex<float> >(1, {this->get_value(name, type, index), time}));
 }
 
-void EventHandler::add_direction_path(const std::string &name, const DeviceType type, const unsigned int index, const float time)
+void EventHandler::add_direction_history(const std::string &name, const DeviceType type, const unsigned int index, const float time)
 {
-	this->direction_path(name, type, index) = std::make_shared<SegmentedPath<glm::vec2> >(std::list<PathVertex<glm::vec2> >(1, PathVertex<glm::vec2>(this->get_direction(name, type, index), time)));
+	this->direction_history(name, type, index) = std::make_shared<SegmentCurve<glm::vec2> >(std::list<CurveVertex<glm::vec2> >(1, {this->get_direction(name, type, index), time}));
 }
 
-void EventHandler::remove_button_path(const std::string &name, const DeviceType type, const unsigned int index)
+void EventHandler::remove_button_history(const std::string &name, const DeviceType type, const unsigned int index)
 {
-	this->button_path(name, type, index).reset();
+	this->button_history(name, type, index).reset();
 }
 
-void EventHandler::remove_value_path(const std::string &name, const DeviceType type, const unsigned int index)
+void EventHandler::remove_value_history(const std::string &name, const DeviceType type, const unsigned int index)
 {
-	this->value_path(name, type, index).reset();
+	this->value_history(name, type, index).reset();
 }
 
-void EventHandler::remove_direction_path(const std::string &name, const DeviceType type, const unsigned int index)
+void EventHandler::remove_direction_history(const std::string &name, const DeviceType type, const unsigned int index)
 {
-	this->direction_path(name, type, index).reset();
+	this->direction_history(name, type, index).reset();
 }
 
-void EventHandler::update(const Clock &clock)
+void EventHandler::step(const Clock &clock)
 {
-	this->update_count++;
+	this->step_count++;
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event) != 0)
@@ -208,29 +206,29 @@ void EventHandler::update(const Clock &clock)
 			case SDL_KEYDOWN:
 				this->key_states[event.key.keysym.scancode].is_down = true;
 				if (event.key.repeat == 0)
-					this->key_states[event.key.keysym.scancode].moved_down_count = this->update_count;
+					this->key_states[event.key.keysym.scancode].moved_down_count = this->step_count;
 				break;
 			case SDL_KEYUP:
 				this->key_states[event.key.keysym.scancode].is_down = false;
 				if (event.key.repeat == 0)
-					this->key_states[event.key.keysym.scancode].moved_up_count = this->update_count;
+					this->key_states[event.key.keysym.scancode].moved_up_count = this->step_count;
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				this->mouse_button_states.at(event.button.button).is_down = true;
-				this->mouse_button_states.at(event.button.button).moved_down_count = this->update_count;
+				this->mouse_button_states.at(event.button.button).moved_down_count = this->step_count;
 				break;
 			case SDL_MOUSEBUTTONUP:
 				this->mouse_button_states.at(event.button.button).is_down = false;
-				this->mouse_button_states.at(event.button.button).moved_up_count = this->update_count;
+				this->mouse_button_states.at(event.button.button).moved_up_count = this->step_count;
 				break;
 			case SDL_MOUSEMOTION:
-				this->mouse_motion_count = this->update_count;
+				this->mouse_motion_count = this->step_count;
                 this->mouse_position = this->pixel_to_gl_position(glm::ivec2(event.motion.x, event.motion.y));
 				this->mouse_motion.x = static_cast<float>(event.motion.xrel) / static_cast<float>(this->window_size[0]);
 				this->mouse_motion.y = static_cast<float>(-event.motion.yrel) / static_cast<float>(this->window_size[1]);
 				break;
 			case SDL_MOUSEWHEEL:
-				this->mouse_wheel_count = this->update_count;
+				this->mouse_wheel_count = this->step_count;
 				this->mouse_wheel_motion = static_cast<float>(event.wheel.y);
 				break;
             case SDL_CONTROLLERAXISMOTION:
@@ -240,9 +238,9 @@ void EventHandler::update(const Clock &clock)
 					this->controller_axis_positions.at(event.caxis.which).at(event.caxis.axis) = next_value;
 					this->controller_trigger_states.at(event.caxis.which).at(event.caxis.axis).is_down = next_value >= this->trigger_threshold;
 					if (prev_value < this->trigger_threshold && next_value >= this->trigger_threshold)
-						this->controller_trigger_states.at(event.caxis.which).at(event.caxis.axis).moved_down_count = this->update_count;
+						this->controller_trigger_states.at(event.caxis.which).at(event.caxis.axis).moved_down_count = this->step_count;
 					if (prev_value >= this->trigger_threshold && next_value < this->trigger_threshold)
-						this->controller_trigger_states.at(event.caxis.which).at(event.caxis.axis).moved_up_count = this->update_count;
+						this->controller_trigger_states.at(event.caxis.which).at(event.caxis.axis).moved_up_count = this->step_count;
 				}
                 else
                 {
@@ -252,11 +250,11 @@ void EventHandler::update(const Clock &clock)
                 break;
             case SDL_CONTROLLERBUTTONDOWN:
 				this->controller_button_states.at(event.cbutton.which).at(event.cbutton.button).is_down = true;
-				this->controller_button_states.at(event.cbutton.which).at(event.cbutton.button).moved_down_count = this->update_count;
+				this->controller_button_states.at(event.cbutton.which).at(event.cbutton.button).moved_down_count = this->step_count;
                 break;
             case SDL_CONTROLLERBUTTONUP:
 				this->controller_button_states.at(event.cbutton.which).at(event.cbutton.button).is_down = false;
-				this->controller_button_states.at(event.cbutton.which).at(event.cbutton.button).moved_up_count = this->update_count;
+				this->controller_button_states.at(event.cbutton.which).at(event.cbutton.button).moved_up_count = this->step_count;
                 break;
             case SDL_CONTROLLERDEVICEADDED:
                 this->add_controller(event.cdevice.which);
@@ -271,19 +269,19 @@ void EventHandler::update(const Clock &clock)
 		}
 	}
 
-    for (auto &path : this->mouse_button_paths)
+    for (auto &history : this->mouse_button_histories)
     {
-        if (path.second)
+        if (history.second)
         {
-            path.second->remove_path_vertices_prior(clock.time + clock.elapsed_time - this->path_duration);
-            path.second->add_path_vertex(PathVertex<bool>(this->mouse_button_states.at(path.first).is_down, clock.time + clock.elapsed_time));
+            history.second->remove_curve_vertices_prior(clock.time + clock.elapsed_time - this->history_duration);
+            history.second->add_curve_vertex({this->mouse_button_states.at(history.first).is_down, clock.time + clock.elapsed_time});
         }
     }
 
-    if (this->mouse_position_path)
+    if (this->mouse_position_history)
     {
-        this->mouse_position_path->remove_path_vertices_prior(clock.time + clock.elapsed_time - this->path_duration);
-        this->mouse_position_path->add_path_vertex(PathVertex<glm::vec2>(this->mouse_position, clock.time + clock.elapsed_time));
+        this->mouse_position_history->remove_curve_vertices_prior(clock.time + clock.elapsed_time - this->history_duration);
+        this->mouse_position_history->add_curve_vertex({this->mouse_position, clock.time + clock.elapsed_time});
     }
 }
 
@@ -341,46 +339,46 @@ glm::vec2 EventHandler::button_direction(const std::string &name, const DeviceTy
 	return state;
 }
 
-std::shared_ptr<SegmentedPath<bool> >& EventHandler::button_path(const std::string &name, const DeviceType type, const unsigned int index)
+std::shared_ptr<SegmentCurve<bool> >& EventHandler::button_history(const std::string &name, const DeviceType type, const unsigned int index)
 {
 	switch (type)
 	{
 		case DeviceType::keyboard:
-			throw std::runtime_error("keyboard button paths are unsupported");
+			throw std::runtime_error("keyboard button histories are unsupported");
 			break;
 		case DeviceType::mouse:
-			return this->mouse_button_paths.at(mouse_button_name_to_enum.at(name));
+			return this->mouse_button_histories.at(mouse_button_name_to_enum.at(name));
 			break;
 		case DeviceType::controller:
-			throw std::runtime_error("controller button paths are unsupported");
+			throw std::runtime_error("controller button histories are unsupported");
 			break;
 		default:
 			throw std::runtime_error("unknown device type");
 	}
 }
 
-std::shared_ptr<SegmentedPath<float> >& EventHandler::value_path(const std::string &name, const DeviceType type, const unsigned int index)
+std::shared_ptr<SegmentCurve<float> >& EventHandler::value_history(const std::string &name, const DeviceType type, const unsigned int index)
 {
-	throw std::runtime_error("value paths are unsupported");
+	throw std::runtime_error("value histories are unsupported");
 }
 
-std::shared_ptr<SegmentedPath<glm::vec2> >& EventHandler::direction_path(const std::string &name, const DeviceType type, const unsigned int index)
+std::shared_ptr<SegmentCurve<glm::vec2> >& EventHandler::direction_history(const std::string &name, const DeviceType type, const unsigned int index)
 {
 	switch (type)
 	{
 		case DeviceType::keyboard:
-			throw std::runtime_error("keyboard direction paths are unsupported");
+			throw std::runtime_error("keyboard direction histories are unsupported");
 			break;
 		case DeviceType::mouse:
 			if (name == "relative")
-				throw std::runtime_error("relative mouse direction paths are unsupported");
+				throw std::runtime_error("relative mouse direction histories are unsupported");
 			else if (name == "absolute")
-				return this->mouse_position_path;
+				return this->mouse_position_history;
 			else
 				throw std::runtime_error("unknown mouse direction name");
 			break;
 		case DeviceType::controller:
-			throw std::runtime_error("controller direction paths are unsupported");
+			throw std::runtime_error("controller direction histories are unsupported");
 			break;
 		default:
 			throw std::runtime_error("unknown device type");

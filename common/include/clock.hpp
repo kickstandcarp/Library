@@ -4,13 +4,13 @@
 class Clock
 {
 	public:
-		Clock(const float time=0.0f);
+		Clock();
         ~Clock();
 
-        void    update(const float elapsed_time);
+        void            step(const float elapsed_time);
 
 		float           time, elapsed_time;
-        unsigned int    count;
+        unsigned int    step_count;
 };
 
 #endif

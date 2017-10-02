@@ -1,5 +1,5 @@
-#ifndef VECTOR_DISPLAY_HPP
-#define VECTOR_DISPLAY_HPP
+#ifndef VECTOR_DISPLAY_VECTOR_DISPLAY_HPP
+#define VECTOR_DISPLAY_VECTOR_DISPLAY_HPP
 
 #include <string>
 #include <map>
@@ -10,7 +10,7 @@
 #include "opengl/window.hpp"
 #include "physics/oscillator_kinetics.hpp"
 #include "image/gaussian_filter.hpp"
-#include "vector_display_path.hpp"
+#include "vector_display_curve.hpp"
 
 class VectorDisplay
 {
@@ -18,9 +18,9 @@ class VectorDisplay
 		VectorDisplay(Window &window, const std::array<unsigned int, 2> &size, const std::string &frame_buffer_name);
 		~VectorDisplay();
 
-		VectorDisplayPath&							get_path(const std::string &name);
-        void										add_path(const std::string &name, VectorDisplayPath &path);
-        void										remove_path(const std::string &name);
+		VectorDisplayCurve&							get_curve(const std::string &name);
+        void										add_curve(const std::string &name, VectorDisplayCurve &curve, Window &window);
+        void										remove_curve(const std::string &name, Window &window);
 
         void                                        step(const Clock &clock, Window &window);
         void                                        draw(Window &window);
@@ -36,12 +36,15 @@ class VectorDisplay
         GaussianFilter                              glow_filter;
 
 	private:
-		std::string									shader_name;
+		std::array<unsigned int, 2>					size;
+
+		std::string									curve_shader_name, accumulation_shader_name;
 		std::string									vertex_array_name;
 		std::string									frame_buffer_name;
-		unsigned int								prev_value_color_attachment, next_value_color_attachment, intermediate_color_attachment;
+		unsigned int								prev_value_color_attachment_index, next_value_color_attachment_index;
+		unsigned int								accumulation_color_attachment_index, intermediate_color_attachment_index;
 
-		std::map<std::string, VectorDisplayPath>    paths;
+		std::map<std::string, VectorDisplayCurve>   curves;
 
 		unsigned int								max_shader_vertices;
 };

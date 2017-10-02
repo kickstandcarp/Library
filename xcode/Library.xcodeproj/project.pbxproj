@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		660B286F1F6754030053C885 /* path_vertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = path_vertex.hpp; path = ../common/include/geometry/path_vertex.hpp; sourceTree = "<group>"; };
-		660B28701F6754030053C885 /* path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = path.hpp; path = ../common/include/geometry/path.hpp; sourceTree = "<group>"; };
-		660B28721F67540E0053C885 /* path_vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = path_vertex.cpp; path = ../common/src/geometry/path_vertex.cpp; sourceTree = "<group>"; };
+		660AE2B31F7FE85C0039A1CF /* parametric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parametric.cpp; path = ../python/src/parametric.cpp; sourceTree = "<group>"; };
+		660AE2B51F7FE9460039A1CF /* curve_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve_support.hpp; path = ../../common/include/parametric/curve_support.hpp; sourceTree = "<group>"; };
+		660AE2B61F7FE9460039A1CF /* segment_curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = segment_curve.hpp; path = ../../common/include/parametric/segment_curve.hpp; sourceTree = "<group>"; };
+		660AE2B71F7FE9460039A1CF /* curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve.hpp; path = ../../common/include/parametric/curve.hpp; sourceTree = "<group>"; };
 		660B28731F6754340053C885 /* repr.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = repr.hpp; path = ../python/include/repr.hpp; sourceTree = "<group>"; };
 		660B28741F67543F0053C885 /* repr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = repr.cpp; path = ../python/src/repr.cpp; sourceTree = "<group>"; };
+		6614D3961F812C1200AE22E3 /* segment_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = segment_curve.cpp; path = ../../common/src/parametric/segment_curve.cpp; sourceTree = "<group>"; };
+		6614D3971F8165E500AE22E3 /* curve_support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = curve_support.cpp; path = ../../common/src/parametric/curve_support.cpp; sourceTree = "<group>"; };
 		6619E5AB1F2BFEC5009BFA97 /* window.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = window.hpp; path = ../common/include/opengl/window.hpp; sourceTree = "<group>"; };
 		6619E5AC1F2BFED1009BFA97 /* window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = window.cpp; path = ../common/src/opengl/window.cpp; sourceTree = "<group>"; };
 		662ABF9A1F6405640043D4F4 /* camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = camera.hpp; path = ../common/include/opengl/camera.hpp; sourceTree = "<group>"; };
@@ -33,7 +36,7 @@
 		664AAFF01F6FFFF100EB110C /* clock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = clock.cpp; path = ../python/src/clock.cpp; sourceTree = "<group>"; };
 		66628E941F2CF09D008E4BD9 /* test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = test.py; path = ../test/test.py; sourceTree = "<group>"; };
 		666A13881F2ABAF8006FC93A /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = setup.py; path = ../python/setup.py; sourceTree = "<group>"; };
-		668B887C1F6D62B70003D6AC /* geometry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = geometry.hpp; path = ../python/include/geometry.hpp; sourceTree = "<group>"; };
+		668B887C1F6D62B70003D6AC /* parametric.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = parametric.hpp; path = ../python/include/parametric.hpp; sourceTree = "<group>"; };
 		66A3A9F71F53410300C8E512 /* test.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = test.frag; path = ../test/test.frag; sourceTree = "<group>"; };
 		66CD193E1F374D4F00469E6B /* paper_kinetics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = paper_kinetics.hpp; path = ../common/include/physics/paper_kinetics.hpp; sourceTree = "<group>"; };
 		66CD193F1F374D5A00469E6B /* paper_kinetics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = paper_kinetics.cpp; path = ../common/src/physics/paper_kinetics.cpp; sourceTree = "<group>"; };
@@ -60,16 +63,17 @@
 		66DA44631F3E6FED00B4F6B8 /* event_handler_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = event_handler_support.hpp; path = ../common/include/event/event_handler_support.hpp; sourceTree = "<group>"; };
 		66DA44641F3E6FED00B4F6B8 /* event_handler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = event_handler.hpp; path = ../common/include/event/event_handler.hpp; sourceTree = "<group>"; };
 		66DA44651F3E6FF600B4F6B8 /* event_handler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = event_handler.cpp; path = ../common/src/event/event_handler.cpp; sourceTree = "<group>"; };
-		66DAF6611F6B4080004B5690 /* trochoid_path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = trochoid_path.hpp; path = ../test/vector_display/common/include/trochoid_path.hpp; sourceTree = "<group>"; };
-		66DAF6621F6B4080004B5690 /* vector_display_path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display_path.hpp; path = ../test/vector_display/common/include/vector_display_path.hpp; sourceTree = "<group>"; };
+		66DAF6611F6B4080004B5690 /* trochoid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = trochoid.hpp; path = ../test/vector_display/common/include/trochoid.hpp; sourceTree = "<group>"; };
+		66DAF6621F6B4080004B5690 /* vector_display_curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display_curve.hpp; path = ../test/vector_display/common/include/vector_display_curve.hpp; sourceTree = "<group>"; };
 		66DAF6631F6B4080004B5690 /* vector_display_shaders.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display_shaders.hpp; path = ../test/vector_display/common/include/vector_display_shaders.hpp; sourceTree = "<group>"; };
 		66DAF6641F6B4080004B5690 /* vector_display.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display.hpp; path = ../test/vector_display/common/include/vector_display.hpp; sourceTree = "<group>"; };
-		66DAF6651F6B4092004B5690 /* trochoid_path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = trochoid_path.cpp; path = ../test/vector_display/common/src/trochoid_path.cpp; sourceTree = "<group>"; };
-		66DAF6661F6B4092004B5690 /* vector_display_path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display_path.cpp; path = ../test/vector_display/common/src/vector_display_path.cpp; sourceTree = "<group>"; };
+		66DAF6651F6B4092004B5690 /* trochoid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = trochoid.cpp; path = ../test/vector_display/common/src/trochoid.cpp; sourceTree = "<group>"; };
+		66DAF6661F6B4092004B5690 /* vector_display_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display_curve.cpp; path = ../test/vector_display/common/src/vector_display_curve.cpp; sourceTree = "<group>"; };
 		66DAF6671F6B4092004B5690 /* vector_display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display.cpp; path = ../test/vector_display/common/src/vector_display.cpp; sourceTree = "<group>"; };
 		66DAF6681F6B40A4004B5690 /* vector_display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display.cpp; path = ../test/vector_display/python/src/vector_display.cpp; sourceTree = "<group>"; };
-		66DAF66A1F6B40EB004B5690 /* segmented_path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = segmented_path.hpp; path = ../common/include/geometry/segmented_path.hpp; sourceTree = "<group>"; };
 		66DAF66B1F6B410E004B5690 /* vertex_array_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vertex_array_support.hpp; path = ../common/include/opengl/vertex_array_support.hpp; sourceTree = "<group>"; };
+		66DB1DFB1F80002A0074F5FB /* interpolation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = interpolation.hpp; path = ../common/include/math/interpolation.hpp; sourceTree = "<group>"; };
+		66DB1DFC1F8000590074F5FB /* interpolation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interpolation.cpp; path = ../common/src/math/interpolation.cpp; sourceTree = "<group>"; };
 		66F7D08E1F655B2300364D08 /* kinetics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = kinetics.hpp; path = ../common/include/physics/kinetics.hpp; sourceTree = "<group>"; };
 		66F7D0901F65668300364D08 /* event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = event.cpp; path = ../python/src/event.cpp; sourceTree = "<group>"; };
 		66F7D0911F65668300364D08 /* geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = geometry.cpp; path = ../python/src/geometry.cpp; sourceTree = "<group>"; };
@@ -81,6 +85,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		660AE2B41F7FE9340039A1CF /* parametric */ = {
+			isa = PBXGroup;
+			children = (
+				660AE2B71F7FE9460039A1CF /* curve.hpp */,
+				660AE2B51F7FE9460039A1CF /* curve_support.hpp */,
+				6614D3971F8165E500AE22E3 /* curve_support.cpp */,
+				660AE2B61F7FE9460039A1CF /* segment_curve.hpp */,
+				6614D3961F812C1200AE22E3 /* segment_curve.cpp */,
+			);
+			path = parametric;
+			sourceTree = "<group>";
+		};
 		6619E5AA1F2BFEA7009BFA97 /* opengl */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +152,7 @@
 				664AAFEF1F6FFFCC00EB110C /* clock.cpp */,
 				66CD19451F37540C00469E6B /* math */,
 				666A13741F2AB98C006FC93A /* geometry */,
+				660AE2B41F7FE9340039A1CF /* parametric */,
 				66CD193D1F374D1500469E6B /* physics */,
 				66DA44621F3E6FDE00B4F6B8 /* event */,
 				6619E5AA1F2BFEA7009BFA97 /* opengl */,
@@ -151,10 +168,6 @@
 				662ABFA01F64059A0043D4F4 /* coordinate_transform.cpp */,
 				662ABF9C1F64058D0043D4F4 /* coordinate_transform_support.hpp */,
 				662ABF9F1F64059A0043D4F4 /* coordinate_transform_support.cpp */,
-				660B28701F6754030053C885 /* path.hpp */,
-				660B286F1F6754030053C885 /* path_vertex.hpp */,
-				660B28721F67540E0053C885 /* path_vertex.cpp */,
-				66DAF66A1F6B40EB004B5690 /* segmented_path.hpp */,
 			);
 			name = geometry;
 			sourceTree = "<group>";
@@ -168,8 +181,9 @@
 				66F7D0961F65668F00364D08 /* glm.hpp */,
 				66F7D0921F65668300364D08 /* glm.cpp */,
 				664AAFF01F6FFFF100EB110C /* clock.cpp */,
-				668B887C1F6D62B70003D6AC /* geometry.hpp */,
 				66F7D0911F65668300364D08 /* geometry.cpp */,
+				668B887C1F6D62B70003D6AC /* parametric.hpp */,
+				660AE2B31F7FE85C0039A1CF /* parametric.cpp */,
 				66F7D0951F65668300364D08 /* physics.cpp */,
 				66F7D0901F65668300364D08 /* event.cpp */,
 				66F7D0971F65668F00364D08 /* opengl.hpp */,
@@ -209,6 +223,8 @@
 				66CD194B1F37932A00469E6B /* arithmatic.cpp */,
 				66CD19461F37542600469E6B /* integration.hpp */,
 				6643D3751F488CDC009BF826 /* integration.cpp */,
+				66DB1DFB1F80002A0074F5FB /* interpolation.hpp */,
+				66DB1DFC1F8000590074F5FB /* interpolation.cpp */,
 			);
 			name = math;
 			sourceTree = "<group>";
@@ -229,11 +245,11 @@
 				66DAF6691F6B40AE004B5690 /* python */,
 				66DAF6641F6B4080004B5690 /* vector_display.hpp */,
 				66DAF6671F6B4092004B5690 /* vector_display.cpp */,
-				66DAF6621F6B4080004B5690 /* vector_display_path.hpp */,
-				66DAF6661F6B4092004B5690 /* vector_display_path.cpp */,
+				66DAF6621F6B4080004B5690 /* vector_display_curve.hpp */,
+				66DAF6661F6B4092004B5690 /* vector_display_curve.cpp */,
 				66DAF6631F6B4080004B5690 /* vector_display_shaders.hpp */,
-				66DAF6611F6B4080004B5690 /* trochoid_path.hpp */,
-				66DAF6651F6B4092004B5690 /* trochoid_path.cpp */,
+				66DAF6611F6B4080004B5690 /* trochoid.hpp */,
+				66DAF6651F6B4092004B5690 /* trochoid.cpp */,
 			);
 			name = vector_display;
 			sourceTree = "<group>";
@@ -251,7 +267,7 @@
 /* Begin PBXLegacyTarget section */
 		663E67D71F2AB8F80081DFAE /* Library */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "setup.py build_ext --inplace";
+			buildArgumentsString = "setup.py build_ext --build-lib \"lib\" --build-temp \"build\"";
 			buildConfigurationList = 663E67DA1F2AB8F80081DFAE /* Build configuration list for PBXLegacyTarget "Library" */;
 			buildPhases = (
 			);
@@ -269,7 +285,7 @@
 		663E67D31F2AB8F80081DFAE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				TargetAttributes = {
 					663E67D71F2AB8F80081DFAE = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -304,7 +320,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -312,7 +330,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -349,7 +371,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -357,7 +381,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
