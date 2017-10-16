@@ -8,13 +8,8 @@
 
 /* Begin PBXFileReference section */
 		660AE2B31F7FE85C0039A1CF /* parametric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parametric.cpp; path = ../python/src/parametric.cpp; sourceTree = "<group>"; };
-		660AE2B51F7FE9460039A1CF /* curve_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve_support.hpp; path = ../../common/include/parametric/curve_support.hpp; sourceTree = "<group>"; };
-		660AE2B61F7FE9460039A1CF /* segment_curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = segment_curve.hpp; path = ../../common/include/parametric/segment_curve.hpp; sourceTree = "<group>"; };
-		660AE2B71F7FE9460039A1CF /* curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve.hpp; path = ../../common/include/parametric/curve.hpp; sourceTree = "<group>"; };
 		660B28731F6754340053C885 /* repr.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = repr.hpp; path = ../python/include/repr.hpp; sourceTree = "<group>"; };
 		660B28741F67543F0053C885 /* repr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = repr.cpp; path = ../python/src/repr.cpp; sourceTree = "<group>"; };
-		6614D3961F812C1200AE22E3 /* segment_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = segment_curve.cpp; path = ../../common/src/parametric/segment_curve.cpp; sourceTree = "<group>"; };
-		6614D3971F8165E500AE22E3 /* curve_support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = curve_support.cpp; path = ../../common/src/parametric/curve_support.cpp; sourceTree = "<group>"; };
 		6619E5AB1F2BFEC5009BFA97 /* window.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = window.hpp; path = ../common/include/opengl/window.hpp; sourceTree = "<group>"; };
 		6619E5AC1F2BFED1009BFA97 /* window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = window.cpp; path = ../common/src/opengl/window.cpp; sourceTree = "<group>"; };
 		662ABF9A1F6405640043D4F4 /* camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = camera.hpp; path = ../common/include/opengl/camera.hpp; sourceTree = "<group>"; };
@@ -38,6 +33,11 @@
 		666A13881F2ABAF8006FC93A /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = setup.py; path = ../python/setup.py; sourceTree = "<group>"; };
 		668B887C1F6D62B70003D6AC /* parametric.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = parametric.hpp; path = ../python/include/parametric.hpp; sourceTree = "<group>"; };
 		66A3A9F71F53410300C8E512 /* test.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = test.frag; path = ../test/test.frag; sourceTree = "<group>"; };
+		66B3D4AB1F85A2D100022BAD /* curve_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve_support.hpp; path = ../common/include/parametric/curve_support.hpp; sourceTree = "<group>"; };
+		66B3D4AC1F85A2D100022BAD /* segment_curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = segment_curve.hpp; path = ../common/include/parametric/segment_curve.hpp; sourceTree = "<group>"; };
+		66B3D4AD1F85A2D100022BAD /* curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve.hpp; path = ../common/include/parametric/curve.hpp; sourceTree = "<group>"; };
+		66B3D4AE1F85A2E300022BAD /* segment_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = segment_curve.cpp; path = ../common/src/parametric/segment_curve.cpp; sourceTree = "<group>"; };
+		66B3D4AF1F85A2E300022BAD /* curve_support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = curve_support.cpp; path = ../common/src/parametric/curve_support.cpp; sourceTree = "<group>"; };
 		66CD193E1F374D4F00469E6B /* paper_kinetics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = paper_kinetics.hpp; path = ../common/include/physics/paper_kinetics.hpp; sourceTree = "<group>"; };
 		66CD193F1F374D5A00469E6B /* paper_kinetics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = paper_kinetics.cpp; path = ../common/src/physics/paper_kinetics.cpp; sourceTree = "<group>"; };
 		66CD19461F37542600469E6B /* integration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = integration.hpp; path = ../common/include/math/integration.hpp; sourceTree = "<group>"; };
@@ -64,11 +64,11 @@
 		66DA44641F3E6FED00B4F6B8 /* event_handler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = event_handler.hpp; path = ../common/include/event/event_handler.hpp; sourceTree = "<group>"; };
 		66DA44651F3E6FF600B4F6B8 /* event_handler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = event_handler.cpp; path = ../common/src/event/event_handler.cpp; sourceTree = "<group>"; };
 		66DAF6611F6B4080004B5690 /* trochoid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = trochoid.hpp; path = ../test/vector_display/common/include/trochoid.hpp; sourceTree = "<group>"; };
-		66DAF6621F6B4080004B5690 /* vector_display_curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display_curve.hpp; path = ../test/vector_display/common/include/vector_display_curve.hpp; sourceTree = "<group>"; };
+		66DAF6621F6B4080004B5690 /* vector_display_beam.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display_beam.hpp; path = ../test/vector_display/common/include/vector_display_beam.hpp; sourceTree = "<group>"; };
 		66DAF6631F6B4080004B5690 /* vector_display_shaders.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display_shaders.hpp; path = ../test/vector_display/common/include/vector_display_shaders.hpp; sourceTree = "<group>"; };
 		66DAF6641F6B4080004B5690 /* vector_display.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_display.hpp; path = ../test/vector_display/common/include/vector_display.hpp; sourceTree = "<group>"; };
 		66DAF6651F6B4092004B5690 /* trochoid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = trochoid.cpp; path = ../test/vector_display/common/src/trochoid.cpp; sourceTree = "<group>"; };
-		66DAF6661F6B4092004B5690 /* vector_display_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display_curve.cpp; path = ../test/vector_display/common/src/vector_display_curve.cpp; sourceTree = "<group>"; };
+		66DAF6661F6B4092004B5690 /* vector_display_beam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display_beam.cpp; path = ../test/vector_display/common/src/vector_display_beam.cpp; sourceTree = "<group>"; };
 		66DAF6671F6B4092004B5690 /* vector_display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display.cpp; path = ../test/vector_display/common/src/vector_display.cpp; sourceTree = "<group>"; };
 		66DAF6681F6B40A4004B5690 /* vector_display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector_display.cpp; path = ../test/vector_display/python/src/vector_display.cpp; sourceTree = "<group>"; };
 		66DAF66B1F6B410E004B5690 /* vertex_array_support.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vertex_array_support.hpp; path = ../common/include/opengl/vertex_array_support.hpp; sourceTree = "<group>"; };
@@ -85,18 +85,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		660AE2B41F7FE9340039A1CF /* parametric */ = {
-			isa = PBXGroup;
-			children = (
-				660AE2B71F7FE9460039A1CF /* curve.hpp */,
-				660AE2B51F7FE9460039A1CF /* curve_support.hpp */,
-				6614D3971F8165E500AE22E3 /* curve_support.cpp */,
-				660AE2B61F7FE9460039A1CF /* segment_curve.hpp */,
-				6614D3961F812C1200AE22E3 /* segment_curve.cpp */,
-			);
-			path = parametric;
-			sourceTree = "<group>";
-		};
 		6619E5AA1F2BFEA7009BFA97 /* opengl */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,7 +140,7 @@
 				664AAFEF1F6FFFCC00EB110C /* clock.cpp */,
 				66CD19451F37540C00469E6B /* math */,
 				666A13741F2AB98C006FC93A /* geometry */,
-				660AE2B41F7FE9340039A1CF /* parametric */,
+				666A1B031F84555200D765C1 /* parametric */,
 				66CD193D1F374D1500469E6B /* physics */,
 				66DA44621F3E6FDE00B4F6B8 /* event */,
 				6619E5AA1F2BFEA7009BFA97 /* opengl */,
@@ -191,6 +179,18 @@
 				66D00E8A1F6E9384003D71D7 /* image.cpp */,
 			);
 			name = python;
+			sourceTree = "<group>";
+		};
+		666A1B031F84555200D765C1 /* parametric */ = {
+			isa = PBXGroup;
+			children = (
+				66B3D4AD1F85A2D100022BAD /* curve.hpp */,
+				66B3D4AB1F85A2D100022BAD /* curve_support.hpp */,
+				66B3D4AF1F85A2E300022BAD /* curve_support.cpp */,
+				66B3D4AC1F85A2D100022BAD /* segment_curve.hpp */,
+				66B3D4AE1F85A2E300022BAD /* segment_curve.cpp */,
+			);
+			name = parametric;
 			sourceTree = "<group>";
 		};
 		66CD193D1F374D1500469E6B /* physics */ = {
@@ -245,8 +245,8 @@
 				66DAF6691F6B40AE004B5690 /* python */,
 				66DAF6641F6B4080004B5690 /* vector_display.hpp */,
 				66DAF6671F6B4092004B5690 /* vector_display.cpp */,
-				66DAF6621F6B4080004B5690 /* vector_display_curve.hpp */,
-				66DAF6661F6B4092004B5690 /* vector_display_curve.cpp */,
+				66DAF6621F6B4080004B5690 /* vector_display_beam.hpp */,
+				66DAF6661F6B4092004B5690 /* vector_display_beam.cpp */,
 				66DAF6631F6B4080004B5690 /* vector_display_shaders.hpp */,
 				66DAF6611F6B4080004B5690 /* trochoid.hpp */,
 				66DAF6651F6B4092004B5690 /* trochoid.cpp */,

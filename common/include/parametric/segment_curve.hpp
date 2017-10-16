@@ -1,7 +1,6 @@
 #ifndef PARAMETRIC_SEGMENT_CURVE_HPP
 #define PARAMETRIC_SEGMENT_CURVE_HPP
 
-#include <stdexcept>
 #include <cmath>
 #include <iterator>
 #include <algorithm>
@@ -12,21 +11,30 @@
 #include "parametric/curve.hpp"
 #include "parametric/curve_support.hpp"
 
+enum class CurveInterpolation : unsigned int { nearest, linear, cubic };
+
 template <class T>
 class SegmentCurve: public Curve<T>
 {
 	public:
-		SegmentCurve(const std::list<CurveVertex<T> > &curve_vertices);
+		SegmentCurve(const std::list<CurveVertex<T> > &curve_vertices, const CurveInterpolation interpolation);
         virtual ~SegmentCurve();
 
+        virtual float                                       get_min_t() const;
+        virtual float                                       get_max_t() const;
 		const std::list<CurveVertex<T> >&	                get_curve_vertices() const;
+
 		void								                add_curve_vertex(const CurveVertex<T> &curve_vertex);
+
 		void								                remove_curve_vertices_prior(const float t);
 		
 		virtual CurveVertex<T>				                vertex(const float t) const;
         virtual std::list<CurveVertex<T> >	                vertices(const float t1, const float t2) const;
-	
+
+		CurveInterpolation									interpolation;
+
 	private:
+        float                                               normalized_t(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex, const float t) const;
         T                                                   interpolate(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex, const float t) const;
         std::tuple<std::array<float, 4>, std::array<T, 4> > cubic_hermite_ts_values(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex) const;
 
@@ -36,17 +44,29 @@ class SegmentCurve: public Curve<T>
 
 
 template <class T>
-SegmentCurve<T>::SegmentCurve(const std::list<CurveVertex<T> > &curve_vertices)
-:	curve_vertices(curve_vertices)
+SegmentCurve<T>::SegmentCurve(const std::list<CurveVertex<T> > &curve_vertices, const CurveInterpolation interpolation)
+:	interpolation(interpolation),
+	curve_vertices(curve_vertices)
 {
 	this->curve_vertices.sort(&curve_vertex_cmp<T>);
-	this->curve_vertices.unique(&curve_vertex_eq<T>);
 }
 
 template <class T>
 SegmentCurve<T>::~SegmentCurve()
 {
 
+}
+
+template <class T>
+float SegmentCurve<T>::get_min_t() const
+{
+    return this->curve_vertices.front().t;
+}
+
+template <class T>
+float SegmentCurve<T>::get_max_t() const
+{
+    return this->curve_vertices.back().t;
 }
 
 template <class T>
@@ -63,9 +83,6 @@ void SegmentCurve<T>::add_curve_vertex(const CurveVertex<T> &curve_vertex)
 		insert_position = std::lower_bound(this->curve_vertices.begin(), this->curve_vertices.end(), curve_vertex, &curve_vertex_cmp<T>);
 
 	this->curve_vertices.insert(insert_position, curve_vertex);
-
-	if (curve_vertex_eq(curve_vertex, *insert_position))
-		this->curve_vertices.erase(insert_position);
 }
 
 template <class T>
@@ -123,9 +140,19 @@ std::list<CurveVertex<T> > SegmentCurve<T>::vertices(const float t1, const float
 	if (t2 >= this->curve_vertices.front().t && t2 <= this->curve_vertices.back().t)
         vertices.push_back(this->vertex(t2));
 
-    this->fill_vertices(vertices);
+    if (this->interpolation == CurveInterpolation::cubic)
+        this->fill_vertices(vertices);
 
 	return vertices;
+}
+
+template <class T>
+float SegmentCurve<T>::normalized_t(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex, const float t) const
+{
+    if (next_curve_vertex->t != curve_vertex->t)
+        return (t - curve_vertex->t) / (next_curve_vertex->t - curve_vertex->t);
+    else
+        return 0.0f;
 }
 
 template <class T>

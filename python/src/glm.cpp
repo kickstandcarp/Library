@@ -27,8 +27,8 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self == py::self)
 		.def(py::self != py::self)
 
-		.def("__getitem__", [] (const glm::bvec2 &instance, const long index) { return py_get_vec<bool, glm::bvec2, 2>(instance, index); })
-		.def("__setitem__", [] (glm::bvec2 &instance, const long index, const bool value) { return py_set_vec<bool, glm::bvec2, 2>(instance, index, value); })
+		.def("__getitem__", [] (const glm::bvec2 &instance, const int index) { return py_get_vec<bool, glm::bvec2, 2>(instance, index); })
+		.def("__setitem__", [] (glm::bvec2 &instance, const int index, const bool value) { return py_set_vec<bool, glm::bvec2, 2>(instance, index, value); })
 		.def("__iter__", [] (const glm::bvec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+2); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::bvec2>);
 
@@ -48,8 +48,8 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self == py::self)
 		.def(py::self != py::self)
 
-		.def("__getitem__", [] (const glm::bvec3 &instance, const long index) { return py_get_vec<bool, glm::bvec3, 3>(instance, index); })
-		.def("__setitem__", [] (glm::bvec3 &instance, const long index, const bool value) { return py_set_vec<bool, glm::bvec3, 3>(instance, index, value); })
+		.def("__getitem__", [] (const glm::bvec3 &instance, const int index) { return py_get_vec<bool, glm::bvec3, 3>(instance, index); })
+		.def("__setitem__", [] (glm::bvec3 &instance, const int index, const bool value) { return py_set_vec<bool, glm::bvec3, 3>(instance, index, value); })
 		.def("__iter__", [] (const glm::bvec3 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+3); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::bvec3>);
 
@@ -71,8 +71,8 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self == py::self)
 		.def(py::self != py::self)
 
-		.def("__getitem__", [] (const glm::bvec4 &instance, const long index) { return py_get_vec<bool, glm::bvec4, 4>(instance, index); })
-		.def("__setitem__", [] (glm::bvec4 &instance, const long index, const bool value) { return py_set_vec<bool, glm::bvec4, 4>(instance, index, value); })
+		.def("__getitem__", [] (const glm::bvec4 &instance, const int index) { return py_get_vec<bool, glm::bvec4, 4>(instance, index); })
+		.def("__setitem__", [] (glm::bvec4 &instance, const int index, const bool value) { return py_set_vec<bool, glm::bvec4, 4>(instance, index, value); })
 		.def("__iter__", [] (const glm::bvec4 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+4); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::bvec4>);
 
@@ -115,13 +115,10 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def("__len__", [] (const glm::ivec2 &instance) { return 2; })
-		.def("__getitem__", [] (const glm::ivec2 &instance, const long index) { return py_get_vec<int, glm::ivec2, 2>(instance, index); })
-		.def("__setitem__", [] (glm::ivec2 &instance, const long index, const int value) { return py_set_vec<int, glm::ivec2, 2>(instance, index, value); })
+		.def("__getitem__", [] (const glm::ivec2 &instance, const int index) { return py_get_vec<int, glm::ivec2, 2>(instance, index); })
+		.def("__setitem__", [] (glm::ivec2 &instance, const int index, const int value) { return py_set_vec<int, glm::ivec2, 2>(instance, index, value); })
 		.def("__iter__", [] (const glm::ivec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+2); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::ivec2>);
-
-	// py::implicitly_convertible<py::tuple, glm::ivec2>();
-	// py::implicitly_convertible<py::list, glm::ivec2>();
 
 	py::class_<glm::ivec3>(m, "ivec3")
 		.def(py::init<>())
@@ -166,13 +163,10 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def("__len__", [] (const glm::ivec3 &instance) { return 3; })
-		.def("__getitem__", [] (const glm::ivec3 &instance, const long index) { return py_get_vec<int, glm::ivec3, 3>(instance, index); })
-		.def("__setitem__", [] (glm::ivec3 &instance, const long index, const int value) { return py_set_vec<int, glm::ivec3, 3>(instance, index, value); })
+		.def("__getitem__", [] (const glm::ivec3 &instance, const int index) { return py_get_vec<int, glm::ivec3, 3>(instance, index); })
+		.def("__setitem__", [] (glm::ivec3 &instance, const int index, const int value) { return py_set_vec<int, glm::ivec3, 3>(instance, index, value); })
 		.def("__iter__", [] (const glm::ivec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+3); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::ivec3>);
-
-	// py::implicitly_convertible<py::tuple, glm::ivec3>();
-	// py::implicitly_convertible<py::list, glm::ivec3>();
 
 	py::class_<glm::ivec4>(m, "ivec4")
 		.def(py::init<>())
@@ -220,13 +214,10 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def("__len__", [] (const glm::ivec4 &instance) { return 4; })
-		.def("__getitem__", [] (const glm::ivec4 &instance, const long index) { return py_get_vec<int, glm::ivec4, 4>(instance, index); })
-		.def("__setitem__", [] (glm::ivec4 &instance, const long index, const int value) { return py_set_vec<int, glm::ivec4, 4>(instance, index, value); })
+		.def("__getitem__", [] (const glm::ivec4 &instance, const int index) { return py_get_vec<int, glm::ivec4, 4>(instance, index); })
+		.def("__setitem__", [] (glm::ivec4 &instance, const int index, const int value) { return py_set_vec<int, glm::ivec4, 4>(instance, index, value); })
 		.def("__iter__", [] (const glm::ivec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+4); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::ivec4>);
-
-	// py::implicitly_convertible<py::tuple, glm::ivec4>();
-	// py::implicitly_convertible<py::list, glm::ivec4>();
 
     m.def("clamp", (float (*)(const float, const float, const float)) &glm::clamp);
 	m.def("step", [] (const float edge, const float x)  { return glm::mix(1.0f, 0.0f, x < edge); });
@@ -273,13 +264,10 @@ PYBIND11_PLUGIN(glm)
         .def(py::self != py::self)
 
         .def("__len__", [] (const glm::vec2 &instance) { return 2; })
-        .def("__getitem__", [] (const glm::vec2 &instance, const long index) { return py_get_vec<float, glm::vec2, 2>(instance, index); })
-        .def("__setitem__", [] (glm::vec2 &instance, const long index, const float value) { return py_set_vec<float, glm::vec2, 2>(instance, index, value); })
+        .def("__getitem__", [] (const glm::vec2 &instance, const int index) { return py_get_vec<float, glm::vec2, 2>(instance, index); })
+        .def("__setitem__", [] (glm::vec2 &instance, const int index, const float value) { return py_set_vec<float, glm::vec2, 2>(instance, index, value); })
 		.def("__iter__", [] (const glm::vec2 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+2); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::vec2>);
-	
-	// py::implicitly_convertible<py::tuple, glm::vec2>();
-    // py::implicitly_convertible<py::list, glm::vec2>();
 
 	m.def("min", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::min);
 	m.def("max", (glm::vec2 (*)(const glm::vec2 &, const glm::vec2 &)) &glm::max);
@@ -336,13 +324,10 @@ PYBIND11_PLUGIN(glm)
         .def(py::self != py::self)
 
         .def("__len__", [] (const glm::vec3 &instance) { return 3; })
-		.def("__getitem__", [] (const glm::vec3 &instance, const long index) { return py_get_vec<float, glm::vec3, 3>(instance, index); })
-		.def("__setitem__", [] (glm::vec3 &instance, const long index, const float value) { return py_set_vec<float, glm::vec3, 3>(instance, index, value); })
+		.def("__getitem__", [] (const glm::vec3 &instance, const int index) { return py_get_vec<float, glm::vec3, 3>(instance, index); })
+		.def("__setitem__", [] (glm::vec3 &instance, const int index, const float value) { return py_set_vec<float, glm::vec3, 3>(instance, index, value); })
 		.def("__iter__", [] (const glm::vec3 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+3); }, py::keep_alive<0, 1>())
         .def("__repr__", &to_python_string<glm::vec3>);
-
-    // py::implicitly_convertible<py::list, glm::vec3>();
-    // py::implicitly_convertible<py::tuple, glm::vec3>();
 
 	m.def("min", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::min);
 	m.def("max", (glm::vec3 (*)(const glm::vec3 &, const glm::vec3 &)) &glm::max);
@@ -403,13 +388,10 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def("__len__", [] (const glm::vec4 &instance) { return 4; })
-		.def("__getitem__", [] (const glm::vec4 &instance, const long index) { return py_get_vec<float, glm::vec4, 4>(instance, index); })
-		.def("__setitem__", [] (glm::vec4 &instance, const long index, const float value) { return py_set_vec<float, glm::vec4, 4>(instance, index, value); })
+		.def("__getitem__", [] (const glm::vec4 &instance, const int index) { return py_get_vec<float, glm::vec4, 4>(instance, index); })
+		.def("__setitem__", [] (glm::vec4 &instance, const int index, const float value) { return py_set_vec<float, glm::vec4, 4>(instance, index, value); })
 		.def("__iter__", [] (const glm::vec4 &instance) { return py::make_iterator(glm::value_ptr(instance), glm::value_ptr(instance)+4); }, py::keep_alive<0, 1>())
 		.def("__repr__", &to_python_string<glm::vec4>);
-
-	// py::implicitly_convertible<py::list, glm::vec4>();
-	// py::implicitly_convertible<py::tuple, glm::vec4>();
 
 	m.def("min", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::min);
 	m.def("max", (glm::vec4 (*)(const glm::vec4 &, const glm::vec4 &)) &glm::max);
@@ -497,13 +479,13 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def_property_readonly("T", [] (const glm::mat2x2 &instance) { return glm::transpose(instance); })
-		.def("row", [] (const glm::mat2x2 &instance, const long row) { return glm::row(instance, row); }, py::arg("row"))
-		.def("column", [] (const glm::mat2x2 &instance, const long column) { return glm::column(instance, column); }, py::arg("column"))
+		.def("row", [] (const glm::mat2x2 &instance, const int row) { return glm::row(instance, row); }, py::arg("row"))
+		.def("column", [] (const glm::mat2x2 &instance, const int column) { return glm::column(instance, column); }, py::arg("column"))
 
-		.def("__getitem__", [] (const glm::mat2x2 &instance, const long row) { return py_get_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, row, true); })
+		.def("__getitem__", [] (const glm::mat2x2 &instance, const int row) { return py_get_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, row, true); })
 		.def("__getitem__", [] (const glm::mat2x2 &instance, const py::iterable &iterable) { return py_get_mat<glm::mat2x2, 2, 2>(instance, iterable); })
-		.def("__setitem__", [] (glm::mat2x2 &instance, const long row, const float value) { py_set_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, row, glm::vec2(value), true); })
-		.def("__setitem__", [] (glm::mat2x2 &instance, const long row, const glm::vec2 &value) { py_set_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, row, value, true); })
+		.def("__setitem__", [] (glm::mat2x2 &instance, const int row, const float value) { py_set_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, row, glm::vec2(value), true); })
+		.def("__setitem__", [] (glm::mat2x2 &instance, const int row, const glm::vec2 &value) { py_set_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, row, value, true); })
 		.def("__setitem__", [] (glm::mat2x2 &instance, const py::iterable &iterable, const float value) { py_set_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, iterable, glm::vec2(value)); })
 		.def("__setitem__", [] (glm::mat2x2 &instance, py::iterable iterable, glm::vec2 &value) { py_set_mat<glm::vec2, glm::mat2x2, 2, 2>(instance, iterable, value); })
 		.def("__repr__", &to_python_string<glm::mat2x2>);
@@ -548,13 +530,13 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def_property_readonly("T", [] (const glm::mat3x3 &instance) { return glm::transpose(instance); })
-		.def("row", [] (const glm::mat3x3 &instance, const long row) { return glm::row(instance, row); }, py::arg("row"))
-		.def("column", [] (const glm::mat3x3 &instance, const long column) { return glm::column(instance, column); }, py::arg("column"))
+		.def("row", [] (const glm::mat3x3 &instance, const int row) { return glm::row(instance, row); }, py::arg("row"))
+		.def("column", [] (const glm::mat3x3 &instance, const int column) { return glm::column(instance, column); }, py::arg("column"))
 
-		.def("__getitem__", [] (const glm::mat3x3 &instance, const long row) { return py_get_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, row, true); })
+		.def("__getitem__", [] (const glm::mat3x3 &instance, const int row) { return py_get_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, row, true); })
 		.def("__getitem__", [] (const glm::mat3x3 &instance, const py::iterable &iterable) { return py_get_mat<glm::mat3x3, 3, 3>(instance, iterable); })
-		.def("__setitem__", [] (glm::mat3x3 &instance, const long row, const float value) { py_set_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, row, glm::vec3(value), true); })
-		.def("__setitem__", [] (glm::mat3x3 &instance, const long row, const glm::vec3 &value) { py_set_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, row, value, true); })
+		.def("__setitem__", [] (glm::mat3x3 &instance, const int row, const float value) { py_set_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, row, glm::vec3(value), true); })
+		.def("__setitem__", [] (glm::mat3x3 &instance, const int row, const glm::vec3 &value) { py_set_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, row, value, true); })
 		.def("__setitem__", [] (glm::mat3x3 &instance, const py::iterable &iterable, const float value) { py_set_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, iterable, glm::vec3(value)); })
 		.def("__setitem__", [] (glm::mat3x3 &instance, py::iterable iterable, glm::vec3 &value) { py_set_mat<glm::vec3, glm::mat3x3, 3, 3>(instance, iterable, value); })
 		.def("__repr__", &to_python_string<glm::mat3x3>);
@@ -599,13 +581,13 @@ PYBIND11_PLUGIN(glm)
 		.def(py::self != py::self)
 
 		.def_property_readonly("T", [] (const glm::mat4x4 &instance) { return glm::transpose(instance); })
-		.def("row", [] (const glm::mat4x4 &instance, const long row) { return glm::row(instance, row); }, py::arg("row"))
-		.def("column", [] (const glm::mat4x4 &instance, const long column) { return glm::column(instance, column); }, py::arg("column"))
+		.def("row", [] (const glm::mat4x4 &instance, const int row) { return glm::row(instance, row); }, py::arg("row"))
+		.def("column", [] (const glm::mat4x4 &instance, const int column) { return glm::column(instance, column); }, py::arg("column"))
 
-		.def("__getitem__", [] (const glm::mat4x4 &instance, const long row) { return py_get_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, row, true); })
+		.def("__getitem__", [] (const glm::mat4x4 &instance, const int row) { return py_get_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, row, true); })
 		.def("__getitem__", [] (const glm::mat4x4 &instance, const py::iterable &iterable) { return py_get_mat<glm::mat4x4, 4, 4>(instance, iterable); })
-		.def("__setitem__", [] (glm::mat4x4 &instance, const long row, const float value) { py_set_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, row, glm::vec4(value), true); })
-		.def("__setitem__", [] (glm::mat4x4 &instance, const long row, const glm::vec4 &value) { py_set_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, row, value, true); })
+		.def("__setitem__", [] (glm::mat4x4 &instance, const int row, const float value) { py_set_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, row, glm::vec4(value), true); })
+		.def("__setitem__", [] (glm::mat4x4 &instance, const int row, const glm::vec4 &value) { py_set_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, row, value, true); })
 		.def("__setitem__", [] (glm::mat4x4 &instance, const py::iterable &iterable, const float value) { py_set_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, iterable, glm::vec4(value)); })
 		.def("__setitem__", [] (glm::mat4x4 &instance, py::iterable iterable, glm::vec4 &value) { py_set_mat<glm::vec4, glm::mat4x4, 4, 4>(instance, iterable, value); })
 		.def("__repr__", &to_python_string<glm::mat4x4>);

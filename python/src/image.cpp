@@ -8,8 +8,6 @@ namespace py = pybind11;
 
 PYBIND11_PLUGIN(image)
 {
-    py::module::import("opengl");
-
     py::module m("image");
 
     py::class_<GaussianFilter>(m, "GaussianFilter")

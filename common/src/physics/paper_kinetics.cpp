@@ -6,6 +6,7 @@
 #include "physics/paper_kinetics.hpp"
 #include "math/integration.hpp"
 #include "math/arithmatic.hpp"
+#include "parametric/segment_curve.hpp"
 
 
 
@@ -37,12 +38,12 @@ const std::shared_ptr<const SegmentCurve<glm::quat> > PaperKinetics::get_orienta
 
 void PaperKinetics::add_position_history(const float time)
 {
-	this->Kinetics<glm::vec3, glm::quat>::add_history<0>(time);
+	this->Kinetics<glm::vec3, glm::quat>::add_history<0>(time, CurveInterpolation::cubic);
 }
 
 void PaperKinetics::add_orientation_history(const float time)
 {
-	this->Kinetics<glm::vec3, glm::quat>::add_history<1>(time);
+	this->Kinetics<glm::vec3, glm::quat>::add_history<1>(time, CurveInterpolation::linear);
 }
 
 void PaperKinetics::remove_position_history()

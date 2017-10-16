@@ -14,10 +14,6 @@ namespace py = pybind11;
 
 PYBIND11_PLUGIN(opengl)
 {
-    py::module::import("glm");
-    py::module::import("geometry");
-    py::module::import("event");
-
     py::module m("opengl");
 
 	py::enum_<BlendFactor>(m, "BlendFactor")

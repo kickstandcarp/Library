@@ -9,6 +9,7 @@
 #include "math/integration.hpp"
 #include "parametric/curve.hpp"
 #include "parametric/curve_support.hpp"
+#include "parametric/segment_curve.hpp"
 
 template <class T>
 class OscillatorKinetics: public Kinetics<T>
@@ -29,6 +30,9 @@ class OscillatorKinetics: public Kinetics<T>
 };
 
 template <class T> T								    oscillator_kinetics_d2x_dt2(const float dt, const T &dx_dt, const OscillatorKinetics<T> &kinetics);
+
+// std::tuple<float, float>                                underdamped_frequency_time_constant_to_oscillator_frequency_damping_ratio(const float frequency, const float time_constant);
+
 
 
 
@@ -56,7 +60,7 @@ const std::shared_ptr<const SegmentCurve<T> > OscillatorKinetics<T>::get_history
 template <class T>
 void OscillatorKinetics<T>::add_history(const float time)
 {
-	this->Kinetics<T>::template add_history<0>(time);
+	this->Kinetics<T>::template add_history<0>(time, CurveInterpolation::cubic);
 }
 
 template <class T>

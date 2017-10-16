@@ -10,9 +10,6 @@ namespace py = pybind11;
 
 PYBIND11_PLUGIN(physics)
 {
-    py::module::import("glm");
-    py::module::import("geometry");
-
     py::module m("physics");
 
     py::class_<OscillatorKinetics<glm::vec2> >(m, "OscillatorKinetics")

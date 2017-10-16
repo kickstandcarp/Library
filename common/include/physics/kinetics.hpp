@@ -13,7 +13,7 @@ class Kinetics
 		Kinetics(const std::tuple<A...> &values, const std::tuple<A...> &velocities, const std::tuple<A...> &external_accelerations);
 		virtual ~Kinetics();
 
-		template <unsigned int I> void						add_history(const float time);
+		template <unsigned int I> void						add_history(const float time, const CurveInterpolation interpolation);
 		template <unsigned int I> void						remove_history();
 
         virtual void										step(const Clock &clock)=0;
@@ -47,9 +47,9 @@ Kinetics<A...>::~Kinetics()
 
 template <class ...A>
 template <unsigned int I>
-void Kinetics<A...>::add_history(const float time)
+void Kinetics<A...>::add_history(const float time, const CurveInterpolation interpolation)
 {
-	std::get<I>(this->value_histories) = std::make_shared<SegmentCurve<typename std::tuple_element<I, std::tuple<A...> >::type> >(std::list<CurveVertex<typename std::tuple_element<I, std::tuple<A...> >::type> >(1, {std::get<I>(values), time}));
+	std::get<I>(this->value_histories) = std::make_shared<SegmentCurve<typename std::tuple_element<I, std::tuple<A...> >::type> >(std::list<CurveVertex<typename std::tuple_element<I, std::tuple<A...> >::type> >(1, {std::get<I>(values), time}), interpolation);
 }
 
 template <class ...A>

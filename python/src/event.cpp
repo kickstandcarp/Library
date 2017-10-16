@@ -9,9 +9,6 @@ namespace py = pybind11;
 
 PYBIND11_PLUGIN(event)
 {
-    py::module::import("glm");
-    py::module::import("geometry");
-
     py::module m("event");
 
 	py::enum_<DeviceType>(m, "DeviceType")

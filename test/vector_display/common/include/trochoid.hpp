@@ -12,6 +12,9 @@ class Trochoid: public Curve<glm::vec2>
 		Trochoid(const float stator_radius, const float rotor_radius, const float rotor_offset, const float min_vertex_distance);
 		virtual ~Trochoid();
 
+        virtual float                               get_min_t() const;
+        virtual float                               get_max_t() const;
+
 		virtual CurveVertex<glm::vec2>				vertex(const float t) const;
 		virtual std::list<CurveVertex<glm::vec2> >	vertices(const float t1, const float t2) const;	
 

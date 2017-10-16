@@ -5,8 +5,6 @@ import platform
 
 from pybind11 import get_include
 
-# python setup.py build_ext --build-lib "lib" --build-temp "build"
-
 path = split(realpath(__file__))[0]
 
 include_dirs = []
@@ -69,7 +67,7 @@ vector_display_include_dirs = [abspath(join(path, pardir, 'test', 'vector_displa
 vector_display_src_files = []
 vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'python', 'src', 'vector_display.cpp')))
 vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display.cpp')))
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display_curve.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display_beam.cpp')))
 vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'trochoid.cpp')))
 
 '''

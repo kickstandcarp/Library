@@ -2,10 +2,10 @@
 
 
 
-Clock::Clock()
-:   time(0.0f),
-    elapsed_time(0.0f),
-    step_count(0)
+Clock::Clock(const float time, const float elapsed_time, const unsigned int step_count)
+:   time(time),
+    elapsed_time(elapsed_time),
+    step_count(step_count)
 {
 
 }

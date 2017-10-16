@@ -393,9 +393,7 @@ void py_add_buffer(VertexArray &vertex_array, const std::string &name, const py:
 	if (py_add_buffer_type<glm::vec4>(vertex_array, name, py_data, frequency, access))
 		return;
 
-	std::stringstream what;
-	what << "unsupported buffer type: '" << name << "'";
-	throw std::invalid_argument(what.str());
+	throw std::invalid_argument("unsupported buffer type");
 }
 
 template <class T>

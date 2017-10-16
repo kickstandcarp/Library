@@ -11,14 +11,16 @@
 
 namespace py = pybind11;
 
+template <class A, class T, unsigned int D> A											py_get_vec(const T &instance, const py::handle &py_index);
 template <class A, class T, unsigned int D> A											py_get_vec(const T &instance, const int index);
+
 template <class A, class T, unsigned int D> void										py_set_vec(T &instance, const int index, const A &value);
 
-template <class A, class T, unsigned int R, unsigned int C> A							py_get_mat(const T &instance, const int index, const bool get_row=true);
-template <class A, class T, unsigned int R, unsigned int C> void						py_set_mat(T &instance, const int index, const A &value, const bool set_row=true);
-
 template <class T, unsigned int R, unsigned int C> py::object							py_get_mat(const T &instance, const py::iterable &iterable);
+template <class A, class T, unsigned int R, unsigned int C> A							py_get_mat(const T &instance, const int index, const bool get_row=true);
+
 template <class A, class T, unsigned int R, unsigned int C> void						py_set_mat(T &instance, const py::iterable &iterable, const A &value);
+template <class A, class T, unsigned int R, unsigned int C> void						py_set_mat(T &instance, const int index, const A &value, const bool set_row=true);
 
 template <class A, class T, unsigned int D> void										from_iterable(T &instance, const py::iterable &iterable);
 template <unsigned int R, unsigned int C> std::tuple<std::array<int, 2>, unsigned int>  indices_from_iterable(const py::iterable &iterable);
@@ -47,14 +49,18 @@ void py_set_vec(T &instance, const int index, const A &value)
 	instance[index >= 0 ? index : dimension+index] = value;
 }
 
-template <class A, class T, unsigned int R, unsigned int C>
-A py_get_mat(const T &instance, const int index, const bool get_row)
-{
-	int dimension = get_row ? static_cast<int>(R) : static_cast<int>(C);
-	if (index >= dimension || index < -dimension)
-		throw py::index_error();
 
-	return get_row ? glm::row(instance, index >= 0 ? index : dimension+index) : glm::column(instance, index >= 0 ? index : dimension+index);
+template <class A, class T, unsigned int R, unsigned int C>
+void py_set_mat(T &instance, const py::iterable &iterable, const A &value)
+{
+	unsigned int num_indices;
+	std::array<int, 2> indices;
+	std::tie(indices, num_indices) = indices_from_iterable<R, C>(iterable);
+
+	if (num_indices == 1)
+		instance = glm::row(instance, indices[0] >= 0 ? indices[0] : static_cast<int>(R)+indices[0], value);
+	else
+		instance[indices[1] >= 0 ? indices[1] : static_cast<int>(C)+indices[1]][indices[0] >= 0 ? indices[0] : static_cast<int>(R)+indices[0]] = value[0];
 }
 
 template <class A, class T, unsigned int R, unsigned int C>
@@ -83,16 +89,13 @@ py::object py_get_mat(const T &instance, const py::iterable &iterable)
 }
 
 template <class A, class T, unsigned int R, unsigned int C>
-void py_set_mat(T &instance, const py::iterable &iterable, const A &value)
+A py_get_mat(const T &instance, const int index, const bool get_row)
 {
-	unsigned int num_indices;
-	std::array<int, 2> indices;
-	std::tie(indices, num_indices) = indices_from_iterable<R, C>(iterable);
+	int dimension = get_row ? static_cast<int>(R) : static_cast<int>(C);
+	if (index >= dimension || index < -dimension)
+		throw py::index_error();
 
-	if (num_indices == 1)
-		instance = glm::row(instance, indices[0] >= 0 ? indices[0] : static_cast<int>(R)+indices[0], value);
-	else
-		instance[indices[1] >= 0 ? indices[1] : static_cast<int>(C)+indices[1]][indices[0] >= 0 ? indices[0] : static_cast<int>(R)+indices[0]] = value[0];
+	return get_row ? glm::row(instance, index >= 0 ? index : dimension+index) : glm::column(instance, index >= 0 ? index : dimension+index);
 }
 
 template <class A, class T, unsigned int D>

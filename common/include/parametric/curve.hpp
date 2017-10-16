@@ -12,7 +12,10 @@ class Curve
 	public:
 		Curve(const float min_vertex_distance=INFINITY);
         virtual ~Curve();
-		
+
+        virtual float                       get_min_t() const=0;
+        virtual float                       get_max_t() const=0;
+
 		virtual CurveVertex<T>				vertex(const float t) const=0;
         virtual std::list<CurveVertex<T> >	vertices(const float t1, const float t2) const=0;
 

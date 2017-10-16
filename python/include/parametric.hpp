@@ -1,6 +1,8 @@
 #ifndef PYTHON_PARAMETRIC_HPP
 #define PYTHON_PARAMETRIC_HPP
 
+#include <stdexcept>
+#include <iterator>
 #include <list>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -9,7 +11,7 @@
 
 namespace py = pybind11;
 
-template <class T> void             curve_vertices_from_iterable(SegmentCurve<T> &instance, const py::iterable &iterable);
+template <class T> void             segment_curve_from_iterable(SegmentCurve<T> &instance, const py::iterable &iterable, const CurveInterpolation interpolation);
 template <class T> CurveVertex<T>   curve_vertex_from_iterable(const py::iterable &iterable);
 
 template <class T> py::list         curve_vertices_to_list(const std::list<CurveVertex<T> > &curve_vertex_list);
@@ -18,14 +20,14 @@ template <class T> py::tuple        curve_vertex_to_tuple(const CurveVertex<T> &
 
 
 template <class T>
-void curve_vertices_from_iterable(SegmentCurve<T> &instance, const py::iterable &iterable)
+void segment_curve_from_iterable(SegmentCurve<T> &instance, const py::iterable &iterable, const CurveInterpolation interpolation)
 {
     std::list<CurveVertex<T> > vertices;
 
     for (auto const &item : iterable)
         vertices.push_back(curve_vertex_from_iterable<T>(py::cast<py::iterable>(item)));
 
-    new (&instance) SegmentCurve<T>(vertices);
+    new (&instance) SegmentCurve<T>(vertices, interpolation);
 }
 
 template <class T>

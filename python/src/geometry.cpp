@@ -13,8 +13,6 @@ namespace py = pybind11;
 
 PYBIND11_PLUGIN(geometry)
 {
-    py::module::import("glm");
-
     py::module m("geometry");
 
     py::class_<CoordinateTransform, std::shared_ptr<CoordinateTransform> >(m, "CoordinateTransform")

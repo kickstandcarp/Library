@@ -13,7 +13,7 @@ float cubic_hermite_evaluate(const float x, const std::array<float, 4> &coeffici
 std::array<float, 4> cubic_hermite_coefficients(const float x0, const float x1, const float x2, const float x3, const float y0, const float y1, const float y2, const float y3)
 {
     float h0 = x1 - x0, h1 = x2 - x1, h2 = x3 - x2;
-    float m0 = (y1 - y0) / h0, m1 = (y2 - y1) / h1, m2 = (y3 - y2) / h2;
+    float m0 = h0 == 0.0f ? 0.0f : (y1 - y0) / h0, m1 = h1 == 0.0f ? 0.0f : (y2 - y1) / h1, m2 = h2 == 0.0f ? 0.0f : (y3 - y2) / h2;
 
     float d0, d1;
     if (std::isnan(m0) && std::isnan(m2))

@@ -18,6 +18,16 @@ Trochoid::~Trochoid()
 
 }
 
+float Trochoid::get_min_t() const
+{
+    return 0.0f;
+}
+
+float Trochoid::get_max_t() const
+{
+    return INFINITY;
+}
+
 CurveVertex<glm::vec2> Trochoid::vertex(const float t) const
 {
     float c = std::sqrt((this->stator_radius - this->rotor_radius)*(this->stator_radius - this->rotor_radius)*(this->rotor_offset*this->rotor_offset + this->rotor_radius*this->rotor_radius) / (this->rotor_radius*this->rotor_radius));
