@@ -8,7 +8,6 @@
 #include <glm/glm.hpp>
 #include "clock.hpp"
 #include "opengl/window.hpp"
-#include "physics/oscillator_kinetics.hpp"
 #include "image/gaussian_filter.hpp"
 #include "vector_display_beam.hpp"
 
@@ -27,11 +26,9 @@ class VectorDisplay
 
         void                                        step(const Clock &clock, Window &window, const std::vector<std::string> &curve_names=std::vector<std::string>());
 
-        void                                        draw(Window &window);
+		void                                        draw(Window &window);
 
 		float								        threshold;
-
-        OscillatorKinetics<glm::vec2>				kinetics, beam_kinetics;
 
         GaussianFilter                              glow_filter;
 

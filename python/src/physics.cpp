@@ -15,6 +15,9 @@ PYBIND11_PLUGIN(physics)
     py::class_<OscillatorKinetics<glm::vec2> >(m, "OscillatorKinetics")
         .def(py::init<glm::vec2, glm::vec2, glm::vec2, glm::vec2, glm::vec2>(), py::arg("value"), py::arg("velocity"), py::arg("external_acceleration"), py::arg("frequency"), py::arg("damping_ratio"))
 
+		.def_property("min_step", [] (OscillatorKinetics<glm::vec2> &instance) { return instance.min_step; }, [] (OscillatorKinetics<glm::vec2> &instance, const float min_step) { instance.min_step = min_step; })
+		.def_property("step_tolerance", [] (OscillatorKinetics<glm::vec2> &instance) { return instance.step_tolerance; }, [] (OscillatorKinetics<glm::vec2> &instance, const float step_tolerance) { instance.step_tolerance = step_tolerance; })
+
         .def_readwrite("frequency", &OscillatorKinetics<glm::vec2>::frequency)
         .def_readwrite("damping_ratio", &OscillatorKinetics<glm::vec2>::damping_ratio)
 		.def_property("history_duration", [] (OscillatorKinetics<glm::vec2> &instance) { return instance.history_duration; }, [] (OscillatorKinetics<glm::vec2> &instance, const float history_duration) { return instance.history_duration = history_duration; })
@@ -24,7 +27,7 @@ PYBIND11_PLUGIN(physics)
 		.def_property("external_acceleration", [] (OscillatorKinetics<glm::vec2> &instance) { return std::get<0>(instance.external_accelerations); }, [] (OscillatorKinetics<glm::vec2> &instance, const glm::vec2 external_acceleration) { std::get<0>(instance.external_accelerations) = external_acceleration; })
 
 		.def_property_readonly("history", &OscillatorKinetics<glm::vec2>::get_history)
-
+		
 		.def("add_history", &OscillatorKinetics<glm::vec2>::add_history, py::arg("time"))
 		.def("remove_history", &OscillatorKinetics<glm::vec2>::remove_history)
 
@@ -34,6 +37,9 @@ PYBIND11_PLUGIN(physics)
 
     py::class_<PaperKinetics>(m, "PaperKinetics")
         .def(py::init<glm::vec3, glm::quat, glm::vec3, glm::vec3, glm::vec3, glm::vec3, float, float, float, float, glm::vec3>(), py::arg("position"), py::arg("orientation"), py::arg("velocity"), py::arg("angular_velocity"), py::arg("external_acceleration"), py::arg("external_angular_acceleration"), py::arg("perpendicular_friction"), py::arg("parallel_friction"), py::arg("fluid_density"), py::arg("paper_density"), py::arg("size"))
+
+		.def_property("min_step", [] (PaperKinetics &instance) { return instance.min_step; }, [] (PaperKinetics &instance, const float min_step) { instance.min_step = min_step; })
+		.def_property("step_tolerance", [] (PaperKinetics &instance) { return instance.step_tolerance; }, [] (PaperKinetics &instance, const float step_tolerance) { instance.step_tolerance = step_tolerance; })
 
 		.def_readwrite("perpendicular_friction", &PaperKinetics::perpendicular_friction)
 		.def_readwrite("parallel_friction", &PaperKinetics::parallel_friction)

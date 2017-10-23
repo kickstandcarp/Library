@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <list>
+#include "math/arithmatic.hpp"
 #include "parametric/curve_support.hpp"
 
 template <class T>
@@ -51,7 +52,7 @@ void Curve<T>::fill_vertices(std::list<CurveVertex<T> > &vertices) const
     auto vertex = vertices.begin();
     while (vertex != std::prev(vertices.end()))
     {
-        if (curve_vertex_distance(*vertex, *std::next(vertex)) > this->min_vertex_distance)
+        if (::distance(vertex->value, std::next(vertex)->value) > this->min_vertex_distance)
         {
             vertices.insert(std::next(vertex), this->vertex(0.5f*(vertex->t + std::next(vertex)->t)));
             if (vertices.size() > this->max_vertices)

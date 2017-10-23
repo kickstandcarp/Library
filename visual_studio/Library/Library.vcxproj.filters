@@ -183,11 +183,14 @@
     <ClInclude Include="..\..\common\include\parametric\curve_support.hpp">
       <Filter>Header Files\parametric</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_curve.hpp">
-      <Filter>Header Files\test\vector_display</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\test\vector_display\common\include\trochoid.hpp">
       <Filter>Header Files\test\vector_display</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_beam.hpp">
+      <Filter>Header Files\test\vector_display</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\include\math\interpolation.hpp">
+      <Filter>Header Files\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -281,14 +284,14 @@
     <ClCompile Include="..\..\common\src\parametric\segment_curve.cpp">
       <Filter>Source Files\paametric</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\common\src\parametric\curve_support.cpp">
-      <Filter>Source Files\paametric</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_curve.cpp">
-      <Filter>Source Files\test\vector_display</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\test\vector_display\common\src\trochoid.cpp">
       <Filter>Source Files\test\vector_display</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_beam.cpp">
+      <Filter>Source Files\test\vector_display</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\src\math\interpolation.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

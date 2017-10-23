@@ -6,6 +6,7 @@
 #include <glm/gtc/constants.hpp>
 #include "clock.hpp"
 #include "physics/kinetics.hpp"
+#include "math/arithmatic.hpp"
 #include "math/integration.hpp"
 #include "parametric/curve.hpp"
 #include "parametric/curve_support.hpp"
@@ -29,10 +30,10 @@ class OscillatorKinetics: public Kinetics<T>
         T											    frequency, damping_ratio;
 };
 
-template <class T> T								    oscillator_kinetics_d2x_dt2(const float dt, const T &dx_dt, const OscillatorKinetics<T> &kinetics);
+template <class T> T								    oscillator_kinetics_d2x_dt2(const float t, const T &dx_dt, const OscillatorKinetics<T> &kinetics);
+template <class T> float							    oscillator_kinetics_error(const T &x1, const T &x2);
 
 // std::tuple<float, float>                                underdamped_frequency_time_constant_to_oscillator_frequency_damping_ratio(const float frequency, const float time_constant);
-
 
 
 
@@ -78,23 +79,37 @@ T OscillatorKinetics<T>::steady_state_value_to_acceleration(const T &value) cons
 template <class T>
 void OscillatorKinetics<T>::step(const Clock &clock)
 {
-	T accelerations = runge_kutta<T, const OscillatorKinetics<T>&>(oscillator_kinetics_d2x_dt2<T>, std::get<0>(this->velocities), 0.0f, clock.elapsed_time, *this);
+	float elapsed_time = clock.elapsed_time;
+	while (true)
+	{
+		float iteration_elapsed_time;
+		T accelerations;
+		std::tie(accelerations, iteration_elapsed_time) = runge_kutta_fehlberg<T, const OscillatorKinetics<T>&>(oscillator_kinetics_d2x_dt2<T>, std::get<0>(this->velocities), clock.time + (clock.elapsed_time - elapsed_time), elapsed_time, oscillator_kinetics_error<T>, this->step_tolerance, this->min_step, *this);
+		elapsed_time -= iteration_elapsed_time;
 
-	accumulate(std::get<0>(this->velocities), accelerations, clock.elapsed_time);
-	accumulate(std::get<0>(this->values), std::get<0>(this->velocities), clock.elapsed_time);
+		accumulate(std::get<0>(this->velocities), accelerations, iteration_elapsed_time);
+		accumulate(std::get<0>(this->values), std::get<0>(this->velocities), iteration_elapsed_time);
+
+		if (elapsed_time <= 0.0f)
+			break;
+	}
 
 	this->Kinetics<T>::template step_history<0>(clock);
 }
 
 template <class T>
-T oscillator_kinetics_d2x_dt2(const float dt, const T &dx_dt, const OscillatorKinetics<T> &kinetics)
+T oscillator_kinetics_d2x_dt2(const float t, const T &dx_dt, const OscillatorKinetics<T> &kinetics)
 {
     T angular_frequency = glm::two_pi<T>()*kinetics.frequency;
-
 	T x = std::get<0>(kinetics.values);
-	accumulate(x, dx_dt, dt);
 
     return std::get<0>(kinetics.external_accelerations) - 2.0f*kinetics.damping_ratio*angular_frequency*dx_dt - angular_frequency*angular_frequency*x;
+}
+
+template <class T>
+float oscillator_kinetics_error(const T &x1, const T &x2)
+{
+	return distance(x1, x2);
 }
 
 #endif

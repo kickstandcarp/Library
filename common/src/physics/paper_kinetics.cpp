@@ -59,7 +59,7 @@ void PaperKinetics::remove_orientation_history()
 void PaperKinetics::step(const Clock &clock)
 {
 	std::array<float, 6> dx_dt{{std::get<0>(this->velocities).x, std::get<0>(this->velocities).y, std::get<0>(this->velocities).z, std::get<1>(this->velocities).x, std::get<1>(this->velocities).y, std::get<1>(this->velocities).z}};
-	std::array<float, 6> d2x_dt2 = runge_kutta<std::array<float, 6>, const PaperKinetics&>(paper_kinetics_d2x_dt2, dx_dt, 0.0f, clock.elapsed_time, *this);
+	std::array<float, 6> d2x_dt2 = runge_kutta<std::array<float, 6>, const PaperKinetics&>(paper_kinetics_d2x_dt2, dx_dt, clock.time, clock.elapsed_time, *this);
 
 	accumulate(std::get<0>(this->velocities), glm::vec3(d2x_dt2[0], d2x_dt2[1], d2x_dt2[2]), clock.elapsed_time);
 	accumulate(std::get<0>(this->values), std::get<0>(this->velocities), clock.elapsed_time);
@@ -72,13 +72,12 @@ void PaperKinetics::step(const Clock &clock)
 	this->Kinetics<glm::vec3, glm::quat>::step_history<1>(clock);
 }
 
-std::array<float, 6> paper_kinetics_d2x_dt2(const float dt, const std::array<float, 6> &dx_dt, const PaperKinetics &kinetics)
+std::array<float, 6> paper_kinetics_d2x_dt2(const float t, const std::array<float, 6> &dx_dt, const PaperKinetics &kinetics)
 {
     glm::vec3 velocity(dx_dt[0], dx_dt[1], dx_dt[2]);
     glm::vec3 angular_velocity(dx_dt[3], dx_dt[4], dx_dt[5]);
 
 	glm::quat orientation = std::get<1>(kinetics.values);
-	accumulate(orientation, glm::quat(0.0f, angular_velocity), dt);
 
     glm::vec3 friction_acceleration = glm::rotate(orientation, -glm::vec3(kinetics.parallel_friction, kinetics.perpendicular_friction, kinetics.parallel_friction)*glm::rotate(glm::inverse(orientation), velocity));
     glm::vec3 friction_angular_acceleration = -glm::vec3(kinetics.perpendicular_friction, kinetics.parallel_friction, kinetics.perpendicular_friction)*angular_velocity;
@@ -103,4 +102,9 @@ std::array<float, 6> paper_kinetics_d2x_dt2(const float dt, const std::array<flo
     glm::vec3 angular_acceleration = friction_angular_acceleration + lift_angular_acceleration + glm::vec3(std::get<1>(kinetics.external_accelerations).x, std::get<1>(kinetics.external_accelerations).y, std::get<1>(kinetics.external_accelerations).z);
 
 	return {{acceleration.x, acceleration.y, acceleration.z, angular_acceleration.x, angular_acceleration.y, angular_acceleration.z}};
+}
+
+float paper_kinetics_error(const std::array<float, 6> &x1, const std::array<float, 6> &x2)
+{
+	return distance(glm::vec3(x1[0], x1[1], x1[2]), glm::vec3(x2[0], x2[1], x2[2])) + distance(glm::vec3(x1[3], x1[4], x1[5]), glm::vec3(x2[3], x2[4], x2[5]));
 }

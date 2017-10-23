@@ -4,10 +4,10 @@
 
 
 
-float cubic_hermite_evaluate(const float x, const std::array<float, 4> &coefficients)
+template <>
+glm::quat linear_evaluate(const glm::quat& value, const glm::quat& next_value, const float t)
 {
-    float x_1 = 1.0f - x;
-    return coefficients[0]*x_1*x_1*x_1 + coefficients[1]*3.0f*x*x_1*x_1 + coefficients[2]*3.0f*x*x*x_1 + coefficients[3]*x*x*x;
+	return glm::slerp(value, next_value, t);
 }
 
 std::array<float, 4> cubic_hermite_coefficients(const float x0, const float x1, const float x2, const float x3, const float y0, const float y1, const float y2, const float y3)

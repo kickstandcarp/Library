@@ -1,7 +1,7 @@
 from sys import path
 from os.path import pardir, split, join, realpath
 
-path.append(join(split(realpath(__file__))[0], pardir, 'python'))
+path.append(join(split(realpath(__file__))[0], pardir, 'python', 'lib'))
 from glm import ivec2, ivec3, ivec4, vec2, vec3, vec4, quat, mat4x4
 from opengl import Window, BlendFactor, ShaderType, BufferUsageFrequency, BufferUsageAccess, DrawMode, TextureInterpolation, TextureWrap
 

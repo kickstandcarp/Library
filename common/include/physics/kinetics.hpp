@@ -1,6 +1,7 @@
 #ifndef PHYSICS_KINETICS_HPP
 #define PHYSICS_KINETICS_HPP
 
+#include <cmath>
 #include <memory>
 #include <tuple>
 #include "clock.hpp"
@@ -23,6 +24,8 @@ class Kinetics
 		std::tuple<std::shared_ptr<SegmentCurve<A> >...>	value_histories;
 		float												history_duration;
 
+		float												min_step, step_tolerance;
+
     protected:
         template <unsigned int I> void						step_history(const Clock &clock);
 };
@@ -34,7 +37,9 @@ Kinetics<A...>::Kinetics(const std::tuple<A...> &values, const std::tuple<A...> 
 :   values(values),
     velocities(velocities),
 	external_accelerations(external_accelerations),
-	history_duration(0.0f)
+	history_duration(0.0f),
+	min_step(INFINITY),
+	step_tolerance(INFINITY)
 {
 
 }

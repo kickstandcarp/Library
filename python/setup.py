@@ -30,8 +30,8 @@ geometry_src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry'
 
 parametric_src_files = []
 parametric_src_files.append(abspath(join(path, 'src', 'parametric.cpp')))
+parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'arithmatic.cpp')))
 parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'interpolation.cpp')))
-parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'curve_support.cpp')))
 parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'segment_curve.cpp')))
 
 physics_src_files = []

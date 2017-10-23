@@ -12,8 +12,6 @@
 
 VectorDisplay::VectorDisplay(Window &window, const std::array<unsigned int, 2> &size)
 :   threshold(0.5f / 255.0f),
-	kinetics(glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(1.0f), glm::vec2(1.0f)),
-    beam_kinetics(glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(0.0f), glm::vec2(1.0f), glm::vec2(1.0f)),
     glow_filter(window),
 	size(size),
 	beam_shader_name("vector_display_beam"),
@@ -43,9 +41,6 @@ VectorDisplay::VectorDisplay(Window &window, const std::array<unsigned int, 2> &
     std::vector<std::string> frame_buffer_names = window.get_frame_buffer_names();
     if (std::find(frame_buffer_names.begin(), frame_buffer_names.end(), this->frame_buffer_name) == frame_buffer_names.end())
         window.add_frame_buffer(this->frame_buffer_name, size, {TextureFormat::rgba, TextureFormat::rgba}, false);
-
-	this->beam_kinetics.add_history(0.0f);
-	this->beam_kinetics.history_duration = 1.0f;
 
     this->glow_filter.size = 0.1f;
     this->glow_filter.width = 0.015f;
@@ -93,80 +88,36 @@ void VectorDisplay::remove_beam(const std::string &name, Window &window)
 	this->beams.erase(name);
 	window.remove_texture(name);
 }
+
 void VectorDisplay::step(const Clock &clock, Window &window, const std::vector<std::string> &beam_names)
 {
-	this->kinetics.step(clock);
-	this->beam_kinetics.step(clock);
-
     std::vector<std::string> step_beam_names = beam_names.size() == 0 ? this->get_beam_names() : beam_names;
 	for (auto const &beam_name : step_beam_names)
 	{
-        std::vector<glm::vec4> vertices;
-        std::vector<int> segment_indices;
-        std::tie(vertices, segment_indices) = this->beams.at(beam_name).shader_vertices(clock, this->beam_kinetics.get_history());
-
-        window.set_use_blending(false);
-        window.get_frame_buffer(this->frame_buffer_name).swap_color_texture(this->prev_value_color_attachment_index, window.get_texture(beam_name));
-
-        float iteration_time = clock.time, iteration_elapsed_time;
-        int begin_index, end_index = 1;
-        while (true)
-        {
-            begin_index = end_index-1;
-            end_index = std::min(begin_index + static_cast<int>(this->max_shader_vertices), static_cast<int>(vertices.size()));
-
-            std::vector<glm::vec4> iteration_vertices;
-            std::vector<int> iteration_segment_indices;
-            if (begin_index == end_index)
-            {
-                iteration_vertices = {glm::vec4(0.0f, 0.0f, iteration_time, 0.0f), glm::vec4(0.0f, 0.0f, iteration_time, 0.0f)};
-                iteration_segment_indices = {0, 2};
-            }
-            else
-            {
-                iteration_vertices.resize(end_index - begin_index);
-                std::copy(std::next(vertices.begin(), begin_index), std::next(vertices.begin(), end_index), iteration_vertices.begin());
-
-                iteration_segment_indices.push_back(0);
-                auto iteration_segment_indices_begin = std::lower_bound(segment_indices.begin(), segment_indices.end(), begin_index);
-                auto iteration_segment_indices_end = std::lower_bound(segment_indices.begin(), segment_indices.end(), end_index);
-                for (auto segment_vertices_index = iteration_segment_indices_begin; segment_vertices_index != iteration_segment_indices_end; ++segment_vertices_index)
-                {
-                    if (*segment_vertices_index > begin_index  && *segment_vertices_index < end_index)
-                        iteration_segment_indices.push_back(*segment_vertices_index - begin_index);
-                }
-                iteration_segment_indices.push_back(end_index - begin_index);
-            }
-
-            iteration_elapsed_time = end_index == static_cast<int>(vertices.size()) ? clock.time + clock.elapsed_time - iteration_time : iteration_vertices.back().z - iteration_time;
-
+		window.set_use_blending(false);
+		window.get_frame_buffer(this->frame_buffer_name).swap_color_texture(this->prev_value_color_attachment_index, window.get_texture(beam_name));
+		
+		std::vector<std::vector<glm::vec4> > vertices_excitationses = this->beams.at(beam_name).shader_vertices(clock, this->max_shader_vertices);
+        for (auto vertices_excitations = vertices_excitationses.begin(); vertices_excitations != vertices_excitationses.end(); ++vertices_excitations)
+		{
             window.set_target_frame_buffer(this->frame_buffer_name, {this->next_value_color_attachment_index});
             window.clear();
             window.get_shader(this->beam_shader_name).set_attribute("vertex_position", window.get_vertex_array(this->vertex_array_name), "vertex_positions");
-            window.get_shader(this->beam_shader_name).set_uniform("vertices", iteration_vertices);
-            window.get_shader(this->beam_shader_name).set_uniform("num_segments", static_cast<int>(iteration_segment_indices.size()-1));
-            window.get_shader(this->beam_shader_name).set_uniform("segment_indices", iteration_segment_indices);
-            window.get_frame_buffer(this->frame_buffer_name).get_color_texture(this->prev_value_color_attachment_index).set_texture_unit(1);
-            window.get_shader(this->beam_shader_name).set_uniform("value_sampler", 1);
-            window.get_shader(this->beam_shader_name).set_uniform("time", iteration_time);
-            window.get_shader(this->beam_shader_name).set_uniform("elapsed_time", iteration_elapsed_time);
+			window.get_shader(this->beam_shader_name).set_uniform("num_vertices", static_cast<int>(vertices_excitations->size()));
+			window.get_shader(this->beam_shader_name).set_uniform("vertices", *vertices_excitations);
             window.get_shader(this->beam_shader_name).set_uniform("threshold", this->threshold);
-            window.get_shader(this->beam_shader_name).set_uniform("excitation", this->beams.at(beam_name).excitation);
-            window.get_shader(this->beam_shader_name).set_uniform("color", this->beams.at(beam_name).color);
-            window.get_shader(this->beam_shader_name).set_uniform("width", this->beams.at(beam_name).width);
-            window.get_shader(this->beam_shader_name).set_uniform("excitation_time_constant", this->beams.at(beam_name).excitation_time_constant);
+			window.get_frame_buffer(this->frame_buffer_name).get_color_texture(this->prev_value_color_attachment_index).set_texture_unit(1);
+			window.get_shader(this->beam_shader_name).set_uniform("value_sampler", 1);
+			window.get_shader(this->beam_shader_name).set_uniform("beam_color", this->beams.at(beam_name).color);
+            window.get_shader(this->beam_shader_name).set_uniform("beam_radius", this->beams.at(beam_name).radius);
+			window.get_shader(this->beam_shader_name).set_uniform("excitation_time_constant", this->beams.at(beam_name).excitation_time_constant);
             window.get_shader(this->beam_shader_name).set_uniform("excitation_decay_time_constant", this->beams.at(beam_name).excitation_decay_time_constant);
-            window.get_shader(this->beam_shader_name).set_uniform("decay_time_constant", this->beams.at(beam_name).decay_time_constant);
+			window.get_shader(this->beam_shader_name).set_uniform("decay_time_constant", this->beams.at(beam_name).decay_time_constant);
             window.get_vertex_array(this->vertex_array_name).draw();
 
-            if (end_index != static_cast<int>(vertices.size()))
-            {
+            if (vertices_excitations != std::prev(vertices_excitationses.end()))
                 std::swap(this->prev_value_color_attachment_index, this->next_value_color_attachment_index);
-                iteration_time += iteration_elapsed_time;
-            }
-            else
-                break;
-        }
+		}
 
         window.get_frame_buffer(this->frame_buffer_name).swap_color_texture(this->next_value_color_attachment_index, window.get_texture(beam_name));
 	}
@@ -181,7 +132,6 @@ void VectorDisplay::draw(Window &window)
     for (auto beam = this->beams.begin(); beam != this->beams.end(); ++beam)
     {
         window.get_texture(beam->first).set_texture_unit(1);
-        window.get_shader(this->accumulation_shader_name).set_uniform("translation", std::get<0>(this->kinetics.values));
         window.get_shader(this->accumulation_shader_name).set_uniform("value_sampler", 1);
         window.get_vertex_array(this->vertex_array_name).draw();
     }

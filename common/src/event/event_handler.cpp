@@ -163,7 +163,7 @@ const std::shared_ptr<const SegmentCurve<glm::vec2> > EventHandler::get_directio
 
 void EventHandler::add_button_history(const std::string &name, const DeviceType type, const unsigned int index, const float time)
 {
-	this->button_history(name, type, index) = std::make_shared<SegmentCurve<bool> >(std::list<CurveVertex<bool> >(1, {this->get_button(name, type, index), time}), CurveInterpolation::nearest);
+	this->button_history(name, type, index) = std::make_shared<SegmentCurve<bool> >(std::list<CurveVertex<bool> >(1, {this->get_button(name, type, index), time}), CurveInterpolation::floor);
 }
 
 void EventHandler::add_value_history(const std::string &name, const DeviceType type, const unsigned int index, const float time)

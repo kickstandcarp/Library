@@ -11,7 +11,7 @@
 #include "parametric/curve.hpp"
 #include "parametric/curve_support.hpp"
 
-enum class CurveInterpolation : unsigned int { nearest, linear, cubic };
+enum class CurveInterpolation : unsigned int { floor, ceil, nearest, linear, cubic };
 
 template <class T>
 class SegmentCurve: public Curve<T>
@@ -35,8 +35,8 @@ class SegmentCurve: public Curve<T>
 
 	private:
         float                                               normalized_t(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex, const float t) const;
-        T                                                   interpolate(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex, const float t) const;
-        std::tuple<std::array<float, 4>, std::array<T, 4> > cubic_hermite_ts_values(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex) const;
+		T                                                   interpolate(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex, const float t) const;
+		std::tuple<std::array<float, 4>, std::array<T, 4> > cubic_hermite_ts_values(typename std::list<CurveVertex<T> >::const_iterator curve_vertex, typename std::list<CurveVertex<T> >::const_iterator next_curve_vertex) const;
 
 		std::list<CurveVertex<T> >			                curve_vertices;
 };
@@ -111,12 +111,7 @@ CurveVertex<T> SegmentCurve<T>::vertex(const float t) const
 		auto next_curve_vertex = std::next(curve_vertex);
 		if ((curve_vertex == this->curve_vertices.begin() && t < curve_vertex->t) || (t >= curve_vertex->t && t <= next_curve_vertex->t) || (next_curve_vertex == end_curve_vertex && t > next_curve_vertex->t))
 		{
-            if (t == curve_vertex->t)
-                vertex.value = curve_vertex->value;
-            else if (t == next_curve_vertex->t)
-                vertex.value = next_curve_vertex->value;
-            else
-                vertex.value = this->interpolate(curve_vertex, next_curve_vertex, t);
+            vertex.value = this->interpolate(curve_vertex, next_curve_vertex, t);
 			break;
 		}
 	}

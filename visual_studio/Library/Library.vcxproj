@@ -168,6 +168,7 @@
     <ClInclude Include="..\..\common\include\image\transform.hpp" />
     <ClInclude Include="..\..\common\include\math\arithmatic.hpp" />
     <ClInclude Include="..\..\common\include\math\integration.hpp" />
+    <ClInclude Include="..\..\common\include\math\interpolation.hpp" />
     <ClInclude Include="..\..\common\include\opengl\buffer.hpp" />
     <ClInclude Include="..\..\common\include\opengl\camera.hpp" />
     <ClInclude Include="..\..\common\include\opengl\frame_buffer.hpp" />
@@ -191,7 +192,7 @@
     <ClInclude Include="..\..\python\include\repr.hpp" />
     <ClInclude Include="..\..\test\vector_display\common\include\trochoid.hpp" />
     <ClInclude Include="..\..\test\vector_display\common\include\vector_display.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_curve.hpp" />
+    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_beam.hpp" />
     <ClInclude Include="..\..\test\vector_display\common\include\vector_display_shaders.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +205,7 @@
     <ClCompile Include="..\..\common\src\image\transform.cpp" />
     <ClCompile Include="..\..\common\src\math\arithmatic.cpp" />
     <ClCompile Include="..\..\common\src\math\integration.cpp" />
+    <ClCompile Include="..\..\common\src\math\interpolation.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer.cpp" />
     <ClCompile Include="..\..\common\src\opengl\camera.cpp" />
     <ClCompile Include="..\..\common\src\opengl\frame_buffer.cpp" />
@@ -214,7 +216,6 @@
     <ClCompile Include="..\..\common\src\opengl\vertex_array.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer_support.cpp" />
     <ClCompile Include="..\..\common\src\opengl\window.cpp" />
-    <ClCompile Include="..\..\common\src\parametric\curve_support.cpp" />
     <ClCompile Include="..\..\common\src\parametric\segment_curve.cpp" />
     <ClCompile Include="..\..\common\src\physics\paper_kinetics.cpp" />
     <ClCompile Include="..\..\python\src\event.cpp" />
@@ -226,7 +227,7 @@
     <ClCompile Include="..\..\python\src\repr.cpp" />
     <ClCompile Include="..\..\test\vector_display\common\src\trochoid.cpp" />
     <ClCompile Include="..\..\test\vector_display\common\src\vector_display.cpp" />
-    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_curve.cpp" />
+    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_beam.cpp" />
     <ClCompile Include="..\..\test\vector_display\python\src\vector_display.cpp" />
   </ItemGroup>
   <ItemGroup>

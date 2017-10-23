@@ -1,18 +1,29 @@
-#include <cmath>
+#include <stdexcept>
 
 #include "math/arithmatic.hpp"
 
 
 
 template <>
-int modulo<int>(const int dividend, const int divisor)
+float length<bool>(const bool &a, const bool &b)
 {
-	int remainder = dividend % divisor;
-	return remainder >= 0 ? remainder : remainder + divisor;
+	throw std::runtime_error("not implemented yet");
 }
 
 template <>
-float modulo<float>(const float dividend, const float divisor)
+float length<glm::quat>(const glm::quat &a, const glm::quat &b)
 {
-	return dividend - std::floor(dividend / divisor)*divisor;
+	throw std::runtime_error("not implemented yet");
+}
+
+template <>
+float distance<bool>(const bool &a, const bool &b)
+{
+	throw std::runtime_error("not implemented yet");
+}
+
+template <>
+float distance<glm::quat>(const glm::quat &a, const glm::quat &b)
+{
+	throw std::runtime_error("not implemented yet");
 }

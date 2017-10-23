@@ -30,5 +30,6 @@ class PaperKinetics: public Kinetics<glm::vec3, glm::quat>
 };
 
 std::array<float, 6>										    paper_kinetics_d2x_dt2(const float dt, const std::array<float, 6> &dx_dt, const PaperKinetics &kinetics);
+float															paper_kinetics_error(const std::array<float, 6> &x1, const std::array<float, 6> &x2);
 
 #endif

@@ -37,7 +37,6 @@
 		66B3D4AC1F85A2D100022BAD /* segment_curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = segment_curve.hpp; path = ../common/include/parametric/segment_curve.hpp; sourceTree = "<group>"; };
 		66B3D4AD1F85A2D100022BAD /* curve.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = curve.hpp; path = ../common/include/parametric/curve.hpp; sourceTree = "<group>"; };
 		66B3D4AE1F85A2E300022BAD /* segment_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = segment_curve.cpp; path = ../common/src/parametric/segment_curve.cpp; sourceTree = "<group>"; };
-		66B3D4AF1F85A2E300022BAD /* curve_support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = curve_support.cpp; path = ../common/src/parametric/curve_support.cpp; sourceTree = "<group>"; };
 		66CD193E1F374D4F00469E6B /* paper_kinetics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = paper_kinetics.hpp; path = ../common/include/physics/paper_kinetics.hpp; sourceTree = "<group>"; };
 		66CD193F1F374D5A00469E6B /* paper_kinetics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = paper_kinetics.cpp; path = ../common/src/physics/paper_kinetics.cpp; sourceTree = "<group>"; };
 		66CD19461F37542600469E6B /* integration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = integration.hpp; path = ../common/include/math/integration.hpp; sourceTree = "<group>"; };
@@ -186,7 +185,6 @@
 			children = (
 				66B3D4AD1F85A2D100022BAD /* curve.hpp */,
 				66B3D4AB1F85A2D100022BAD /* curve_support.hpp */,
-				66B3D4AF1F85A2E300022BAD /* curve_support.cpp */,
 				66B3D4AC1F85A2D100022BAD /* segment_curve.hpp */,
 				66B3D4AE1F85A2E300022BAD /* segment_curve.cpp */,
 			);

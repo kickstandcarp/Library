@@ -15,7 +15,7 @@ from vector_display import VectorDisplay, VectorDisplayBeam
 
 
 size = 500, 500
-beam_width = 0.002
+beam_width = 0.0025
 beam_velocity = 1.0
 
 clock = Clock()
@@ -28,7 +28,8 @@ window.event_handler.get_direction_history('absolute', DeviceType.mouse).min_ver
 
 vector_display = VectorDisplay(window, size)
 
-vector_display.add_beam('test', VectorDisplayBeam(window.event_handler.get_direction_history('absolute', DeviceType.mouse), window.event_handler.get_button_history('left', DeviceType.mouse), 5.0, vec3(1.0), beam_width, beam_velocity, -window.refresh_time), window)
+vector_display.add_beam('test', VectorDisplayBeam(window.event_handler.get_direction_history('absolute', DeviceType.mouse), window.event_handler.get_button_history('left', DeviceType.mouse), vec3(1.0), beam_width, beam_velocity, -window.refresh_time), window)
+vector_display.beams('test').excitation = 2.0
 vector_display.beams('test').decay_time_constant = 3.0
 
 while not window.event_handler.quit:
