@@ -9,9 +9,9 @@ enum class DeviceType : unsigned int { keyboard, mouse, controller };
 
 struct ButtonState
 {
-	bool            is_down;
-	unsigned int    moved_down_count;
-	unsigned int	moved_up_count;
+    bool            is_down;
+    unsigned int    moved_down_count;
+    unsigned int    moved_up_count;
 };
 
 static const int                            MIN_AXIS_VALUE = -32768;

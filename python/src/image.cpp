@@ -11,7 +11,7 @@ PYBIND11_PLUGIN(image)
     py::module m("image");
 
     py::class_<GaussianFilter>(m, "GaussianFilter")
-		.def(py::init<Window>(), py::arg("window"))
+        .def(py::init<Window&>(), py::arg("window"))
 
         .def_readwrite("size", &GaussianFilter::size)
         .def_readwrite("width", &GaussianFilter::width)
@@ -30,5 +30,7 @@ PYBIND11_PLUGIN(image)
 
         .def("apply", &GaussianFilter::apply, py::arg("window"));
 
-	return m.ptr();
+	m.def("initialize_window_gaussian_filter", &initialize_window_gaussian_filter, py::arg("window"), py::arg("column_shader_name")="gaussian_filter_column", py::arg("row_shader_name")="gaussian_filter_row", py::arg("vertex_array_name")="gaussian_filter_vertex_array");
+
+    return m.ptr();
 }

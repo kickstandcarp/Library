@@ -12,7 +12,7 @@ Camera::Camera(const float width, const float height, const float near_z, const 
     is_orthographic(orthographic),
     is_updated(false),
     coordinate_transform(std::make_shared<CoordinateTransform>()),
-	perspective_matrix(1.0f),
+    perspective_matrix(1.0f),
     transform_matrix(1.0f)
 {
     this->set_perspective(width, height, near_z, far_z, orthographic);
@@ -27,6 +27,11 @@ const std::shared_ptr<CoordinateTransform> Camera::get_coordinate_transform()
 {
     this->is_updated = false;
     return this->coordinate_transform;
+}
+
+const std::shared_ptr<const CoordinateTransform> Camera::get_coordinate_transform() const
+{
+	return this->coordinate_transform;
 }
 
 float Camera::get_width() const
@@ -54,12 +59,12 @@ bool Camera::get_orthographic() const
     return this->is_orthographic;
 }
 
-const glm::mat4x4& Camera::get_transform_matrix()
+const glm::mat4x4& Camera::get_transform_matrix() const
 {
     if (!this->is_updated)
     {
-        this->transform_matrix = this->perspective_matrix*this->coordinate_transform->get_inverse_global_matrix();
-        this->is_updated = true;
+        const_cast<Camera*>(this)->transform_matrix = this->perspective_matrix*this->coordinate_transform->get_inverse_global_matrix();
+		const_cast<Camera*>(this)->is_updated = true;
     }
 
     return this->transform_matrix;

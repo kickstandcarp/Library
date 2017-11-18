@@ -4,7 +4,7 @@
 #include <string>
 
 static const std::string gaussian_filter_vertex_shader = R"(#version 330 core
-layout(location = 0) in vec2	vertex_position;
+layout(location = 0) in vec2    vertex_position;
 
 out vec2                        position;
 
@@ -12,11 +12,11 @@ out vec2                        position;
 
 void main()
 {
-	position = vertex_position;
-	gl_Position = vec4(vertex_position, 0.0, 1.0);
+    position = vertex_position;
+    gl_Position = vec4(vertex_position, 0.0, 1.0);
 })";
 
-static const std::string gaussian_filter_fragment_shader_1 = R"(#version 330 core
+static const std::string gaussian_filter_fragment_column_shader = R"(#version 330 core
 layout(location = 0) out vec4   fragment_color;
 
 uniform int                     size;
@@ -46,7 +46,7 @@ void main()
     fragment_color = amplitude*color / normalization;
 })";
 
-static const std::string gaussian_filter_fragment_shader_2 = R"(#version 330 core
+static const std::string gaussian_filter_fragment_row_shader = R"(#version 330 core
 layout(location = 0) out vec4   fragment_color;
 
 uniform int                     size;

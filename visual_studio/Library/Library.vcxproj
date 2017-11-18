@@ -167,8 +167,6 @@
     <ClInclude Include="..\..\common\include\image\indexing.hpp" />
     <ClInclude Include="..\..\common\include\image\transform.hpp" />
     <ClInclude Include="..\..\common\include\math\arithmatic.hpp" />
-    <ClInclude Include="..\..\common\include\math\integration.hpp" />
-    <ClInclude Include="..\..\common\include\math\interpolation.hpp" />
     <ClInclude Include="..\..\common\include\opengl\buffer.hpp" />
     <ClInclude Include="..\..\common\include\opengl\camera.hpp" />
     <ClInclude Include="..\..\common\include\opengl\frame_buffer.hpp" />
@@ -182,18 +180,26 @@
     <ClInclude Include="..\..\common\include\opengl\window.hpp" />
     <ClInclude Include="..\..\common\include\parametric\curve.hpp" />
     <ClInclude Include="..\..\common\include\parametric\curve_support.hpp" />
+    <ClInclude Include="..\..\common\include\parametric\interpolation.hpp" />
     <ClInclude Include="..\..\common\include\parametric\segment_curve.hpp" />
+    <ClInclude Include="..\..\common\include\physics\integration.hpp" />
     <ClInclude Include="..\..\common\include\physics\kinetics.hpp" />
     <ClInclude Include="..\..\common\include\physics\oscillator_kinetics.hpp" />
     <ClInclude Include="..\..\common\include\physics\paper_kinetics.hpp" />
+    <ClInclude Include="..\..\projects\explode_mode\common\include\background.hpp" />
+    <ClInclude Include="..\..\projects\explode_mode\common\include\player.hpp" />
+    <ClInclude Include="..\..\projects\explode_mode\common\include\square.hpp" />
+    <ClInclude Include="..\..\projects\explode_mode\common\include\square_shaders.hpp" />
+    <ClInclude Include="..\..\projects\explode_mode\common\include\vector_display_curve.hpp" />
+    <ClInclude Include="..\..\projects\explode_mode\common\include\vector_display_curve_shaders.hpp" />
+    <ClInclude Include="..\..\projects\vector_display\common\include\trochoid.hpp" />
+    <ClInclude Include="..\..\projects\vector_display\common\include\vector_display.hpp" />
+    <ClInclude Include="..\..\projects\vector_display\common\include\vector_display_beam.hpp" />
+    <ClInclude Include="..\..\projects\vector_display\common\include\vector_display_shaders.hpp" />
     <ClInclude Include="..\..\python\include\glm.hpp" />
     <ClInclude Include="..\..\python\include\opengl.hpp" />
-    <ClInclude Include="..\..\python\include\parametric.hpp" />
     <ClInclude Include="..\..\python\include\repr.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\trochoid.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\vector_display.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_beam.hpp" />
-    <ClInclude Include="..\..\test\vector_display\common\include\vector_display_shaders.hpp" />
+    <ClInclude Include="..\..\python\include\stl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\common\src\clock.cpp" />
@@ -203,9 +209,6 @@
     <ClCompile Include="..\..\common\src\image\gaussian_filter.cpp" />
     <ClCompile Include="..\..\common\src\image\indexing.cpp" />
     <ClCompile Include="..\..\common\src\image\transform.cpp" />
-    <ClCompile Include="..\..\common\src\math\arithmatic.cpp" />
-    <ClCompile Include="..\..\common\src\math\integration.cpp" />
-    <ClCompile Include="..\..\common\src\math\interpolation.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer.cpp" />
     <ClCompile Include="..\..\common\src\opengl\camera.cpp" />
     <ClCompile Include="..\..\common\src\opengl\frame_buffer.cpp" />
@@ -216,19 +219,29 @@
     <ClCompile Include="..\..\common\src\opengl\vertex_array.cpp" />
     <ClCompile Include="..\..\common\src\opengl\buffer_support.cpp" />
     <ClCompile Include="..\..\common\src\opengl\window.cpp" />
+    <ClCompile Include="..\..\common\src\parametric\curve_support.cpp" />
+    <ClCompile Include="..\..\common\src\parametric\interpolation.cpp" />
     <ClCompile Include="..\..\common\src\parametric\segment_curve.cpp" />
+    <ClCompile Include="..\..\common\src\physics\integration.cpp" />
     <ClCompile Include="..\..\common\src\physics\paper_kinetics.cpp" />
+    <ClCompile Include="..\..\projects\explode_mode\common\src\background.cpp" />
+    <ClCompile Include="..\..\projects\explode_mode\common\src\player.cpp" />
+    <ClCompile Include="..\..\projects\explode_mode\common\src\square.cpp" />
+    <ClCompile Include="..\..\projects\explode_mode\common\src\vector_display_curve.cpp" />
+    <ClCompile Include="..\..\projects\explode_mode\python\src\explode_mode.cpp" />
+    <ClCompile Include="..\..\projects\vector_display\common\src\trochoid.cpp" />
+    <ClCompile Include="..\..\projects\vector_display\common\src\vector_display.cpp" />
+    <ClCompile Include="..\..\projects\vector_display\common\src\vector_display_beam.cpp" />
+    <ClCompile Include="..\..\projects\vector_display\python\src\vector_display.cpp" />
+    <ClCompile Include="..\..\python\src\clock.cpp" />
     <ClCompile Include="..\..\python\src\event.cpp" />
     <ClCompile Include="..\..\python\src\geometry.cpp" />
     <ClCompile Include="..\..\python\src\glm.cpp" />
+    <ClCompile Include="..\..\python\src\image.cpp" />
     <ClCompile Include="..\..\python\src\opengl.cpp" />
     <ClCompile Include="..\..\python\src\parametric.cpp" />
     <ClCompile Include="..\..\python\src\physics.cpp" />
     <ClCompile Include="..\..\python\src\repr.cpp" />
-    <ClCompile Include="..\..\test\vector_display\common\src\trochoid.cpp" />
-    <ClCompile Include="..\..\test\vector_display\common\src\vector_display.cpp" />
-    <ClCompile Include="..\..\test\vector_display\common\src\vector_display_beam.cpp" />
-    <ClCompile Include="..\..\test\vector_display\python\src\vector_display.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\python\setup.py" />

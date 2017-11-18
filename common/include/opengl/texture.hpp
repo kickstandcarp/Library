@@ -16,25 +16,25 @@ class Texture
         Texture(const std::vector<float> &data, const std::array<unsigned int, 2> &size, const TextureFormat format, const TextureInterpolation interpolation, const TextureWrap wrap);
         ~Texture();
 
-		unsigned int				get_id() const;
-		unsigned int				get_length() const;
-		std::array<unsigned int, 2>	get_size() const;
-		std::array<unsigned int, 3>	get_shape() const;
-		std::vector<float>			get_data() const;
+        unsigned int                get_id() const;
+        unsigned int                get_length() const;
+        std::array<unsigned int, 2> get_size() const;
+        std::array<unsigned int, 3> get_shape() const;
+        std::vector<float>          get_data() const;
 
-		void						set_data(const std::vector<float> &data, const std::array<unsigned int, 2> &size);
-		void						set_texture_unit(const unsigned int index);
+        void                        set_data(const std::vector<float> &data, const std::array<unsigned int, 2> &size);
+        void                        set_texture_unit(const unsigned int index);
 
         friend void                 swap(Texture &a, Texture &b);
 
-	private:
-		unsigned int				num_channels() const;
-		int                         internal_format() const;
+    private:
+        unsigned int                num_channels() const;
+        int                         internal_format() const;
 
-		unsigned int                id;
+        unsigned int                id;
 
-		std::array<unsigned int, 3>	shape;
-		TextureFormat				format;
+        std::array<unsigned int, 3> shape;
+        TextureFormat               format;
 };
 
 #endif

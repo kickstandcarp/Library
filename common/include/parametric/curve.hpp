@@ -10,15 +10,12 @@
 template <class T>
 class Curve
 {
-	public:
-		Curve(const float min_vertex_distance=INFINITY);
+    public:
+        Curve(const float min_vertex_distance=INFINITY);
         virtual ~Curve();
 
-        virtual float                       get_min_t() const=0;
-        virtual float                       get_max_t() const=0;
-
-		virtual CurveVertex<T>				vertex(const float t) const=0;
-        virtual std::list<CurveVertex<T> >	vertices(const float t1, const float t2) const=0;
+        virtual CurveVertex<T>              vertex(const float t) const=0;
+        virtual std::list<CurveVertex<T> >  vertices(const float t1, const float t2) const=0;
 
         float                               min_vertex_distance;
         unsigned int                        max_vertices;
@@ -52,7 +49,7 @@ void Curve<T>::fill_vertices(std::list<CurveVertex<T> > &vertices) const
     auto vertex = vertices.begin();
     while (vertex != std::prev(vertices.end()))
     {
-        if (::distance(vertex->value, std::next(vertex)->value) > this->min_vertex_distance)
+        if (curve_vertex_distance(*vertex, *std::next(vertex)) > this->min_vertex_distance)
         {
             vertices.insert(std::next(vertex), this->vertex(0.5f*(vertex->t + std::next(vertex)->t)));
             if (vertices.size() > this->max_vertices)

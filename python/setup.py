@@ -30,14 +30,13 @@ geometry_src_files.append(abspath(join(path, pardir, 'common', 'src', 'geometry'
 
 parametric_src_files = []
 parametric_src_files.append(abspath(join(path, 'src', 'parametric.cpp')))
-parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'arithmatic.cpp')))
-parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'interpolation.cpp')))
+parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'interpolation.cpp')))
+parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'curve_support.cpp')))
 parametric_src_files.append(abspath(join(path, pardir, 'common', 'src', 'parametric', 'segment_curve.cpp')))
 
 physics_src_files = []
 physics_src_files.append(abspath(join(path, 'src', 'physics.cpp')))
-physics_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'arithmatic.cpp')))
-physics_src_files.append(abspath(join(path, pardir, 'common', 'src', 'math', 'integration.cpp')))
+physics_src_files.append(abspath(join(path, pardir, 'common', 'src', 'physics', 'integration.cpp')))
 physics_src_files.append(abspath(join(path, pardir, 'common', 'src', 'physics', 'paper_kinetics.cpp')))
 
 event_src_files = []
@@ -63,12 +62,19 @@ image_src_files = []
 image_src_files.append(abspath(join(path, 'src', 'image.cpp')))
 image_src_files.append(abspath(join(path, pardir, 'common', 'src', 'image', 'gaussian_filter.cpp')))
 
-vector_display_include_dirs = [abspath(join(path, pardir, 'test', 'vector_display', 'common', 'include'))]
+vector_display_include_dirs = [abspath(join(path, pardir, 'projects', 'vector_display', 'common', 'include'))]
 vector_display_src_files = []
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'python', 'src', 'vector_display.cpp')))
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display.cpp')))
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'vector_display_beam.cpp')))
-vector_display_src_files.append(abspath(join(path, pardir, 'test', 'vector_display', 'common', 'src', 'trochoid.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'projects', 'vector_display', 'python', 'src', 'vector_display.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'projects', 'vector_display', 'common', 'src', 'vector_display.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'projects', 'vector_display', 'common', 'src', 'vector_display_beam.cpp')))
+vector_display_src_files.append(abspath(join(path, pardir, 'projects', 'vector_display', 'common', 'src', 'trochoid.cpp')))
+
+explode_mode_include_dirs = [abspath(join(path, pardir, 'projects', 'explode_mode', 'common', 'include'))]
+explode_mode_src_files = []
+explode_mode_src_files.append(abspath(join(path, pardir, 'projects', 'explode_mode', 'python', 'src', 'explode_mode.cpp')))
+explode_mode_src_files.append(abspath(join(path, pardir, 'projects', 'explode_mode', 'common', 'src', 'vector_display_curve.cpp')))
+explode_mode_src_files.append(abspath(join(path, pardir, 'projects', 'explode_mode', 'common', 'src', 'background.cpp')))
+explode_mode_src_files.append(abspath(join(path, pardir, 'projects', 'explode_mode', 'common', 'src', 'square.cpp')))
 
 '''
 glm_extension = Extension('glm', glm_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
@@ -80,6 +86,7 @@ event_extension = Extension('event', event_src_files + parametric_src_files + cl
 opengl_extension = Extension('opengl', opengl_src_files + event_src_files + parametric_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 image_extension = Extension('image', image_src_files + opengl_src_files + event_src_files + parametric_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 vector_display_extension = Extension('vector_display', vector_display_src_files + image_src_files + opengl_src_files + event_src_files + parametric_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs + vector_display_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+explode_mode_extension = Extension('explode_mode', explode_mode_src_files + image_src_files + opengl_src_files + event_src_files + parametric_src_files + physics_src_files + geometry_src_files + clock_src_files, language='c++', include_dirs=include_dirs + explode_mode_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 '''
 
 glm_extension = Extension('glm', glm_src_files, language='c++', include_dirs=include_dirs, libraries=[], extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
@@ -91,6 +98,7 @@ event_extension = Extension('event', event_src_files, language='c++', include_di
 opengl_extension = Extension('opengl', opengl_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 image_extension = Extension('image', image_src_files, language='c++', include_dirs=include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 vector_display_extension = Extension('vector_display', vector_display_src_files, language='c++', include_dirs=include_dirs + vector_display_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
+explode_mode_extension = Extension('explode_mode', explode_mode_src_files, language='c++', include_dirs=include_dirs + explode_mode_include_dirs, libraries=opengl_libraries + event_libraries, extra_compile_args=extra_compile_args, extra_link_args=extra_link_args)
 
-ext_modules = [glm_extension, clock_extension, geometry_extension, parametric_extension, physics_extension, event_extension, opengl_extension, image_extension, vector_display_extension]
+ext_modules = [glm_extension, clock_extension, geometry_extension, parametric_extension, physics_extension, event_extension, opengl_extension, image_extension, vector_display_extension, explode_mode_extension]
 setup(ext_modules=ext_modules)

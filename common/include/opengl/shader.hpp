@@ -14,36 +14,36 @@
 class Shader
 {
     public:
-		Shader(const std::vector<std::pair<std::string, ShaderType> > &shaders, const std::vector<std::string> &transform_feedback_varying_names);
-		~Shader();
+        Shader(const std::vector<std::pair<std::string, ShaderType> > &shaders, const std::vector<std::string> &transform_feedback_varying_names);
+        ~Shader();
 
         unsigned int                                            get_id() const;
-		std::vector<std::string>                                get_attribute_names() const;
-		std::vector<std::string>                                get_transform_feedback_varying_names() const;
-		std::vector<std::string>                                get_uniform_names() const;
-		std::vector<std::string>                                get_uniform_buffer_names() const;
-		GLenum                                                  get_uniform_type(const std::string &name) const;
-		unsigned int                                            get_uniform_size(const std::string &name) const;
+        std::vector<std::string>                                get_attribute_names() const;
+        std::vector<std::string>                                get_transform_feedback_varying_names() const;
+        std::vector<std::string>                                get_uniform_names() const;
+        std::vector<std::string>                                get_uniform_buffer_names() const;
+        GLenum                                                  get_uniform_type(const std::string &name) const;
+        unsigned int                                            get_uniform_size(const std::string &name) const;
         template <class T> T                                    get_uniform(const std::string &name, const unsigned int offset=0) const;
         template <class T> std::vector<T>                       get_uniform(const std::string &name, const unsigned int offset, const unsigned int size) const;
 
-		void                                                    set_attribute(const std::string &name, VertexArray &vertex_array, const std::string &buffer_name) const;
-		void                                                    set_transform_feedback_varying(const std::string &name, VertexArray &vertex_array, const std::string &buffer_name) const;
-		template <class T> void                                 set_uniform(const std::string &name, const T &value, const unsigned int offset=0);
-		template <class T> void                                 set_uniform(const std::string &name, const std::vector<T> &values, const unsigned int offset=0);
+        void                                                    set_attribute(const std::string &name, VertexArray &vertex_array, const std::string &buffer_name) const;
+        void                                                    set_transform_feedback_varying(const std::string &name, VertexArray &vertex_array, const std::string &buffer_name) const;
+        template <class T> void                                 set_uniform(const std::string &name, const T &value, const unsigned int offset=0);
+        template <class T> void                                 set_uniform(const std::string &name, const std::vector<T> &values, const unsigned int offset=0);
 
-		void                                                    initialize_uniform_buffer(const std::string &name, const unsigned int binding, const BufferUsageFrequency frequency=BufferUsageFrequency::statical, const BufferUsageAccess access=BufferUsageAccess::draw);
+        void                                                    initialize_uniform_buffer(const std::string &name, const unsigned int binding, const BufferUsageFrequency frequency=BufferUsageFrequency::statical, const BufferUsageAccess access=BufferUsageAccess::draw);
 
-	private:
-		std::tuple<std::shared_ptr<Buffer>, UniformInformation> buffer_uniform_information(const std::string &name) const;
+    private:
+        std::tuple<std::shared_ptr<Buffer>, UniformInformation> buffer_uniform_information(const std::string &name) const;
 
         unsigned int                                            id;
-		std::vector<unsigned int>                               shader_ids;
+        std::vector<unsigned int>                               shader_ids;
 
-		std::map<std::string, AttributeInformation>             attribute_information;
-		std::map<std::string, AttributeInformation>             transform_feedback_varying_information;
-		std::map<std::string, UniformInformation>               uniform_information;
-		std::map<std::string, UniformBufferInformation>         uniform_buffer_information;
+        std::map<std::string, AttributeInformation>             attribute_information;
+        std::map<std::string, AttributeInformation>             transform_feedback_varying_information;
+        std::map<std::string, UniformInformation>               uniform_information;
+        std::map<std::string, UniformBufferInformation>         uniform_buffer_information;
 };
 
 
@@ -51,10 +51,10 @@ class Shader
 template <class T>
 T Shader::get_uniform(const std::string &name, const unsigned int offset) const
 {
-	T value;
+    T value;
 
-	auto information = this->uniform_information.find(name);
-	if (information != this->uniform_information.end())
+    auto information = this->uniform_information.find(name);
+    if (information != this->uniform_information.end())
         value = ::get_uniform<T>(this->id, information->second.location + offset, information->second.size);
     else
     {
@@ -68,10 +68,10 @@ T Shader::get_uniform(const std::string &name, const unsigned int offset) const
 template <class T>
 std::vector<T> Shader::get_uniform(const std::string &name, const unsigned int offset, const unsigned int size) const
 {
-	std::vector<T> values;
+    std::vector<T> values;
 
-	auto information = this->uniform_information.find(name);
-	if (information != this->uniform_information.end())
+    auto information = this->uniform_information.find(name);
+    if (information != this->uniform_information.end())
     {
         if (offset + size > information->second.size)
             throw std::length_error("uniform length error");
@@ -95,8 +95,8 @@ std::vector<T> Shader::get_uniform(const std::string &name, const unsigned int o
 template <class T>
 void Shader::set_uniform(const std::string &name, const T &value, const unsigned int offset)
 {
-	auto information = this->uniform_information.find(name);
-	if (information != this->uniform_information.end())
+    auto information = this->uniform_information.find(name);
+    if (information != this->uniform_information.end())
         ::set_uniform<T>(information->second.location + offset, value);
     else
     {
@@ -107,8 +107,8 @@ void Shader::set_uniform(const std::string &name, const T &value, const unsigned
 
 template <class T> void Shader::set_uniform(const std::string &name, const std::vector<T> &values, const unsigned int offset)
 {
-	auto information = this->uniform_information.find(name);
-	if (information != this->uniform_information.end())
+    auto information = this->uniform_information.find(name);
+    if (information != this->uniform_information.end())
     {
         if (offset + values.size() > information->second.size)
             throw std::length_error("uniform length error");

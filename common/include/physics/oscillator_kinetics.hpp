@@ -6,44 +6,41 @@
 #include <glm/gtc/constants.hpp>
 #include "clock.hpp"
 #include "physics/kinetics.hpp"
-#include "math/arithmatic.hpp"
-#include "math/integration.hpp"
-#include "parametric/curve.hpp"
-#include "parametric/curve_support.hpp"
+#include "physics/integration.hpp"
 #include "parametric/segment_curve.hpp"
 
 template <class T>
 class OscillatorKinetics: public Kinetics<T>
 {
-	public:
-		OscillatorKinetics(const T &value, const T &velocity, const T &external_acceleration, const T &frequency, const T &damping_ratio);
-		virtual ~OscillatorKinetics();
+    public:
+        OscillatorKinetics(const T &value, const T &velocity, const T &frequency, const T &damping_ratio);
+        virtual ~OscillatorKinetics();
 
-		const std::shared_ptr<const SegmentCurve<T> >   get_history() const;
-		void										    add_history(const float time);
-		void										    remove_history();
+        const std::shared_ptr<const SegmentCurve<T> >   get_history() const;
+        void                                            add_history(const float time);
+        void                                            remove_history();
 
-        T											    steady_state_value_to_acceleration(const T &value) const;
+        T                                               steady_state_value_to_acceleration(const T &value) const;
 
-        virtual void								    step(const Clock &clock);
+        virtual void                                    step(const Clock &clock);
 
-        T											    frequency, damping_ratio;
+        T                                               frequency, damping_ratio;
+
+	private:
+		virtual std::tuple<T>							runge_kutta_midpoint(const float dt, const std::tuple<T> &x, const std::vector<float> &coefficients, const std::vector<std::tuple<T> > &dx_dts, const bool derivative) const;
+		virtual float									adaptive_runge_kutta_relative_error(const std::tuple<T> &dx_dt_1, const std::tuple<T> &dx_dt_2) const;
+		virtual std::tuple<T>							d2x_dt2(const float t, const std::tuple<T> &x, const std::tuple<T> &dx_dt) const;
 };
-
-template <class T> T								    oscillator_kinetics_d2x_dt2(const float t, const T &dx_dt, const OscillatorKinetics<T> &kinetics);
-template <class T> float							    oscillator_kinetics_error(const T &x1, const T &x2);
-
-// std::tuple<float, float>                                underdamped_frequency_time_constant_to_oscillator_frequency_damping_ratio(const float frequency, const float time_constant);
 
 
 
 template <class T>
-OscillatorKinetics<T>::OscillatorKinetics(const T &value, const T &velocity, const T &external_acceleration, const T &frequency, const T &damping_ratio)
-:   Kinetics<T>(std::make_tuple(value), std::make_tuple(velocity), std::make_tuple(external_acceleration)),
+OscillatorKinetics<T>::OscillatorKinetics(const T &value, const T &velocity, const T &frequency, const T &damping_ratio)
+:   Kinetics<T>(std::make_tuple(value), std::make_tuple(velocity)),
     frequency(frequency),
     damping_ratio(damping_ratio)
 {
-
+	this->external_accelerations = std::make_tuple(T(0));
 }
 
 template <class T>
@@ -55,19 +52,19 @@ OscillatorKinetics<T>::~OscillatorKinetics()
 template <class T>
 const std::shared_ptr<const SegmentCurve<T> > OscillatorKinetics<T>::get_history() const
 {
-	return std::get<0>(this->value_histories);
+    return std::get<0>(this->value_histories);
 }
 
 template <class T>
 void OscillatorKinetics<T>::add_history(const float time)
 {
-	this->Kinetics<T>::template add_history<0>(time, CurveInterpolation::cubic);
+    this->Kinetics<T>::template add_history<0>(time, CurveInterpolation::cubic);
 }
 
 template <class T>
 void OscillatorKinetics<T>::remove_history()
 {
-	this->Kinetics<T>::template remove_history<0>();
+    this->Kinetics<T>::template remove_history<0>();
 }
 
 template <class T>
@@ -79,37 +76,39 @@ T OscillatorKinetics<T>::steady_state_value_to_acceleration(const T &value) cons
 template <class T>
 void OscillatorKinetics<T>::step(const Clock &clock)
 {
-	float elapsed_time = clock.elapsed_time;
-	while (true)
-	{
-		float iteration_elapsed_time;
-		T accelerations;
-		std::tie(accelerations, iteration_elapsed_time) = runge_kutta_fehlberg<T, const OscillatorKinetics<T>&>(oscillator_kinetics_d2x_dt2<T>, std::get<0>(this->velocities), clock.time + (clock.elapsed_time - elapsed_time), elapsed_time, oscillator_kinetics_error<T>, this->step_tolerance, this->min_step, *this);
-		elapsed_time -= iteration_elapsed_time;
-
-		accumulate(std::get<0>(this->velocities), accelerations, iteration_elapsed_time);
-		accumulate(std::get<0>(this->values), std::get<0>(this->velocities), iteration_elapsed_time);
-
-		if (elapsed_time <= 0.0f)
-			break;
-	}
-
-	this->Kinetics<T>::template step_history<0>(clock);
+	// this->Kinetics<T>::runge_kutta_4(clock);
+	this->Kinetics<T>::adaptive_runge_kutta_45(clock);
+    this->Kinetics<T>::template step_history<0>(clock);
 }
 
 template <class T>
-T oscillator_kinetics_d2x_dt2(const float t, const T &dx_dt, const OscillatorKinetics<T> &kinetics)
+std::tuple<T> OscillatorKinetics<T>::runge_kutta_midpoint(const float dt, const std::tuple<T> &x, const std::vector<float> &coefficients, const std::vector<std::tuple<T> > &dx_dts, const bool derivative) const
 {
-    T angular_frequency = glm::two_pi<T>()*kinetics.frequency;
-	T x = std::get<0>(kinetics.values);
+	T dx_dt(0);
+	for (unsigned int i = 0; i < coefficients.size(); i++)
+		dx_dt += coefficients[i]*std::get<0>(dx_dts[i]);
 
-    return std::get<0>(kinetics.external_accelerations) - 2.0f*kinetics.damping_ratio*angular_frequency*dx_dt - angular_frequency*angular_frequency*x;
+	T midpoint = ingetrate(dt, std::get<0>(x), dx_dt);
+
+	return std::tuple<T>(midpoint);
 }
 
 template <class T>
-float oscillator_kinetics_error(const T &x1, const T &x2)
+float OscillatorKinetics<T>::adaptive_runge_kutta_relative_error(const std::tuple<T> &dx_dt_1, const std::tuple<T> &dx_dt_2) const
 {
-	return distance(x1, x2);
+	float dx_dt_error = glm::distance(std::get<0>(dx_dt_1), std::get<0>(dx_dt_2));
+	float dx_dt_magnitude = 0.5f*(glm::length(std::get<0>(dx_dt_1)) + glm::length(std::get<0>(dx_dt_2)));
+
+	return dx_dt_magnitude == 0.0f ? 0.0f : dx_dt_error / dx_dt_magnitude;
+}
+
+template <class T>
+std::tuple<T> OscillatorKinetics<T>::d2x_dt2(const float t, const std::tuple<T> &x, const std::tuple<T> &dx_dt) const
+{
+	T angular_frequency = glm::two_pi<T>()*this->frequency;
+	T d2x_dt2 = std::get<0>(this->external_accelerations) - 2.0f*this->damping_ratio*angular_frequency*std::get<0>(dx_dt) - angular_frequency*angular_frequency*std::get<0>(x);
+
+	return std::tuple<T>(d2x_dt2);
 }
 
 #endif

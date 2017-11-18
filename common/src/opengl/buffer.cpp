@@ -3,34 +3,34 @@
 
 
 Buffer::Buffer()
-:	size(0),
-	dimension(0),
-	type(GL_NONE)
+:   size(0),
+    dimension(0),
+    type(GL_NONE)
 {
-	glGenBuffers(1, &this->id);
+    glGenBuffers(1, &this->id);
 }
 
 Buffer::~Buffer()
 {
-	glDeleteBuffers(1, &this->id);
+    glDeleteBuffers(1, &this->id);
 }
 
 unsigned int Buffer::get_id() const
 {
-	return this->id;
+    return this->id;
 }
 
 unsigned int Buffer::get_size() const
 {
-	return this->size;
+    return this->size;
 }
 
 GLenum Buffer::get_type() const
 {
-	return this->type;
+    return this->type;
 }
 
 unsigned int Buffer::get_dimension() const
 {
-	return this->dimension;
+    return this->dimension;
 }
